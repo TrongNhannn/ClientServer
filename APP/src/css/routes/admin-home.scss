@@ -1,0 +1,94 @@
+.app-p-300{
+    padding-left: 300px;
+}
+.highlight{
+    background-color: #cccccc;
+}
+
+.drop-arrow{
+    display: block;
+    width: 12px;
+    height: 12px;
+    transform: rotate(-45deg);
+    border-bottom: 3px solid white;
+    border-left: 3px solid white;
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+
+.dropbox{
+    .dropbox-label{
+        text-decoration: none;
+        color: white;
+    }
+
+    .dropbox-container{
+        .item{
+            padding: 0.5em;
+            padding-left: 2em;
+            a{
+                text-decoration: none;
+                color: white;
+                &::before{
+                    content: "➤";
+                    color: white;
+                    margin-right: 0.5em;
+                }
+            }
+        }
+    }
+}
+
+
+.close{
+    width: 24px;
+    height: 24px;
+    background-color: $color-4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+
+    .icon{
+        display: block;
+        width: 12px;
+        height: 12px;
+        background-image: url('../media/icon/close.png');
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+}
+
+
+.navbar{
+    width: 300px;
+    height: 100vh;
+    background: white;
+    box-shadow: 5px 5px 15px 5px #ccc;
+}
+
+.horizon-bar{
+    width: 100%;
+    background-color: white;
+}
+
+.avatar-container{
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #ba00ff, #1800ff);
+}
+
+
+.white-arrow-right{
+    display: block;
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-left: 4px solid white;
+    border-bottom: 4px solid white;
+    transform: rotate(-135deg);
+}

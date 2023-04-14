@@ -1,0 +1,31 @@
+.block{
+    display: block;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.container{
+    display: block;
+    width: 80%;
+    max-width: $pc-vp;
+    margin: auto;
+}
+
+
+.medium-card{
+    width: 100%;
+    max-width: 448px;
+    min-width: 315px;
+}
+
+.container-fluid{
+    display: block;
+    width: 100%;
+}
+
+.fullscreen{
+    width: 100vw;
+    height: 100vh;
+}

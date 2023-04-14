@@ -1,0 +1,48 @@
+.flex{
+    display: flex;
+}
+
+.flex-wrap{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-no-wrap{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+
+.flex-start{
+    justify-content: flex-start;
+}
+
+.flex-center{
+    justify-content: center;
+}
+
+.flex-end{
+    justify-content: end;
+}
+
+.flex-middle{
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-aligned{
+    align-items: center;
+}
+
+.flex-bottom{
+    align-items: end;
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+
+}
+.fill-available{
+    flex-grow: 1;
+}

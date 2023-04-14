@@ -1,0 +1,84 @@
+.mylan-color{
+    color: $mylan-color;
+}
+
+.theme-color{
+    color: $theme-color;
+}
+
+.light-blue{
+    color: $color-0;
+}
+
+.deep-gray{
+    color: $color-1;
+}
+
+.gray{
+    color: $color-2;
+}
+
+.light-gray{
+    color: $color-3;
+}
+
+.white{
+    color: white;
+}
+
+.crimson{
+    color: $color-4;
+}
+
+
+.bg-theme-color{
+    background-color: $theme-color;
+}
+
+.bg-light-blue{
+    background-color: $color-0;
+}
+
+.bg-deep-gray{
+    background-color: $color-1;
+    color: white;
+}
+
+.bg-gray{
+    background-color: $color-2;
+    color: white;
+}
+
+.bg-white{
+    background-color: #fff;
+}
+
+.bg-green{
+    background-color: $mylan-color;
+}
+
+.bg-greenn{
+    background-color: $color-5;
+}
+
+.bg-warning{
+    background-color: $color-6;
+}
+
+.bg-light-gray{
+    background-color: $color-3;
+    color: white;
+}
+
+.bg-crimson{
+    background-color: $color-4;
+    color: white;
+}
+
+.trans-dark{
+    background: rgba(0, 0, 0, 0.5 );
+}
+
+.trans-dark-25{
+    background: rgba(0, 0, 0, 0.25 );
+}
