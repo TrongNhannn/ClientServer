@@ -1,0 +1,46 @@
+{
+    "data": {
+        "ui": [
+            {
+                "title": "Chấn động",
+                "version_id": 1,
+                "create_by": {
+                    "fullname": "Su nè"
+                },
+                "status": 1,
+                "url": "/news",
+                "description": "Trang mới",
+                "id": 2,
+                "apis": {
+                    "get": "/api/7/1/a6fafcd57bca48b1b7548110f76c1036/",
+                    "post": "/api/7/1/748c2be79fff4fd8a9fab6870b0416af/",
+                    "put": "/api/7/1/ca2f56e559be4b05be4517d7371f5a03/",
+                    "delete": "/api/7/1/3b5fd40db7ec4f1781216f19b7a026e9/"
+                },
+                "formated_create_by": "Su nè",
+                "formated_status": "Đang hoạt động",
+                "widget_name": "Mỹ Lu ngồi lủng tường"
+            },
+            {
+                "title": "Chi tiết",
+                "version_id": 1,
+                "create_by": {
+                    "fullname": "Su nè"
+                },
+                "status": false,
+                "url": "/new/my-lu-ngoi-lung-tuong",
+                "description": "Trang mới",
+                "id": 3,
+                "apis": {
+                    "get": "/api/7/1/a6fafcd57bca48b1b7548110f76c1036/",
+                    "post": "/api/7/1/a3c38e09a8164303abfcabb677612632/",
+                    "put": "/api/7/1/ca2f56e559be4b05be4517d7371f5a03/",
+                    "delete": "/api/7/1/3b5fd40db7ec4f1781216f19b7a026e9/"
+                },
+                "formated_create_by": "Su nè",
+                "formated_status": "Vô hiệu",
+                "widget_name": "Chi tiết vụ Mỹ Diệu ngồi lủng tường"
+            }
+        ]
+    }
+}
