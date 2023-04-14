@@ -129,7 +129,7 @@ export default (props) => {
         openTab(`data`)
     }
     const redirectToInput = () => {
-        const id_str_post = page.apis.post.split('/')[6];
+        const id_str_post = page.apis.post.split('/')[4];
         openTab(`/su/api/post/input/${id_str_post}`)
     }
     const noParamsFilter = () => {

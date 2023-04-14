@@ -56,7 +56,7 @@ export default (props) => {
                 })
                 .catch(error => {
                     // Show an error message when adding the user fails
-                    al.error("Thất bại", "Xóa thất bại");
+                    al.failure("Thất bại", "Xóa thất bại");
                 });
             }
         }   
