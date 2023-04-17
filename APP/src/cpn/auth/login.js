@@ -22,13 +22,17 @@ export default () => {
             },
             body: JSON.stringify(auth)
         }).then( res => res.json() ).then( ( resp ) => {
-            const { success, role, credential_string, _token } = resp;
+            const { success, role, credential_string, _token, redirectToImport  } = resp;
             console.log( resp )
             if( success ){
                 localStorage.setItem( 'role', role )
                 localStorage.setItem( 'credential_string', credential_string )
                 localStorage.setItem( '_token', _token )
-                window.location = '/';
+                if (redirectToImport) {
+                    window.location = "/"; // Chuyển hướng đến trang import nếu không tồn tại các bảng
+                  } else {
+                    window.location = "/su/users";
+                  }
             }else{
                 alert(`CREDENTIAL ERROR`);
             }

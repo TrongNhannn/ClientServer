@@ -65,31 +65,86 @@ router.post('/create_user', async (req, res) => {
 //@route post /%unique_string%/login
 //@desc Đăng nhập tài khoản người dùng
 //@access Public
+
+const defaultUser = {
+  account_string: "a",
+  pwd_string: "1",
+  account_role: "su",
+  fullname: "Admin",
+  email: "admin@example.com",
+  phone: "0123456789",
+  address: "123 Default Street",
+};
+
+async function checkCollectionsExist(dbo) {
+  const collections = await dbo.listCollections().toArray();
+  const collectionNames = collections.map((c) => c.name);
+
+  return (
+    collectionNames.includes("accounts") &&
+    collectionNames.includes("tables") &&
+    collectionNames.includes("fields")
+  );
+}
+
 router.post('/login', async (req, res) => {
   const { account_string, pwd_string } = req.body;
-  // Kiểm tra xem tài khoản tồn tại hay không
-  // console.log( { account_string, pwd_string } )
-  const dbo = await asyncMongo();
+
+  if (account_string === defaultUser.account_string && pwd_string === defaultUser.pwd_string) {
+    // Tạo mã JWT để xác thực người dùng
+    const dbo = await asyncMongo();
+    const token = jwt.sign({ credential_string: defaultUser.account_string }, 'your-jwt-secret', { expiresIn: '1h' });
+    const collectionsExist = await checkCollectionsExist(dbo);
+    res.status(200).json({ success: true, content: 'Đăng nhập thành công', role: defaultUser.account_role, credential_string: defaultUser.account_string, _token: token ,redirectToImport: !collectionsExist, });
+  } else {
+    // Xử lý đăng nhập thông thường (kiểm tra tài khoản trong cơ sở dữ liệu)
+    const dbo = await asyncMongo();
 
   const user = await new Promise((resolve, reject) => {
       dbo.collection( tables.accounts ).findOne({ account_string }, (err, result) => {
           resolve( result );
       })
   });
-
   if( user ){
       const hashedPassword = user.hashedPassword;
           if (bcrypt.compareSync(pwd_string, hashedPassword)) {
               // Tạo mã JWT để xác thực người dùng
               const token = jwt.sign({ credential_string: user.credential_string }, 'your-jwt-secret', { expiresIn: '1h' });
-              res.status(200).json({ success: true, content: 'Đăng nhập thành công', role: user.account_role, credential_string: user.credential_string, _token: token });
+              const collectionsExist = await checkCollectionsExist(dbo);
+              res.status(200).json({ success: true, content: 'Đăng nhập thành công', role: user.account_role, credential_string: user.credential_string, _token: token,  redirectToImport: !collectionsExist, });
           } else {
               res.status(404).json({ success: false, content: 'Sai tài khoản hoặc mật khẩu' });
           }
     }else{
         return res.status(404).json({ success: false, content: 'Sai thông tin đăng nhập' });
     }
+  }
 });
+// router.post('/login', async (req, res) => {
+  
+//   const { account_string, pwd_string } = req.body;
+//   // Kiểm tra xem tài khoản tồn tại hay không
+//   // console.log( { account_string, pwd_string } )
+//   const dbo = await asyncMongo();
+
+//   const user = await new Promise((resolve, reject) => {
+//       dbo.collection( tables.accounts ).findOne({ account_string }, (err, result) => {
+//           resolve( result );
+//       })
+//   });
+//   if( user ){
+//       const hashedPassword = user.hashedPassword;
+//           if (bcrypt.compareSync(pwd_string, hashedPassword)) {
+//               // Tạo mã JWT để xác thực người dùng
+//               const token = jwt.sign({ credential_string: user.credential_string }, 'your-jwt-secret', { expiresIn: '1h' });
+//               res.status(200).json({ success: true, content: 'Đăng nhập thành công', role: user.account_role, credential_string: user.credential_string, _token: token });
+//           } else {
+//               res.status(404).json({ success: false, content: 'Sai tài khoản hoặc mật khẩu' });
+//           }
+//     }else{
+//         return res.status(404).json({ success: false, content: 'Sai thông tin đăng nhập' });
+//     }
+// });
 
 // Đổi mật khẩu người dùng
 

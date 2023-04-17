@@ -68,14 +68,15 @@ export default () => {
 
     const submit = () => {
         if( nullCheck(data) ){
-            fetch(`${ api.url.proxy }${ api.url.url }`, {
+            console.log(`${ api.url.proxy }${ api.url.url }`)
+            fetch(`${ proxy }${ api.url.url }`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
                 },
                 body: JSON.stringify({ data })
             }).then( res => res.json() ).then( res => {
-                const { success, data, fk } = res;
+                const { success, data, fk } = res;                
                 console.log( res )
                 if( success ){
                     al.success("", "Thành công thêm dữ liệu!")

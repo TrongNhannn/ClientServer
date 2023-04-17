@@ -6,6 +6,8 @@ const { id, intValidate } = require('../module/modulars');
 const { getAndUpdateCurrentID, getCurrentID, makePattern } = require('../module/id-manipulation');
 const tables  = require('../mongo/tables');
 
+const { getRequest } = require('./api-resolving');
+
 var router  = express.Router();
 
 
@@ -133,14 +135,14 @@ router.put('/api/:id_str/update', async (req, res) => {
 
 router.get(`/api/input/info/:id_str`, async (req, res) => {
     const { id_str } = req.params;
-    console.log( id_str )
+
     const dbo = await asyncMongo()
     const api = await new Promise( (resolve, reject) => {
         dbo.collection(tables.apis).findOne({ "url.id_str": id_str }, (err, result) => {
             resolve( result )
         })
     });
-    console.log(api)
+
     if( api && api.status ){
 
         const { version_id } = api;
@@ -164,8 +166,19 @@ router.get(`/api/input/info/:id_str`, async (req, res) => {
             const isExistInSelectedTables = apiTables.filter( apiTable => apiTable.table_alias == tb.table_alias )[0];
             return !isExistInSelectedTables ? true: false
         });
-            
-        res.status(200).send({ success: true, api, relatedTables })
+
+        const fields = [];
+        for( let i = 0; i < api.tables.length; i++ ){
+            const { table_id } = api.tables[i];
+            const _fields = await new Promise((resolve, reject) => {
+                dbo.collection(tables.fields).find({ table_id }).toArray((err, result) => {
+                    resolve(result)
+                })
+            })
+            fields.push(..._fields)
+        }
+
+        res.status(200).send({ success: true, api, relatedTables, fields })
     }else{
         res.status(404).send({ success: false })
     }
@@ -227,6 +240,37 @@ router.get('/api/get/auto_increment/:field_alias', async (req, res) => {
     }
 })
 
+router.get('/retrive/put/data/:id_str', async (req, res) => {
+    const { id_str } = req.params;
+    const dbo = await asyncMongo()
+    const api = await new Promise((resolve, reject) => {
+        dbo.collection( tables.apis ).findOne({ "url.id_str": id_str }, (err, result) => {
+            resolve( result )
+        })
+    })
+    if( api ){
+        api.params = [];
+        api.method = "get";
+
+        const fields = [];
+        for( let i = 0; i < api.tables.length; i++ ){
+            const { table_id } = api.tables[i];
+            const _fields = await new Promise((resolve, reject) => {
+                dbo.collection(tables.fields).find({ table_id }).toArray((err, result) => {
+                    resolve(result)
+                })
+            })
+            fields.push(..._fields)
+        }
+
+        api.fields = fields;
+
+        const data = await getRequest(req, api);
+        res.status(200).send(data)
+    }else{
+        res.status(404).send({ success: false, data: [] })
+    }
+})
 
 router.get('/id_str/:id_str', (req, res) => {
     const { id_str } = req.params;
@@ -242,4 +286,7 @@ router.get('/id_str/:id_str', (req, res) => {
         })
     })
 })
+
+
+
 module.exports = router;

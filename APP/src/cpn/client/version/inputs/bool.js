@@ -3,20 +3,26 @@ import { useState, useEffect } from 'react';
 export default (props) => {
     const { defaultValue, field, changeTrigger } = props;
     const [ height, setHeight ] = useState(0);
+    const [ current, setCurrent ] = useState(0)
 
-    const [ data, setData ] = useState({})
     const values = [
         {
             id: 0,
-            label: field.props.props.IF_TRUE,
+            label: field.props.IF_TRUE,
             value: true
         },
         {
             id: 1,
-            label: field.props.props.IF_FALSE,
+            label: field.props.IF_FALSE,
             value: false
         },
     ]
+    const [ data, setData ] = useState(values[current])
+
+    useEffect(() => {
+        setCurrent(defaultValue == 1 ? 0 : 1)
+        setData( values[defaultValue == 1 ? 0 : 1] )
+    }, [defaultValue])
 
     const blurTrigger = (e) => {
             e.preventDefault();
@@ -30,6 +36,7 @@ export default (props) => {
     }
 
     const changeValue = (val) => {
+        setData( values[val ? 0 : 1] )
         changeTrigger(field, val )
     }
 
@@ -45,7 +52,7 @@ export default (props) => {
                     <input
                         onBlur = { blurTrigger }
                         onFocus = { focusTrigger }
-                        defaultValue = { data.label } readOnly
+                        value = { data.label } readOnly
                         className="text-16-px block text-center no-border fill-available" spellCheck="false"/>
                     <div className="rel w-12-pct flex-middle">
                         <img className="w-12-px block ml-auto" src="/assets/icon/drop-arrow.png"/>

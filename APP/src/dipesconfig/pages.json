@@ -1,29 +1,23 @@
 {
     "pages": [
         {
-            "id": 0,
-            "param": "san_pham",
+            "title": "Khách hàng",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "Su nè"
+            },
+            "status": false,
+            "param": "khachhang",
+            "description": "Trang mới",
+            "id": 7,
             "apis": {
-                "get": "http://192.168.15.205:5000/api/1/1/afd1208365574f24b83100388a6fd4ff/",
-                "post": "http://192.168.15.205:5000/api/1/1/806090f250f741f580dc9601d54fa72a/"
-            }
-        },
-        {
-            "id": 1,
-            "param": "khach_hang",
-            "apis": {
-                "get": "http://192.168.15.205:5000/api/1/1/7c020f51cc124fec99e6aac46ab70103/",
-                "post": "http:/post/khach/hang/o/day/ne"
-            }
-        },
-        {
-            "id": 2,
-            "param": "khach_hang_test",
-            "apis": {
-                "get": "/api/7/1/b56c210790bc4552a09f65126a2b87d3/",
-                "post": "/api/7/1/86f74e55a222426db91d3ad7cb6e78a0/"
-            }
+                "get": "/api/7/1/4ae126bdea7c476cbf0357439213ce84/",
+                "post": "/api/7/1/2892362507d2431fa4aec0862ac118e6/",
+                "put": "/api/7/1/d4674cddead5430faa1dfb9754f0be2b/id1681087516708",
+                "delete": "/api/7/1/91afdde14adc4b60928ac4edffc76718/id1681087516708"
+            },
+            "formated_create_by": "Su nè",
+            "formated_status": "Vô hiệu"
         }
-    ] 
+    ]
 }
-    

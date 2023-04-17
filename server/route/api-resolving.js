@@ -205,9 +205,6 @@ const postRequest  = async ( req, api ) => {
         }
     }
 
-    // console.log("\nDATA")
-    // console.log( data )
-
     for( let i = 0 ; i < tables.length; i++ ){
         const table = tables[i]
         const { table_id, table_alias, table_name } = table;
@@ -631,4 +628,4 @@ const apiResolving = async (req, api, callback) => {
     }
 }
 
-module.exports = { apiResolving }
+module.exports = { apiResolving, getRequest }

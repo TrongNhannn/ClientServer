@@ -11,10 +11,11 @@ import { Navbar, Horizon } from '../../navbar';
 
 export default (props) => {
     const { page_param } = useParams()
-    const { navState, unique_string, proxy, addConstraintBox, addApi, apiAddFilter, pages } = useSelector(state => state);
+    const { navState, unique_string, proxy, addConstraintBox, addApi, apiAddFilter, pages, Alert, Confirm } = useSelector(state => state);
 
     const dispatch = useDispatch()
-
+    const cf = new Confirm(dispatch);
+    const al = new Alert(dispatch);
     const page = pages.filter(pag => pag.param == page_param)[0];
     if (!page) {
         alert("Page not found")
@@ -24,7 +25,7 @@ export default (props) => {
 
     const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
     const { _api, collection, setCollections } = props;
-    const [api, setApi] = useState(_api);
+    const [api, setApi] = useState(_api ? _api : {});
     const { openTab } = useSelector(state => state.functions);
     const [height, setHeight] = useState(0);
     const [apiData, setApiData] = useState([])
@@ -42,7 +43,6 @@ export default (props) => {
     // }, [])
     useEffect(() => {
         const id_str = page.apis.get.split('/')[4];
-
         dispatch({
             type: "setNavBarHighLight",
             payload: { page: 1001 }
@@ -58,6 +58,8 @@ export default (props) => {
                 callApi(api)
             })
     }, [])
+
+
     const cardDrop = () => {
         setHeight(height == 0 ? 200 : 0)
     }
@@ -132,6 +134,19 @@ export default (props) => {
         const id_str_post = page.apis.post.split('/')[4];
         openTab(`/su/api/post/input/${id_str_post}`)
     }
+    const redirectToInputPut = (data) => {
+        const id_str_put = page.apis.put.split(`/`)[4];
+
+        let rawParams = page.apis.put.split(`/${id_str_put}/`)[1];
+
+        const keys = Object.keys(data);
+        keys.map(key => {
+            const value = data[key];
+            rawParams = rawParams.replaceAll(key, value);
+        })
+
+        openTab(`/su/api/put/input/${id_str_put}/${rawParams}`)
+    }
     const noParamsFilter = () => {
         const { fields } = api;
         const { params } = api.url;
@@ -158,6 +173,35 @@ export default (props) => {
         `)
         alert("Đã sao chép JSON")
     }
+  
+    const deleteData = (data) => {
+        let rawParams = page.apis.delete;
+        const keys = Object.keys(data);
+        keys.map(key => {
+            const value = data[key];
+            rawParams = rawParams.replaceAll(key, value);
+        })
+        fetch(`${proxy}${rawParams}`, {
+            method: "DELETE",
+            headers: {
+                "content-type": "application/json"
+            }
+        }).then(res => res.json()).then(res => {
+            const { success, content } = res;
+            if (success) {
+               al.success("Thành công","Xóa dữ liệu thành công")
+               setTimeout(() => {
+                window.location.reload();
+            }, 1600);
+            } else {
+                al.failure("Thất bại", "Xóa thất bại")
+            }
+        })
+    }
+    const askRemove = ( data ) => {
+        cf.askYesNo("Xóa bản ghi ?", "Bản ghi này sẽ bị xóa vĩnh viễn", (conf) => { deleteData(data) })
+    }
+
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
             <Navbar urls={urls} param={page_param} />
@@ -227,8 +271,8 @@ export default (props) => {
                                                                 <td>{data[field.field_alias]}</td>
                                                             )}
                                                             <td className='text-center'>
-                                                                <img onClick={handleClick} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/edit.png`} width="100%"/>
-                                                                <img onClick={handleClick} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/delete.png`} width="100%"/>
+                                                                <img onClick={() => { redirectToInputPut(data) }} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/edit.png`} width="100%" />
+                                                                <img onClick={() => { askRemove(data) }} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/delete.png`} width="100%" />
                                                             </td>
                                                         </tr>
                                                     )}

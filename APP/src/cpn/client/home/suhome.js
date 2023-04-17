@@ -27,8 +27,8 @@ export default () => {
             reader.onload = (e) => {
                 try {
                     const json = JSON.parse(e.target.result);
-                    console.log(json)
-                    console.log(file)
+                    // console.log(json)
+                    // console.log(file)
                     setFile(file)
                     setUploadedJson(json);
                 } catch (error) {
@@ -154,7 +154,7 @@ export default () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="m-t-1 m-b-1">
+                            {/* <div className="m-t-1 m-b-1">
                                 <div className="flex flex-no-wrap">
                                     <div className="main-pic w-30-pct">
                                         Dự án:
@@ -173,7 +173,7 @@ export default () => {
 
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="flex flex-no-wrap abs b-0 r-0 p-1">  
                                 <CustomFileInput onChange={handleFileUpload} />
                                 {

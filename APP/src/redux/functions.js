@@ -11,9 +11,13 @@ const formatDateNumber = (int) => {
     }
 }
 
+// const openTab = (url) => {
+//     window.open(url, '_blank').focus();
+// }
 const openTab = (url) => {
-    window.open(url, '_blank').focus();
+    window.location= url;
 }
+
 
 
 const autoLabel = ( key ) => {

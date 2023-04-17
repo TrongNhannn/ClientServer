@@ -2,7 +2,7 @@ const links = {
     su: {
         urls: [
             { id: 0, url: "/", label: "Import Data", icon: "export.png", },
-             { id: 1, url: "/su/projects", label: "Quản lý dự án", icon: "manage.png" },
+            //  { id: 1, url: "/su/projects", label: "Quản lý dự án", icon: "manage.png" },
             { id: 2, url: "/su/users", label: "Quản lý người dùng", icon: "users.png" },
             // { id: 3, url: "/statistic", label: "Thống kê", icon: "chart.png" },
             // { id: 4, url: "/report/export", label: "Xuất báo cáo", icon: "export.png" },

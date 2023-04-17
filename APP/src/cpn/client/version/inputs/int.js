@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export default ( props ) => {
-    const { field, changeTrigger, related, table } = props;
-    const [ current, setCurrent ] = useState('')
+    const { field, changeTrigger, related, table, defaultValue } = props;
+    const [ current, setCurrent ] = useState(defaultValue ? defaultValue : "")
     const [ fields, setFields ] = useState([])
     const [ height, setHeight ] = useState(0)
     const [ foreignData, setForeignData ] = useState([])
@@ -12,7 +12,8 @@ export default ( props ) => {
     const [ relatedTable, setRelatedTable ] = useState({})
 
     useEffect(() => {
-
+        console.log(field.field_alias)
+        console.log(defaultValue)
         if( isFieldForeign()){
             const thisFieldForeignKey = table.fk.filter( fk => {
                 const { fks } = fk;
@@ -47,6 +48,10 @@ export default ( props ) => {
         }
 
     }, [])
+
+    useEffect(() => {
+        setCurrent(defaultValue)
+    }, [defaultValue])
 
     const isFieldForeign = () => {
         const isForeign = table.fk.filter( key => {

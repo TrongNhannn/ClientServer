@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-
 export default (props) => {
     const { userAdd, setUserAdd, users, setUsers } = props;
     const [right, setRight] = useState(-500);
@@ -11,7 +10,6 @@ export default (props) => {
         { id: 1, label: "Quản trị viên ( Admin ) ", value: "admin" },
         { id: 2, label: "Người dùng ( User ) ", value: "user" },
     ]
-
     const [errors, setErrors] = useState({
         account_string: "",
         pwd_string: "",
@@ -20,7 +18,6 @@ export default (props) => {
         phone: "",
         address: ""
     });
-
     const handleInputChange = (e, field) => {
         const value = e.target.value;
         let errorMessage = "";
@@ -31,19 +28,14 @@ export default (props) => {
                 break;
             // Add more case statements for other fields
         }
-
         setUser({ ...user, [field]: value });
         setErrors({ ...errors, [field]: errorMessage });
     };
     const { navState, Alert } = useSelector(state => state);
     const dispatch = useDispatch();
-
     const al = new Alert(dispatch);
-
     useEffect(() => {
-
     }, [])
-
     useEffect(() => {
 
         if (userAdd) {
@@ -65,8 +57,6 @@ export default (props) => {
         }
     }, [userAdd])
 
-
-
     const { unique_string, proxy, defaultImage } = useSelector(state => state);
     const [user, setUser] = useState({})
 
@@ -80,6 +70,7 @@ export default (props) => {
     const focusTrigger = () => {
         setHeight(135);
     }
+
     const submit = () => {
         if (user.pwd_string && user.account_string) {
             fetch(`${proxy}/${unique_string}/create_user`, {
@@ -102,8 +93,6 @@ export default (props) => {
                         window.location.reload();
                     }, 1600);
                     setUsers({ ...user, credential_string, avatar: defaultImage })
-
-
                 })
                 .catch(error => {
                     // Show an error message when adding the user fails
@@ -124,7 +113,6 @@ export default (props) => {
                         <img src="/assets/icon/right-arrow.png" className="block w-80-pct" />
                     </div>
                 </div>
-
                 {/* FORM BODY */}
                 <span className="text-20-px block p-1 text-right">Thông tin tài khoản</span>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
@@ -137,20 +125,18 @@ export default (props) => {
                         onChange={(e) => handleInputChange(e, "account_string")}
                         className="block w-60-pct border-1  border-radius-8-px p-0-5"
                     /> */}
-
                 </div>
                 {/* <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <span className="text-red-500 block w-40-pct "></span>
                     <span className="text-red-500 block w-60-pct ">{errors.account_string}</span>
                 </div> */}
-
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Mật khẩu</label>
                     <input value={user.pwd_string} onChange={
                         (e) => { setUser({ ...user, pwd_string: e.target.value }) }
                     } className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
-
+                
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Loại tài khoản</label>
                     <input defaultValue={user.account_role_label ? user.account_role_label : ""}   onFocus={focusTrigger} onBlur={blurTrigger} className="block w-60-pct border-1  border-radius-8-px p-0-5" readOnly />

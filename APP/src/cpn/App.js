@@ -12,7 +12,7 @@ import "../css/index.scss";
 import Alert from './alert';
 import Confirm from './confirm';
 import { Login, SignUp, SignOut } from './auth';
-import { Home, Projects, SuProjects, SuProject, SuUsers, SuUser, Version, TableInput, APIPostInput } from './client';
+import { Home, Projects, SuProjects, SuProject, SuUsers, SuUser, EditUser, Version, TableInput, APIPostInput, APIPutInput } from './client';
 import DataClient from './client/version/data-client';
 import APIFetching from './client/version/api-fetching';
 
@@ -59,12 +59,14 @@ function App() {
                 <Route exac path="/su/projects" element = { <SuProjects /> } />
                 <Route exac path="/su/project/:project_id" element = { <SuProject /> } />
                 <Route exac path="/su/users" element = { <SuUsers /> } />
+                <Route exac path="/su/user/edit/:credential_string" element = { <EditUser /> } />
                 <Route exac path="/su/user/:credential_string" element = { <SuUser /> } />
                 <Route exac path="/su/project/:project_id/version/:version_id" element = { <Version /> } />
                 <Route exac path="/su/project/:project_id/version/:version_id/table/:table_id/input" element = { <TableInput /> } />
                 <Route exac path="/su/api/post/input/:id_str" element={ <APIPostInput /> } />
                 <Route exac path="/fetch/:page_param" element={ <APIFetching /> } />
                 <Route exac path="/data" element={ <DataClient /> } />
+                <Route path="/su/api/put/input/:id_str/*" element={ <APIPutInput /> } />
             </Routes>
         </Router>
         <Alert/>

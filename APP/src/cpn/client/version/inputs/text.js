@@ -1,9 +1,18 @@
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
 export default ( props ) => {
-    const { field, changeTrigger } = props;
+    const { field, changeTrigger, defaultValue } = props;
+    const [ current, setCurrent ] = useState('')
+
     const fieldChangeData = (e) => {
         const { value } = e.target
+        setCurrent(value)
         changeTrigger( field, value )
     }
+    useEffect(() => {
+        setCurrent(defaultValue)
+    }, [defaultValue])
 
     return(
         <div className="w-100-pct p-1 m-t-1">
@@ -13,6 +22,7 @@ export default ( props ) => {
             <div className="m-t-0-5">
                 <textarea type="text"
                     className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
+                    value={current}
                     placeholder="" onChange={ fieldChangeData }
                     />
             </div>

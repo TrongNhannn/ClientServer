@@ -97,7 +97,7 @@ export default (props) => {
                     <div onClick={() => { openTab(`/fetch/${ page.param }`) }} className={`flex flex-no-wrap m-t-0-5 pointer hover ${page_param === page.param ? "highlight" : ""}`} key={ page.id }>
 
                         <div className="w-72-px pointer order-0">
-       
+                        ICON
                         </div>
                         <div className="w-100-pct p-0-5 order-1">
                             <span className="text-16-px block p-l-0-5">{ page.param } </span>
