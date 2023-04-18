@@ -31,20 +31,15 @@ mongoose.connect(`mongodb://127.0.0.1:27017/?directConnection=true&serverSelecti
 app.use( express.static('public') );
 
 app.use(bodyparser.json({ limit: "50mb" }));
-// app.use(morgan('combined'));
-// var connection = require('./Connect/Dbconnection');
-const logger = require('./route/logs');
-// app.use(logger);
+
 
 var login = require('./route/rLogin');
 var user = require('./route/rUser');
-var table = require('./route/table/rTable');
-var projects = require('./route/projects');
+
 
 // var field = require('./route/table/rField');
-var tk = require('./route/token');
-var tables = require('./route/tables');
-var table = require('./route/table');
+
+
 var api = require('./route/apis');
 var json = require('./route/importjson')
 
@@ -56,7 +51,6 @@ app.get('/api/get/the/god/damn/api/key/with/ridiculous/long/url/string', (req, r
 const Auth = require('./Middleware/Auth');
 app.use(cors());
 //Token
-app.use('/token', tk);
 //Middleware
 // app.use(Auth.isAuth);
 //Login
@@ -65,29 +59,9 @@ app.use(`/${unique_string}`, login);
 // app.use(Auth.verifyToken);
 //User
 app.use(`/api/${unique_string}/user`, user);
-app.use(`/api/${unique_string}/projects`, projects);
+
 app.use(`/api/${unique_string}/apis`, api);
 app.use(`/api/${unique_string}/json`, json)
-//Table
-// app.use('/api/table',table);
-//Field
-// app.use('/api/field',field);
-// app.use('/api/field',fields.router);
-
-app.use(`/api/${unique_string}/tables`, tables.router)
-app.use(`/api/${unique_string}/table`, table.router)
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.use( async (req, res, next) => {
     const { url } = req;
@@ -116,4 +90,4 @@ var server = app.listen(process.env.PORT, function () {
 
 
 
-module.exports = app;
+

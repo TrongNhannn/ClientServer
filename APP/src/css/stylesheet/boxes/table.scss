@@ -29,5 +29,10 @@ table{
     border-radius: 4px; /* Bo góc button */
     transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
   }
-  
+
+
+  .button-wrapper {
+    display: inline-block;
+    margin-right: 10px;
+  }
   

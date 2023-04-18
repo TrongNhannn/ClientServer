@@ -12,99 +12,101 @@ import {
 export default () => {
     const dispatch = useDispatch();
 
-    const{ id_str } = useParams()
+    const { id_str } = useParams()
 
-    const { urls, bottomUrls } = useSelector( state => state.navbarLinks.su )
-    const { dateGenerator, autoLabel, openTab } = useSelector( state => state.functions )
-    const { navState, unique_string, proxy, Alert, Confirm } = useSelector( state => state );
+    const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
+    const { dateGenerator, autoLabel, openTab } = useSelector(state => state.functions)
+    const { navState, unique_string, proxy, Alert, Confirm } = useSelector(state => state);
 
-    const [ initialData, setInitData ] = useState({})
+    const [initialData, setInitData] = useState({})
 
-    const [ api, setApi ] = useState({})
-    const [ tables, setTables ] = useState([])
-    const [ keyFields, setKeyFields ] = useState([]);
-    const [ fields, setFields ] = useState([]);
-    const [ data, setData ] = useState({});
-    const [ relatedTables, setRelatedTables ] = useState([])
+    const [api, setApi] = useState({})
+    const [tables, setTables] = useState([])
+    const [keyFields, setKeyFields] = useState([]);
+    const [fields, setFields] = useState([]);
+    const [data, setData] = useState({});
+    const [relatedTables, setRelatedTables] = useState([])
 
-    const [ params, setParams ] = useState([]);
+    const [params, setParams] = useState([]);
 
-    const al = new Alert( dispatch );
-    const cf = new Confirm( dispatch )
- 
-    useEffect( () => {
+    const al = new Alert(dispatch);
+    const cf = new Confirm(dispatch)
+    const handleClick = () => {
+        history.back();
+    };
+    useEffect(() => {
         const url = window.location;
         const rawParams = url.pathname.split(`/${id_str}/`)[1];
-        const paramsList = rawParams.split('/');        
-        
-        fetch(`${ proxy }/api/${ unique_string }/apis/api/input/info/${ id_str }`).then( res => res.json() )
-        .then( res => {
-            const { success, api, relatedTables, fields } = res;
-            if( success ){
-                const { tables } = api;
-                const apiFields = api.fields;
-                delete api.fields;
-                delete api.tables;
+        const paramsList = rawParams.split('/');
 
-                const serializeParams = api.params.map( (param, index) => {
-                    const { field_alias } = param;
-                    return { field_alias,  value: paramsList[index] }
-                })
-                console.log( fields )
-                const keyFields = serializeParams.map( par => {
-                    const field = fields.filter( f => f.field_alias == par.field_alias )[0]
-                    return field;
-                })
+        fetch(`${proxy}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
+            .then(res => {
+                const { success, api, relatedTables, fields } = res;
+                if (success) {
+                    const { tables } = api;
+                    const apiFields = api.fields;
+                    delete api.fields;
+                    delete api.tables;
 
-                setKeyFields( keyFields )
-                setParams( serializeParams );
-                setApi( api )
-                setFields(apiFields)
-                setTables(tables)
-                setRelatedTables( relatedTables )
+                    const serializeParams = api.params.map((param, index) => {
+                        const { field_alias } = param;
+                        return { field_alias, value: paramsList[index] }
+                    })
+                    console.log(fields)
+                    const keyFields = serializeParams.map(par => {
+                        const field = fields.filter(f => f.field_alias == par.field_alias)[0]
+                        return field;
+                    })
+
+                    setKeyFields(keyFields)
+                    setParams(serializeParams);
+                    setApi(api)
+                    setFields(apiFields)
+                    setTables(tables)
+                    setRelatedTables(relatedTables)
 
 
-                fetch(`${ proxy }/api/${ unique_string }/apis/retrive/put/data/${ id_str }`)
-                .then(res => res.json()).then( res => {
-                    const { data } = res;
+                    fetch(`${proxy}/api/${unique_string}/apis/retrive/put/data/${id_str}`)
+                        .then(res => res.json()).then(res => {
+                            const { data } = res;
 
-                    let initData = data
-                    for( let i = 0; i < serializeParams.length; i++ ){
-                        const { field_alias, value } = serializeParams[i]
-                        initData = initData.filter( row => {
-                            return row[field_alias] == value
+                            let initData = data
+                            for (let i = 0; i < serializeParams.length; i++) {
+                                const { field_alias, value } = serializeParams[i]
+                                initData = initData.filter(row => {
+                                    return row[field_alias] == value
+                                })
+                            }
+                            if (initData[0]) {
+                                const data = {};
+                                apiFields.map(field => {
+                                    const { field_alias } = field;
+                                    data[field_alias] = initData[0][field_alias];
+                                })
+                                setInitData(initData[0] ? initData[0] : {});
+                                setData(data)
+                            }
                         })
-                    }
-                    if( initData[0] ){
-                        const data = {};
-                        apiFields.map( field => {
-                            const { field_alias } = field;
-                            data[field_alias] = initData[0][field_alias];
-                        })
-                        setInitData( initData[0] ? initData[0]: {} );
-                        setData( data )
-                    }
-                })
 
-            }else{
-                al.failure("Lỗi", "API này không tồn tại hoặc đã bị vô hiệu")
-            }
-        })
+                } else {
+                    al.failure("Lỗi", "API này không tồn tại hoặc đã bị vô hiệu")
+                }
+            })
     }, [])
 
-    const changeTrigger = ( field, value ) => {
+    const changeTrigger = (field, value) => {
         const newData = data;
         newData[field.field_alias] = value;
-        setData( newData )
+        setData(newData)
     }
 
     const paramsConcat = () => {
-        const values = params.map( par => {
+        const values = params.map(par => {
             const { field_name, value } = par;
-            if( value ){
+            if (value) {
                 return value
             }
-            else{
+            else {
                 return field_name.replaceAll(' ', '_')
             }
         })
@@ -112,122 +114,161 @@ export default () => {
     }
 
     const submit = () => {
-        fetch(`${ proxy }${ api.url.url }${window.location.pathname.split(`/${id_str}/`)[1]}`, {
+        fetch(`${proxy}${api.url.url}${window.location.pathname.split(`/${id_str}/`)[1]}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json"
             },
             body: JSON.stringify({ data })
-        }).then( res => res.json() ).then( res => {
+        }).then(res => res.json()).then(res => {
             const { success, content } = res;
-            if( success ){
+            if (success) {
                 al.success("", "Cập nhật dữ liệu thành công")
-            }else{
-                al.failure( "Oops!", data )
+            } else {
+                al.failure("Oops!", data)
             }
         })
     }
-    return(
+    return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
-            <Navbar urls={ urls } bottomUrls={ bottomUrls } />
-            <div id="app-container" className={`app fixed-default overflow ${ !navState ? "app-stretch": "app-scaled" }`} style={{ height: "100vh" }}>
+            <Navbar urls={urls} bottomUrls={bottomUrls} />
+
+            <div id="app-container" className={`app fixed-default overflow ${!navState ? "app-stretch" : "app-scaled"}`} style={{ height: "100vh" }}>
                 <Horizon />
                 <div className="p-1" id="app-scrollBox">
-                    {/* VERSION INFO */}
-                    { tables.length > 0 ?
-                    <div className="w-50-pct mg-auto p-1 bg-white">
-                        <span className="block text-32-px text-center p-0-5">{ api.api_name }</span>
-                        { keyFields.map(field =>
-                            <div className="w-100-pct p-1 m-t-1">
-                                <div>
-                                    <span className="block text-16-px">{ field.field_name }</span>
+                    <div className="p-1 min-height-full-screen column">
+                        <div className="w-100-pct">
+                            <div className="flex flex-no-wrap bg-white shadow-blur">
+                                <div className="fill-available p-1">
+                                    <span> Người dùng</span>
                                 </div>
-                                <div className="m-t-0-5">
-                                    <input type="text" value={ initialData[ field.field_alias ] }
-                                        className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
-                                        placeholder=""
-                                        />
+                                <div className="w-48-px flex flex-middle">
+                                    <div className="w-72-px pointer order-0">
+                                        <div className="block p-1" onClick={() => { navTrigger() }}>
+                                            <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
+                                            <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
+                                            <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        ) }
-
-                        { fields.map( field =>
-                            <React.StrictMode key={field.field_id}>
-                                { field.data_type == "VARCHAR" ?
-                                    <Varchar
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "CHAR" ?
-                                    <Char
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "TEXT" ?
-                                    <Text
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "INT" || field.data_type == "BIG INT" ?
-                                    <Int
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "INT UNSIGNED" || field.data_type == "BIG INT UNSIGNED" ?
-                                    <Int
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } unsigned={ true } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "DATE" ?
-                                    <DateInput
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "TIME" ?
-                                    <TimeInput
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "DATETIME" ?
-                                    <DateTimeInput
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "DECIMAL" ?
-                                    <Decimal
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "DECIMAL UNSIGNED" ?
-                                    <Decimal
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } unsigned={ true } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                                { field.data_type == "BOOL" ?
-                                    <Bool
-                                        table={ tables.filter(tb => tb.table_id == field.table_id)[0] }
-                                        related={ relatedTables } field={ field }
-                                        changeTrigger={ changeTrigger } defaultValue={ initialData[ field.field_alias ] }/> : null
-                                }
-                            </React.StrictMode>
-                        )}
-                        <div className="m-t-1">
-                            <div className="p-1">
-                                <button onClick={ submit } className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Lưu bảng ghi</button>
+                        </div>
+                        <div className="m-t-0-5 fill-available bg-white shadow-blur">
+                            <div className="w-100-pct h-fit column p-1">
+                                <div className="flex flex-no-wrap border-1-bottom">
+                                    <input className="p-0-5 text-16-px block fill-available no-border"
+                                        placeholder="Search"
+                                        spellCheck="false" />
+                                    <div className="flex flex-no-wrap flex-aligned">
+                                        <div className="border-1-right w-48-px">
+                                            <img className="w-28-px block mg-auto" src="/assets/icon/viewmode/grid.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-100-pct m-t-1">
+                                    {/* VERSION INFO */}
+                                    {tables.length > 0 ?
+                                        <div className="w-50-pct mg-auto p-1 bg-white">
+                                            <span className="block text-32-px text-center p-0-5">{api.api_name}</span>
+                                            {keyFields.map(field =>
+                                                <div className="w-100-pct p-1 m-t-1">
+                                                    <div>
+                                                        <span className="block text-16-px">{field.field_name}</span>
+                                                    </div>
+                                                    <div className="m-t-0-5">
+                                                        <input type="text" value={initialData[field.field_alias]}
+                                                            className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
+                                                            placeholder=""
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                            {fields.map(field =>
+                                                <React.StrictMode key={field.field_id}>
+                                                    {field.data_type == "VARCHAR" ?
+                                                        <Varchar
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "CHAR" ?
+                                                        <Char
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "TEXT" ?
+                                                        <Text
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "INT" || field.data_type == "BIG INT" ?
+                                                        <Int
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "INT UNSIGNED" || field.data_type == "BIG INT UNSIGNED" ?
+                                                        <Int
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} unsigned={true} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "DATE" ?
+                                                        <DateInput
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "TIME" ?
+                                                        <TimeInput
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "DATETIME" ?
+                                                        <DateTimeInput
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "DECIMAL" ?
+                                                        <Decimal
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "DECIMAL UNSIGNED" ?
+                                                        <Decimal
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} unsigned={true} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "BOOL" ?
+                                                        <Bool
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                </React.StrictMode>
+                                            )}
+                                            <div className="m-t-1">
+                                                <div className="p-1">
+                                                    <div className="button-wrapper">
+                                                        <button onClick={submit} className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Lưu lại</button>
+                                                    </div>
+                                                    <div className="button-wrapper">
+                                                        <button onClick={handleClick} className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Quay về</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        : null}
+                                </div>
                             </div>
                         </div>
                     </div>
-                    : null }
                 </div>
             </div>
         </div>

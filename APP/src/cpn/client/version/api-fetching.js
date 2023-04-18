@@ -29,9 +29,7 @@ export default (props) => {
     const { openTab } = useSelector(state => state.functions);
     const [height, setHeight] = useState(0);
     const [apiData, setApiData] = useState([])
-    const handleClick = () => {
-        alert('Chưa có tính năng này');
-    };
+
     // useEffect(() => {
     //     dispatch({
     //         type: "setNavBarHighLight",
@@ -58,7 +56,6 @@ export default (props) => {
                 callApi(api)
             })
     }, [])
-
 
     const cardDrop = () => {
         setHeight(height == 0 ? 200 : 0)
@@ -97,7 +94,7 @@ export default (props) => {
         fetch(`${proxy}${page.apis.get}`).then(res => res.json()).then(res => {
             const { success, content, data } = res;
             if (!success) {
-                alert("API NÀY KHUM TỒN TẠI HOẶC ĐÃ BỊ DZÔ HIỆU")
+                al.failure("Lỗi", "Đọc dữ liệu thất bại ")
             } else {
                 setApiData(data)
             }
@@ -127,9 +124,7 @@ export default (props) => {
 
         })
     }
-    const openNewtab = () => {
-        openTab(`data`)
-    }
+
     const redirectToInput = () => {
         const id_str_post = page.apis.post.split('/')[4];
         openTab(`/su/api/post/input/${id_str_post}`)
@@ -173,7 +168,7 @@ export default (props) => {
         `)
         alert("Đã sao chép JSON")
     }
-  
+
     const deleteData = (data) => {
         let rawParams = page.apis.delete;
         const keys = Object.keys(data);
@@ -189,19 +184,18 @@ export default (props) => {
         }).then(res => res.json()).then(res => {
             const { success, content } = res;
             if (success) {
-               al.success("Thành công","Xóa dữ liệu thành công")
-               setTimeout(() => {
-                window.location.reload();
-            }, 1600);
+                al.success("Thành công", "Xóa dữ liệu thành công")
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1600);
             } else {
                 al.failure("Thất bại", "Xóa thất bại")
             }
         })
     }
-    const askRemove = ( data ) => {
+    const askRemove = (data) => {
         cf.askYesNo("Xóa bản ghi ?", "Bản ghi này sẽ bị xóa vĩnh viễn", (conf) => { deleteData(data) })
     }
-
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
             <Navbar urls={urls} param={page_param} />
@@ -212,7 +206,7 @@ export default (props) => {
                         <div className="w-100-pct">
                             <div className="flex flex-no-wrap bg-white shadow-blur">
                                 <div className="fill-available p-1">
-                                    <span> Bảng {page.param}</span>
+                                    <span> Bảng {page.title}</span>
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
@@ -236,7 +230,7 @@ export default (props) => {
                                         <div className="border-1-right w-48-px">
                                             <img className="w-28-px block mg-auto" src="/assets/icon/viewmode/grid.png" />
                                         </div>
-                                        <div className="p-1">
+                                        <div className="p-0-5">
                                             <button onClick={redirectToInput} className="bold text-24-px no-border bg-green white border-radius-50-pct pointer" style={{ width: "32px", height: "32px" }}>+</button>
                                         </div>
                                     </div>
@@ -278,7 +272,10 @@ export default (props) => {
                                                     )}
                                                 </tbody>
                                             </table>
-                                            : null
+                                            :
+                                            (
+                                                <span>Không có dữ liệu.</span>
+                                            )
                                         }
                                     </div>
                                 </div>

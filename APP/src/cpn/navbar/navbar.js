@@ -8,8 +8,8 @@ export default (props) => {
     const { dateGenerator, autoLabel, openTab } = useSelector(state => state.functions)
     const [collections, setCollections] = useState([]);
     const [collection, setCollection] = useState([]);
-    const { page_param } = useParams() 
-    
+    const { page_param } = useParams()
+
     const criterias = [
         { id: 0, label: "ALL", value: null },
         { id: 1, label: "GET", value: "get" },
@@ -73,9 +73,9 @@ export default (props) => {
                         <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                     </div>
                 </div>
-                {/* <div className="w-100-pct order-1">
-                    <img className="w-84-px block ml-auto m-r-1" src="/assets/image/mylan.png"/>
-                </div> */}
+                <div className="w-100-pct order-1">
+                    {/* <img className="w-84-px block ml-auto m-r-1" src="/assets/image/mylan.png"/> */}
+                </div>
             </div>
             <div className="m-t-2">
                 {urls.map(url =>
@@ -84,6 +84,7 @@ export default (props) => {
                         <div className="w-72-px pointer order-0">
                             <div className="block p-0-5">
                                 <img className="w-24-px block mg-auto m-l-0-5" src={`/assets/icon/navbar/${url.icon}`} />
+
                             </div>
                         </div>
                         <div className="w-100-pct p-0-5 order-1">
@@ -92,15 +93,17 @@ export default (props) => {
                     </div>
                 )}
 
-                {pages.map( page =>
+                {pages.map(page =>
 
-                    <div onClick={() => { openTab(`/fetch/${ page.param }`) }} className={`flex flex-no-wrap m-t-0-5 pointer hover ${page_param === page.param ? "highlight" : ""}`} key={ page.id }>
+                    <div onClick={() => { openTab(`/fetch/${page.param}`) }} className={`flex flex-no-wrap m-t-0-5 pointer hover ${page_param === page.param ? "highlight" : ""}`} key={page.id}>
 
                         <div className="w-72-px pointer order-0">
-                        ICON
+                            <div className="block p-0-5">
+                                <img className="w-24-px block mg-auto m-l-0-5" src="/assets/icon/navbar/ui.png" />
+                            </div>
                         </div>
                         <div className="w-100-pct p-0-5 order-1">
-                            <span className="text-16-px block p-l-0-5">{ page.param } </span>
+                            <span className="text-16-px block p-l-0-5">{page.title} </span>
                         </div>
                     </div>
 

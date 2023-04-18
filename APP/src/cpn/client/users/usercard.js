@@ -13,7 +13,7 @@ export default (props) => {
     const al = new Alert(dispatch)
 
    
-    console.log(page_param)
+
     const handleClick = () => {
         alert('Chưa có tính năng này');
     };

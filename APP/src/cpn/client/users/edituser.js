@@ -8,13 +8,14 @@ import { Navbar, Horizon } from '../../navbar';
 import ProjectCard from '../projects/suprojects/projectCard'
 
 
-
+import { Varchar } from '../version/inputs';
 
 
 
 export default () => {
     const dispatch = useDispatch();
     const { credential_string } = useParams();
+    const { Alert, Confirm, pages } = useSelector(state => state);
     const [user, setUser] = useState({})
     const [height, setHeight] = useState(0)
     const [projects, setProjects] = useState({
@@ -22,11 +23,21 @@ export default () => {
         partner: { success: false },
         use: { success: false },
     })
-
+    const al = new Alert(dispatch);
+    const cf = new Confirm(dispatch)
     const [offset, setOffset] = useState({
         x: -500,
         y: -500,
     })
+
+    const props = [
+        { name: "fullname", label: "Họ tên" },
+        { name: "email", label: "Email" },
+        { name: "phone", label: "Di động" },
+        { name: "address", label: "Địa chỉ" },
+        { name: "account_role", label: "Quyền" }
+
+    ]
 
     const [input, setInput] = useState({})
 
@@ -52,11 +63,11 @@ export default () => {
                     setUser(usr)
                 }
 
-                fetch(`${proxy}/api/${unique_string}/projects/of/${credential_string}`).then(res => res.json())
-                    .then(resp => {
-                        const { success, projects } = resp;
-                        setProjects(projects)
-                    })
+                // fetch(`${proxy}/api/${unique_string}/projects/of/${credential_string}`).then(res => res.json())
+                //     .then(resp => {
+                //         const { success, projects } = resp;
+                //         setProjects(projects)
+                //     })
 
             })
     }, [])
@@ -82,20 +93,32 @@ export default () => {
     }
 
     const submitChange = () => {
-        const { key, value } = input;
-        fetch(`${proxy}/api/${unique_string}/user/prop/${user.credential_string}`, {
-            method: "PUT",
+        console.log(user);
+        const apiUrl = `${proxy}/api/${unique_string}/user/update/${user.credential_string}`;
+        console.log(credential_string)
+
+        // Gửi yêu cầu POST đến máy chủ với thông tin người dùng
+        fetch(apiUrl, {
+            method: 'PUT',
             headers: {
-                "content-type": "application/json",
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ key, value }),
-        }).then(res => res.json()).then(data => {
-            console.log(data);
-            const newUser = user;
-            newUser[key] = value;
-            setUser({ ...newUser });
-            setOffset({ x: -500, y: -500 })
+            body: JSON.stringify(user),
+           
         })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Xử lý thành công
+                    al.success("Thành công","Cập nhật thông tin người dùng thành công");
+                } else {
+                    // Xử lý lỗi
+                    al.failure("Thất bại","Cập nhật thông tin người dùng thất bại");
+                }
+            })
+            .catch((error) => {
+                console.error('Lỗi khi gửi yêu cầu:', error);
+            });
     }
     function redirectTo(url) {
         window.location.href = "/su/users";
@@ -103,6 +126,13 @@ export default () => {
     const discardChange = () => {
         setOffset({ x: -500, y: -500 })
     }
+
+    const changeUserData = (e, prop) => {
+        const newUser = user;
+        newUser[prop] = e.target.value;
+        setUser(newUser);
+    }
+
     return (
 
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
@@ -115,7 +145,7 @@ export default () => {
                         <div className="w-100-pct">
                             <div className="flex flex-no-wrap bg-white shadow-blur">
                                 <div className="fill-available p-1">
-                                    {/* <span> Bảng {page.param}</span> */}
+                                    <span> Bảng người dùng </span>
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
@@ -144,42 +174,33 @@ export default () => {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="w-100-pct m-t-1">
-                                    {/* <div class="flex flex-no-wrap">
-                            <div class="ml-auto1">
-                                <div className="m-t">
-                                    <button onClick={redirectToInput} className="upper pointer block w-max-content white text-center p-t-0-5 p-b-0-5 p-l-1 p-r-1 m-l-1 no-border bg-green">Thêm mới</button>
-                                </div>
-                            </div>
-                        </div> */}
+                                    <div className="w-50-pct mg-auto p-1 bg-white">
+                                        <span className="block text-32-px text-center p-0-5">Cập nhật</span>
+                                        {
+                                            props.map(prop =>
+                                                <div className="w-100-pct p-1 m-t-1">
+                                                    <div>
+                                                        <div>
+                                                            <span className="block text-16-px">{prop.label}</span>
+                                                        </div>
+                                                        <div className="m-t-0-5">
+                                                            <input type="text"
+                                                                className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
+                                                                placeholder="" onChange={(e) => { changeUserData(e, prop.name) }} defaultValue={user[prop.name]}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                    <div className="m-t-1 p-t-1">
-                                        {/* <input  type="text"value={user.fullname} onClick={(e) => updateUserInfo("fullname", e.target.value)} className="text-24-px"/> */}
-                                        
-                                        <span onClick={(e) => { inputBox(e, "fullname") }} className="block text-20-px">@{user.fullname}</span>
-                                        
-                                            <span onClick={(e) => { inputBox(e, "email") }} className="block w-50-pct text-20-px m-t-1">{user.email}</span>
-                                            <span onClick={(e) => { inputBox(e, "phone") }} className="block w-50-pct text-20-px m-t-1 ">{user.phone}</span>
-                                      
-                                        <span onClick={(e) => { inputBox(e, "address") }} className="block text-16-px m-t-1">{user.address}</span>
-
-                                        <span className="block text-24-px">{user.account_role && titleCase(user.account_role)}</span>
-                                    </div>
-
-                                    <div className="fixed bg-white shadow" style={{ top: `${offset.y}px`, left: `${offset.x}px`, width: "325px" }}>
-                                        <div className="flex flex-no-wrap w-100-pct p-0-5">
-                                            <input spellCheck="false" id={"input-box"} onBlur={discardChange} onChange={(e) => { setInput({ ...input, value: e.target.value }) }} onKeyUp={enterTrigger} className="no-border border-1-bottom block w-100-pct p-0-5" value={input.value} />
-                                            <div className="flex flex-middle w-48-px">
-                                                <img onClick={submitChange} className="block w-50-pct pointer" src="/assets/icon/check-color.png" />
-                                            </div>
-                                            <div className="flex flex-middle w-48-px">
-                                                <img onClick={discardChange} className="block w-50-pct pointer" src="/assets/icon/cross-color.png" />
-                                            </div>
+                                            )
+                                        }
+                                        <div className="w-100-pct m-t-1 flex flex-no-wrap p-0-5">
+                                            <button onClick={submitChange} className="w-max-content p-0-5 p-l-1 p-r-1 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Cập nhật</button>
+                                            <button onClick={redirectTo} className="w-max-content p-0-5 p-l-1 p-r-1 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Quay về</button>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="w-100-pct m-t-1">
-                                    <button onClick={redirectTo} className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Quay lại</button>
                                 </div>
                             </div>
                         </div>
@@ -187,6 +208,5 @@ export default () => {
                 </div>
             </div>
         </div>
-
     )
 }

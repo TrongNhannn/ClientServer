@@ -17,6 +17,7 @@ export default () => {
             <span className="text-18-px block p-0-5">{ auth.fullname }</span>
             <div className="avatar-container flex flex-middle m-r-1 pointer" onClick={ () => { setHeight( !height ) } }>
                 {/* <img src={ auth.avatar == defaultImage ? defaultImage : `${ proxy }${ auth.avatar }`  } className="w-50-px border-radius-24-px"/> */}
+                
                 <img src="/assets/image/icon.png" className="w-50-px border-radius-24-px"/>
             </div>
             <div className="rel">
