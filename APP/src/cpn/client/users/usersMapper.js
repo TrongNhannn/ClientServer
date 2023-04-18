@@ -105,7 +105,7 @@ export default (props) => {
                                                     <tr>
                                                         <th className="text-left">Họ tên</th>
                                                         <th className="text-left">Tài khoản</th>
-                                                        <th className="text-left">Ảnh</th>
+                                                        {/* <th className="text-left">Ảnh</th> */}
                                                         <th className="text-left">Email</th>
                                                         <th className="text-left">SĐT</th>
                                                         <th className="text-left">Địa chỉ</th>

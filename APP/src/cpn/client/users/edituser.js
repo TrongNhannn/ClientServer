@@ -15,55 +15,55 @@ import ProjectCard from '../projects/suprojects/projectCard'
 export default () => {
     const dispatch = useDispatch();
     const { credential_string } = useParams();
-    const [ user, setUser ] = useState({})
-    const [ height, setHeight ] = useState(0)
-    const [ projects, setProjects ] = useState({
-        own:     { success: false },
+    const [user, setUser] = useState({})
+    const [height, setHeight] = useState(0)
+    const [projects, setProjects] = useState({
+        own: { success: false },
         partner: { success: false },
-        use:     { success: false },
+        use: { success: false },
     })
 
-    const [ offset, setOffset ] = useState({
+    const [offset, setOffset] = useState({
         x: -500,
         y: -500,
     })
 
-    const [ input, setInput ] = useState({})
+    const [input, setInput] = useState({})
 
-    const { urls, bottomUrls } = useSelector( state => state.navbarLinks.su )
-    const { navState, unique_string, proxy, defaultImage } = useSelector( state => state );
-    const { titleCase } = useSelector( state => state.functions )
+    const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
+    const { navState, unique_string, proxy, defaultImage } = useSelector(state => state);
+    const { titleCase } = useSelector(state => state.functions)
 
-    useEffect( () => {
+    useEffect(() => {
         dispatch({
             type: "setNavBarHighLight",
             payload: { url_id: 2 }
         })
 
         const height = $('#ava-container').width() * 75 / 100;
-        setHeight( height )
+        setHeight(height)
 
-        fetch(`${proxy}/api/${ unique_string}/user/getall/${ credential_string }`).then( res => res.json() )
-        .then( resp => {
-            const { data, success } = resp;
-            if( data != undefined && data.length > 0 ) {
-                const nameSplited = data[0].fullname.split(" ");
-                const usr = {...data[0], name: nameSplited[ nameSplited.length - 1 ]}
-                setUser( usr )
-            }
+        fetch(`${proxy}/api/${unique_string}/user/getall/${credential_string}`).then(res => res.json())
+            .then(resp => {
+                const { data, success } = resp;
+                if (data != undefined && data.length > 0) {
+                    const nameSplited = data[0].fullname.split(" ");
+                    const usr = { ...data[0], name: nameSplited[nameSplited.length - 1] }
+                    setUser(usr)
+                }
 
-            fetch(`${ proxy }/api/${ unique_string }/projects/of/${ credential_string }`).then( res => res.json() )
-            .then( resp => {
-                const { success, projects } = resp;
-                setProjects( projects )
+                fetch(`${proxy}/api/${unique_string}/projects/of/${credential_string}`).then(res => res.json())
+                    .then(resp => {
+                        const { success, projects } = resp;
+                        setProjects(projects)
+                    })
+
             })
-
-        })
     }, [])
 
     window.onresize = () => {
         const height = $('#ava-container').width() * 75 / 100;
-        setHeight( height )
+        setHeight(height)
     }
 
     const inputBox = (e, key) => {
@@ -76,117 +76,117 @@ export default () => {
     }
 
     const enterTrigger = (e) => {
-        if( e.keyCode === 13 ){
+        if (e.keyCode === 13) {
             submitChange()
         }
     }
 
     const submitChange = () => {
         const { key, value } = input;
-        fetch(`${proxy}/api/${unique_string}/user/prop/${ user.credential_string }`, {
+        fetch(`${proxy}/api/${unique_string}/user/prop/${user.credential_string}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
             },
             body: JSON.stringify({ key, value }),
-        }).then( res => res.json() ).then( data => {
+        }).then(res => res.json()).then(data => {
             console.log(data);
             const newUser = user;
             newUser[key] = value;
-            setUser( {...newUser} );
+            setUser({ ...newUser });
             setOffset({ x: -500, y: -500 })
         })
     }
-
+    function redirectTo(url) {
+        window.location.href = "/su/users";
+    }
     const discardChange = () => {
         setOffset({ x: -500, y: -500 })
     }
-    return(
-        <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap ">
-            <Navbar urls={ urls } bottomUrls={ bottomUrls } />
-            <div className={`app fixed-default overflow ${ !navState ? "app-stretch": "app-scaled" }`} style={{ height: "100vh" }}>
+    return (
+
+        <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
+            <Navbar urls={urls}
+            />
+            <div id="app-container" className={`app fixed-default overflow ${!navState ? "app-stretch" : "app-scaled"}`} style={{ height: "100vh" }}>
                 <Horizon />
-
-                <div className="p-1">
-
-                    <div className="profile-card bg-white mg-auto p-1">
-
-
-                        <div className="flex flex-wrap">
-                            <div className="w-60-pct rel">
-                                <span onClick={ (e) => { inputBox(e, "fullname") } } className="block text-24-px">@{ user.fullname }</span>
-                                <div className="flex flex-no-wrap m-t-1">
-                                    <span onClick={ (e) => { inputBox(e, "email") } } className="block w-50-pct text-16-px gray">{ user.email }</span>
-                                    <span onClick={ (e) => { inputBox(e, "phone") } } className="block w-50-pct text-16-px gray">{ user.phone }</span>
+                <div className="p-1" id="app-scrollBox">
+                    <div className="p-1 min-height-full-screen column">
+                        <div className="w-100-pct">
+                            <div className="flex flex-no-wrap bg-white shadow-blur">
+                                <div className="fill-available p-1">
+                                    {/* <span> Bảng {page.param}</span> */}
                                 </div>
-                                <span onClick={ (e) => { inputBox(e, "address") } } className="block text-16-px m-t-1">{ user.address }</span>
-
-                                <span className="block text-24-px abs b-0 l-0">{ user.account_role && titleCase( user.account_role ) }</span>
-                            </div>
-                            <div id="ava-container" className="w-40-pct flex flex-middle">
-                                { user.avatar ?
-                                    <div onClick={ () => { $("#avatar").click() } } className="block w-75-pct border-radius-12-px pointer bg-fit" style={{ height: `${height}px`, backgroundImage: `url(${ user.avatar === defaultImage ? user.avatar : `${ user.avatar.length < 100 ? proxy : "" }${ user.avatar }` })` }}/>
-                                    : null
-                                }
-                                <input type="file" id="avatar" className="hidden" onChange={ changeAva }/>
-                            </div>
-                        </div>
-
-                        {/* INPUT BOX */}
-                        <div className="fixed bg-white shadow" style={{ top: `${ offset.y }px`, left: `${ offset.x }px`, width: "325px" }}>
-                            <div className="flex flex-no-wrap w-100-pct p-0-5">
-                                <input spellCheck="false" id={ "input-box" } onBlur={ discardChange } onChange={ (e) => { setInput({ ...input, value: e.target.value }) } } onKeyUp={ enterTrigger } className="no-border border-1-bottom block w-100-pct p-0-5" value={ input.value }/>
-                                <div className="flex flex-middle w-48-px">
-                                    <img onClick={ submitChange } className="block w-50-pct pointer" src="/assets/icon/check-color.png"/>
-                                </div>
-                                <div className="flex flex-middle w-48-px">
-                                    <img onClick={ discardChange } className="block w-50-pct pointer" src="/assets/icon/cross-color.png"/>
+                                <div className="w-48-px flex flex-middle">
+                                    <div className="w-72-px pointer order-0">
+                                        <div className="block p-1" onClick={() => { navTrigger() }}>
+                                            <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
+                                            <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
+                                            <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <hr className="border-1-top block m-t-1"/>
-                        { projects.own.success ?
-                            <div className="m-t-1">
-                                <span className="block text-20-px">Dự án của { user.name }</span>
-
-                                <div className="flex flex-no-wrap">
-                                    { projects.own.success && projects.own.projectDetails.map(project =>
-                                        <ProjectCard key={ project.project_id } project = { project }/>
-                                    )}
+                        <div className="m-t-0-5 fill-available bg-white shadow-blur">
+                            <div className="w-100-pct h-fit column p-1">
+                                <div className="flex flex-no-wrap border-1-bottom">
+                                    <input className="p-0-5 text-16-px block fill-available no-border"
+                                        placeholder="Search"
+                                        spellCheck="false"
+                                    />
+                                    <div className="flex flex-no-wrap flex-aligned">
+                                        <div className="border-1-right w-48-px">
+                                            <img className="w-28-px block mg-auto" src="/assets/icon/viewmode/grid.png" />
+                                        </div>
+                                        <div className="p-1">
+                                            {/* <button onClick={redirectToInput} className="bold text-24-px no-border bg-green white border-radius-50-pct pointer" style={{ width: "32px", height: "32px" }}>+</button> */}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-100-pct m-t-1">
+                                    {/* <div class="flex flex-no-wrap">
+                            <div class="ml-auto1">
+                                <div className="m-t">
+                                    <button onClick={redirectToInput} className="upper pointer block w-max-content white text-center p-t-0-5 p-b-0-5 p-l-1 p-r-1 m-l-1 no-border bg-green">Thêm mới</button>
                                 </div>
                             </div>
-                        : null }
+                        </div> */}
 
-                        { projects.partner.success ?
-                            <div className="m-t-1">
-                                <span className="block text-20-px">Dự án { user.name } đã tham gia</span>
+                                    <div className="m-t-1 p-t-1">
+                                        {/* <input  type="text"value={user.fullname} onClick={(e) => updateUserInfo("fullname", e.target.value)} className="text-24-px"/> */}
+                                        
+                                        <span onClick={(e) => { inputBox(e, "fullname") }} className="block text-20-px">@{user.fullname}</span>
+                                        
+                                            <span onClick={(e) => { inputBox(e, "email") }} className="block w-50-pct text-20-px m-t-1">{user.email}</span>
+                                            <span onClick={(e) => { inputBox(e, "phone") }} className="block w-50-pct text-20-px m-t-1 ">{user.phone}</span>
+                                      
+                                        <span onClick={(e) => { inputBox(e, "address") }} className="block text-16-px m-t-1">{user.address}</span>
 
-                                <div className="flex flex-no-wrap">
-                                    { projects.partner.success && projects.partner.projectDetails.map(project =>
-                                        <ProjectCard key={ project.project_id } project = { project }/>
-                                    )}
+                                        <span className="block text-24-px">{user.account_role && titleCase(user.account_role)}</span>
+                                    </div>
+
+                                    <div className="fixed bg-white shadow" style={{ top: `${offset.y}px`, left: `${offset.x}px`, width: "325px" }}>
+                                        <div className="flex flex-no-wrap w-100-pct p-0-5">
+                                            <input spellCheck="false" id={"input-box"} onBlur={discardChange} onChange={(e) => { setInput({ ...input, value: e.target.value }) }} onKeyUp={enterTrigger} className="no-border border-1-bottom block w-100-pct p-0-5" value={input.value} />
+                                            <div className="flex flex-middle w-48-px">
+                                                <img onClick={submitChange} className="block w-50-pct pointer" src="/assets/icon/check-color.png" />
+                                            </div>
+                                            <div className="flex flex-middle w-48-px">
+                                                <img onClick={discardChange} className="block w-50-pct pointer" src="/assets/icon/cross-color.png" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="w-100-pct m-t-1">
+                                    <button onClick={redirectTo} className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Quay lại</button>
                                 </div>
                             </div>
-                        : null }
-
-                        { projects.use.success ?
-                            <div className="m-t-1">
-                                <span className="block text-20-px">Dự án { user.name } là người dùng</span>
-
-                                <div className="flex flex-no-wrap">
-                                    { projects.use.success && projects.use.projectDetails.map(project =>
-                                        <ProjectCard key={ project.project_id } project = { project }/>
-                                    )}
-                                </div>
-                            </div>
-                        : null }
-
-
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
     )
 }

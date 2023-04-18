@@ -67,27 +67,17 @@ export default (props) => {
     }
 
 
-    const redirectToInput = () => {
-        openTab(`/su/api/put/input/${id_str_post}/`)
-    }
+
     const redirectToInpuPutUser = (data) => {
-        const id_str_put = page.apis.put.split(`/`)[4];
-
-        let rawParams = page.apis.put.split(`/${id_str_put}/`)[1];
-
-        const keys = Object.keys(data);
-        keys.map(key => {
-            const value = data[key];
-            rawParams = rawParams.replaceAll(key, value);
-        })
+        const { credential_string } = user;
         // /su/user/edit/:credential_string
-        openTab(`/su/api/put/input/${id_str_put}/${rawParams}`)
+        openTab(`/su/user/edit/${credential_string}`)
     }
     return (
         <tr>
             <td className='text-left'>{user.fullname}</td>
             <td className='text-left'>{user.account_string}</td>
-            <td><img className="w-64-px block border-radius-50-pct" src={user.avatar === defaultImage ? user.avatar : `${proxy}/${user.avatar}`} /></td>
+            {/* <td><img className="w-64-px block border-radius-50-pct" src={user.avatar === defaultImage ? user.avatar : `${proxy}/${user.avatar}`} /></td> */}
             <td className='text-left'>{user.email}</td>
             <td className='text-left'>{user.phone}</td>
             <td className='text-left'>{user.address}</td>

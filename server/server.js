@@ -15,10 +15,6 @@ app.use(bodyparser.urlencoded({
 }));
 
 const mongoose = require('mongoose');
-
-
-
-// Kết nối đến cơ sở dữ liệu MongoDB
 mongoose.connect(`mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.1/${process.env.DB_NAME_MONGO}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -26,17 +22,7 @@ mongoose.connect(`mongodb://127.0.0.1:27017/?directConnection=true&serverSelecti
   .then(() => console.log(`Kết nối thành công tới cơ sở dữ liệu MongoDB: ${process.env.DB_NAME_MONGO}`))
   .catch((err) => console.error(`Lỗi kết nối tới cơ sở dữ liệu MongoDB: ${process.env.DB_NAME_MONGO}`, err));
 
-// Định nghĩa một lược đồ cho đối tượng User
-const userSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-  email: String,
-});
 
-// Tạo một mô hình User từ lược đồ
-const User = mongoose.model('User', userSchema);
-
-// Kết nối thành công, nhưng không thêm bất kỳ bản ghi nào vào cơ sở dữ liệu
 
 
 

@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 
 import APP_API from '../../APP_API';
 
 export default () => {
     const [ auth, setAuth ] = useState({})
-
+    const {  Confirm, Alert, pages } = useSelector(state => state);
     const { unique_string } = useSelector( state => state )
-
+    const dispatch = useDispatch()
+    const cf = new Confirm(dispatch)
+    const al = new Alert(dispatch)
     const enterTriggered = (e) => {
         if( e.keyCode === 13 ){
             submit()
@@ -34,7 +36,7 @@ export default () => {
                     window.location = "/su/users";
                   }
             }else{
-                alert(`CREDENTIAL ERROR`);
+               al.failure("Thất bại","Đăng nhập thất bại")
             }
         })
     }
