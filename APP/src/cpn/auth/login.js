@@ -31,7 +31,12 @@ export default () => {
                 localStorage.setItem( 'credential_string', credential_string )
                 localStorage.setItem( '_token', _token )
                 if (redirectToImport) {
-                    window.location = "/"; // Chuyển hướng đến trang import nếu không tồn tại các bảng
+                    window.location = "/"; 
+                    
+                    setTimeout(() => {
+                        al.warning("Warning!","Chưa có dữ liệu")
+                    }, 2000);
+                   
                   } else {
                     window.location = "/su/users";
                   }

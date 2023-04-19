@@ -94,7 +94,7 @@ export default (props) => {
         fetch(`${proxy}${page.apis.get}`).then(res => res.json()).then(res => {
             const { success, content, data } = res;
             if (!success) {
-                al.failure("Lỗi", "Đọc dữ liệu thất bại ")
+                // al.failure("Lỗi", "Đọc dữ liệu thất bại ")
             } else {
                 setApiData(data)
             }

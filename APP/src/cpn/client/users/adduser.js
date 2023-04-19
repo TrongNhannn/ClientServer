@@ -5,10 +5,58 @@ export default (props) => {
     const { userAdd, setUserAdd, users, setUsers } = props;
     const [right, setRight] = useState(-500);
     const [height, setHeight] = useState(0);
+    const [error, setError] = useState({});
+
+    const validateField = (field, value) => {
+        let errorMessage = "";
+        switch (field) {
+            case "account_string":
+                if (!value || value.length < 3 || value.length > 20) {
+                    errorMessage = "Tên đăng nhập từ 3-20 ký tự";
+                }
+                break;
+            case "pwd_string":
+                if (!value || value.length < 8) {
+                    errorMessage = "Mật khẩu phải có ít nhất 8 ký tự";
+                }
+                break;
+            case "account_role_label":
+                if (!value) {
+                    errorMessage = "Vui lòng chọn loại tài khoản";
+                }
+                break;
+            case "fullname":
+                if (!value || value.length < 1) {
+                    errorMessage = "Vui lòng nhập tên người dùng";
+                }
+                break;
+            case "email":
+                const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+                if (!value || !emailRegex.test(value)) {
+                    errorMessage = "Vui lòng nhập địa chỉ email hợp lệ";
+                }
+                break;
+            case "phone":
+                const phoneRegex = /^(\+\d{1,2})?\d{10}$/;
+                if (!value || !phoneRegex.test(value)) {
+                    errorMessage = "Vui lòng nhập số điện thoại hợp lệ";
+                }
+                break;
+            case "address":
+                if (!value || value.length < 1) {
+                    errorMessage = "Vui lòng nhập địa chỉ";
+                }
+                break;
+            default:
+                break;
+        }
+        setError({ ...error, [field]: errorMessage });
+    };
+
+
     const roles = [
-        { id: 0, label: "Super User ( SU )", value: "su" },
-        { id: 1, label: "Quản trị viên ( Admin ) ", value: "admin" },
-        { id: 2, label: "Người dùng ( User ) ", value: "user" },
+        { id: 0, label: "Quản trị viên ( Admin )", value: "admin" },
+        { id: 1, label: "Người dùng ( User ) ", value: "user" },
     ]
     const [errors, setErrors] = useState({
         account_string: "",
@@ -68,11 +116,19 @@ export default (props) => {
     }
 
     const focusTrigger = () => {
-        setHeight(135);
+        setHeight(100);
     }
 
     const submit = () => {
-        if (user.pwd_string && user.account_string) {
+        if(user.account_role=="")
+        {
+            al.failure("Thất bại", "Vui lòng chọn quyền");
+            return;
+        }
+        
+
+
+        if (user.pwd_string && user.account_string&&user.account_role) {
             fetch(`${proxy}/${unique_string}/create_user`, {
                 method: "POST",
                 headers: {
@@ -115,50 +171,66 @@ export default (props) => {
                 </div>
                 {/* FORM BODY */}
                 <span className="text-20-px block p-1 text-right">Thông tin tài khoản</span>
-                <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Tên đăng nhập</label>
-                    <input value={user.account_string} onChange={
+
+                    <input value={user.account_string} placeholder='Nhập tài khoản' onChange={
                         (e) => { setUser({ ...user, account_string: e.target.value }) }
-                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                    } onBlur={(e) => validateField("account_string", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+
+
+
+                    {/* <input value={user.account_string} type="text" maxLength={6} minLength={1} placeholder="Nhập tài khoản" onChange={
+                        (e) => { setUser({ ...user, account_string: e.target.value }) }
+                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" /> */}
                     {/* <input
                         value={user.account_string}
                         onChange={(e) => handleInputChange(e, "account_string")}
                         className="block w-60-pct border-1  border-radius-8-px p-0-5"
                     /> */}
                 </div>
-                {/* <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
-                    <span className="text-red-500 block w-40-pct "></span>
-                    <span className="text-red-500 block w-60-pct ">{errors.account_string}</span>
-                </div> */}
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.account_string}</span>
+                </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Mật khẩu</label>
-                    <input value={user.pwd_string} onChange={
-                        (e) => { setUser({ ...user, pwd_string: e.target.value }) }
-                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                    <input value={user.pwd_string} minLength={2} type="password" placeholder='Nhập mật khẩu'
+                        onChange={(e) => { setUser({ ...user, pwd_string: e.target.value }) }
+                        } onBlur={(e) => validateField("pwd_string", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
-                
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.pwd_string}</span>
+                </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
-                    <label className="block w-40-pct">Loại tài khoản</label>
-                    <input defaultValue={user.account_role_label ? user.account_role_label : ""}   onFocus={focusTrigger} onBlur={blurTrigger} className="block w-60-pct border-1  border-radius-8-px p-0-5" readOnly />
-                    
+                    <label className="block w-40-pct h-20-pct">Loại tài khoản</label>
+                    <input placeholder='Chọn quyền' defaultValue={user.account_role_label ? user.account_role_label : ""} onFocus={focusTrigger} onBlur={blurTrigger} className="block w-60-pct border-1  border-radius-8-px p-0-5" readOnly />
+
+                </div>
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.account_role_label}</span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap flex-end mg-auto">
                     <div className="w-60-pct">
                         <div className="rel">
                             <div className="abs-default w-100-pct no-overflow bg-white shadow" style={{ height: `${height}px` }}>
-                                <div className="block w-100-pct p-0-5 overflow" style={{ height: `${200}px` }}>
+                                <div className="block w-100-pct p-0-5 overflow" style={{ height: `${100}px` }}>
                                     {roles.map(role =>
                                         <div key={role.id}>
-                                            <span className="block p-0-5 bg-white pointer hover" onClick={() => { setUser({ ...user, account_role: role.value, account_role_label: role.label }) }}>{role.label}</span>
+                                            <span className="block p-0-5 bg-white pointer hover" onClick={() => {
+                                                setUser({ ...user, account_role: role.value, account_role_label: role.label });
+                                                validateField("account_role_label", role.label); // Kiểm tra tính hợp lệ khi chọn quyền
+                                            }}>{role.label}</span>
                                         </div>
                                     )}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    
                 </div>
+
 
 
                 {/* DROPBOX HERE */}
@@ -166,27 +238,43 @@ export default (props) => {
                 <span className="text-20-px block p-1 text-right">Thông tin người dùng</span>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Họ tên</label>
-                    <input value={user.fullname} onChange={
+                    <input value={user.fullname} placeholder='Nhập đầy đủ họ tên' onChange={
                         (e) => { setUser({ ...user, fullname: e.target.value }) }
-                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                    } onBlur={(e) => validateField("fullname", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                </div>
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.fullname}</span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Email</label>
-                    <input value={user.email} onChange={
+                    <input value={user.email} type="email" placeholder='Nhập tài khoản Email' onChange={
                         (e) => { setUser({ ...user, email: e.target.value }) }
-                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                    } onBlur={(e) => validateField("email", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                </div>
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.email}</span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Số di động</label>
-                    <input value={user.phone} onChange={
+                    <input value={user.phone} maxLength={10} placeholder='Nhập số điện thoại' onChange={
                         (e) => { setUser({ ...user, phone: e.target.value }) }
-                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number"/>
+                    } onBlur={(e) => validateField("phone", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number" />
+                </div>
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.phone}</span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Địa chỉ</label>
-                    <input value={user.address} onChange={
+                    <input value={user.address} placeholder='Nhập địa chỉ' onChange={
                         (e) => { setUser({ ...user, address: e.target.value }) }
-                    } className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                    } onBlur={(e) => validateField("address", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                </div>
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                    <label className="block w-40-pct"></label>
+                    <span className="text-red-500 block w-60-pct ">{error.address}</span>
                 </div>
 
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">

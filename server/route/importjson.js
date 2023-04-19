@@ -22,9 +22,7 @@ async function importData(jsonString) {
         const db = client.db(dbName);
         const data = JSON.parse(jsonString).data;
         // Kiểm tra và xóa dữ liệu 
-        if (await db.collection('accounts').countDocuments() > 0) {
-            await db.collection('accounts').deleteMany({});
-        }
+        
         if (await db.collection('tables').countDocuments() > 0) {
             await db.collection('tables').deleteMany({});
         }
@@ -34,7 +32,7 @@ async function importData(jsonString) {
         if (await db.collection('ids').countDocuments() > 0) {
             await db.collection('ids').deleteMany({});
         }
-        await db.collection('accounts').insertMany(data.accounts);
+     
         await db.collection('tables').insertMany(data.tables);
         await db.collection('fields').insertMany(data.fields);
         await db.collection('ids').insertMany(data.ids);

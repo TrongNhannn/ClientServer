@@ -5,12 +5,14 @@ import Int  from './int';
 import Decimal from './decimal';
 import Bool from './bool';
 
-import { DateInput, TimeInput, DateTimeInput } from './datetime';
 
+import { DateInput, TimeInput, DateTimeInput } from './datetime';
+import DataEmail  from './email';
+import DataPhone from './phone';
 export {
     Varchar, Char, Text,
     Int,
     DateInput, TimeInput, DateTimeInput,
     Decimal,
-    Bool
+    Bool,DataEmail, DataPhone
 }

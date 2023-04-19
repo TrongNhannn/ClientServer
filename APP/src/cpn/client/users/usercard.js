@@ -81,7 +81,7 @@ export default (props) => {
             <td className='text-left'>{user.email}</td>
             <td className='text-left'>{user.phone}</td>
             <td className='text-left'>{user.address}</td>
-            <td className='text-left'>{user.account_role_label}</td>
+            <td className='text-left'>{user.account_role}</td>
             <td className='text-center'>
                 <img onClick={ redirectToInpuPutUser } className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/edit.png`} width="100%" />
                 <img onClick={askRemove} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/delete.png`} width="100%" />

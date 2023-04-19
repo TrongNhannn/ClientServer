@@ -44,6 +44,9 @@ export default ( props ) => {
         setCurrent(defaultValue)
     }, [defaultValue])
 
+
+
+    
     const isFieldForeign = () => {
         const isForeign = table.fk.filter( key => {
             const { fks } = key;

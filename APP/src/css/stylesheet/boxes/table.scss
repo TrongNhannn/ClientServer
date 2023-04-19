@@ -8,31 +8,3 @@ table{
         background: #f2fcff;
     }
 }
-.custom-file-upload {
-    border: 2px solid #ccc;
-   
-    padding: 6px 12px;
-    
-    font-weight: bold;
-  }
-  
-  .button-input {
-    display: inline-block;
-    background-color: #3498db; /* Màu nền */
-    color: #ffffff; /* Màu chữ */
-    border: none; /* Không viền */
-    padding: 12px 24px; /* Đệm trên-dưới và trái-phải */
-    text-align: center; /* Canh giữa chữ */
-    text-decoration: none; /* Không gạch chân */
-    font-size: 16px; /* Cỡ chữ */
-    cursor: pointer; /* Con trỏ chuột khi di chuyển vào button */
-    border-radius: 4px; /* Bo góc button */
-    transition: background-color 0.3s; /* Hiệu ứng chuyển đổi màu nền */
-  }
-
-
-  .button-wrapper {
-    display: inline-block;
-    margin-right: 10px;
-  }
-  

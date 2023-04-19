@@ -127,10 +127,10 @@ export default () => {
                 <Horizon />
                 <div className="p-1" id="app-scrollBox">
                     {/* VERSION INFO */}
+<div className="p-1 min-height-full-screen column">
+                    <div className="block bg-white scroll-y p-1 shadow-blur p-l-5 p-r-5 flex flex-middle" style={{ height: "100vh" }}>
 
-                    <div className="block bg-white scroll-y p-1 shadow-blur p-l-5 p-r-5 flex flex-middle" style={{ height: "90vh" }}>
-
-                        <div className="p-l-2 p-r-1 bg-white shadow-blur rel" style={{ width: 768, height: 448 }}>
+                        <div className="p-l-2 p-r-1 bg-white shadow-blur rel" style={{ width: 768, height: 400 }}>
 
                             <div className="m-t-1 m-b-1">
                                 <div className="flex flex-no-wrap">
@@ -214,6 +214,7 @@ export default () => {
 
 
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

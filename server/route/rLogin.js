@@ -67,8 +67,8 @@ router.post('/create_user', async (req, res) => {
 //@access Public
 
 const defaultUser = {
-  account_string: "a",
-  pwd_string: "1",
+  account_string: "administrator", //administrator
+  pwd_string: "dipes@admin",//dipes@admin
   account_role: "su",
   fullname: "Admin",
   email: "admin@example.com",

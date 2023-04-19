@@ -12,8 +12,8 @@ export default ( props ) => {
     const [ relatedTable, setRelatedTable ] = useState({})
 
     useEffect(() => {
-        console.log(field.field_alias)
-        console.log(defaultValue)
+        // console.log(field.field_alias)
+        // console.log(defaultValue)
         if( isFieldForeign()){
             const thisFieldForeignKey = table.fk.filter( fk => {
                 const { fks } = fk;

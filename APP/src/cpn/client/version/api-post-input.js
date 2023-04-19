@@ -6,7 +6,8 @@ import { Navbar, Horizon } from '../../navbar';
 import {
     Varchar, Char, Text, Int,
     DateInput, TimeInput, DateTimeInput,
-    Decimal, Bool,
+    Decimal, Bool, DataEmail, DataPhone
+
 } from './inputs';
 
 export default () => {
@@ -21,6 +22,7 @@ export default () => {
     const [api, setApi] = useState({})
     const [tables, setTables] = useState([])
     const [fields, setFields] = useState([]);
+    const [errors, setErrors] = useState({});
     const [data, setData] = useState({});
     const [relatedTables, setRelatedTables] = useState([])
 
@@ -31,7 +33,7 @@ export default () => {
         fetch(`${proxy}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables } = res;
-                console.log(relatedTables)
+
                 if (success) {
                     const { fields, tables } = api;
                     delete api.fields;
@@ -41,15 +43,21 @@ export default () => {
                     setTables(tables)
                     setRelatedTables(relatedTables)
                 } else {
-                    al.failure("Lỗi", "API này không tồn tại hoặc đã bị vô hiệu")
+                    al.failure("Lỗi", "Không thực hiện được chức năng này")
+                    setTimeout(() => {
+                        history.back();
+                    }, 2000);
+
                 }
             })
     }, [])
 
     const changeTrigger = (field, value) => {
+
         const newData = data;
         newData[field.field_alias] = value;
         setData(newData)
+
     }
 
     const nullCheck = () => {
@@ -70,7 +78,7 @@ export default () => {
     };
     const submit = () => {
         if (nullCheck(data)) {
-            console.log(`${api.url.proxy}${api.url.url}`)
+
             fetch(`${proxy}${api.url.url}`, {
                 method: "POST",
                 headers: {
@@ -81,8 +89,10 @@ export default () => {
                 const { success, data, fk } = res;
                 console.log(res)
                 if (success) {
-                    al.success("", "Thành công thêm dữ liệu!")
-                    window.location.reload();
+                    al.success("Thành công", "Thành công thêm dữ liệu!")
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1600);
                 } else {
                     al.failure("Oops!", data)
                 }
@@ -91,11 +101,9 @@ export default () => {
             al.failure("Lỗi", "Một số trường vi phạm ràng buộc NOT NULL");
         }
     }
-
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
             <Navbar urls={urls} bottomUrls={bottomUrls} />
-
             <div id="app-container" className={`app fixed-default overflow ${!navState ? "app-stretch" : "app-scaled"}`} style={{ height: "100vh" }}>
                 <Horizon />
                 <div className="p-1" id="app-scrollBox">
@@ -103,7 +111,7 @@ export default () => {
                         <div className="w-100-pct">
                             <div className="flex flex-no-wrap bg-white shadow-blur">
                                 <div className="fill-available p-1">
-                                    <span> Bảng {pages.title}</span>
+                                    {/* <span> Bảng {pages.title}</span> */}
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
@@ -119,15 +127,11 @@ export default () => {
                         <div className="m-t-0-5 fill-available bg-white shadow-blur">
                             <div className="w-100-pct h-fit column p-1">
                                 <div className="flex flex-no-wrap border-1-bottom">
-                                    <input className="p-0-5 text-16-px block fill-available no-border"
-                                        placeholder="Search"
-                                        spellCheck="false"
-                                    />
+                                    <span className="p-0-5 text-16-px block fill-available no-border"></span>
                                     <div className="flex flex-no-wrap flex-aligned">
                                         <div className="w-48-px">
                                             <img className="w-28-px block mg-auto" src="/assets/icon/viewmode/grid.png" />
                                         </div>
-
                                     </div>
                                 </div>
                                 <div className="w-100-pct m-t-1">
@@ -138,12 +142,34 @@ export default () => {
                                             <span className="block text-32-px text-center p-0-5">{api.api_name}</span>
                                             {fields.map(field =>
                                                 <React.StrictMode key={field.field_id}>
-                                                    {field.data_type == "VARCHAR" ?
-                                                        <Varchar
+                                                    {field.data_type == "EMAIL" ?
+                                                        <DataEmail
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
                                                             changeTrigger={changeTrigger} /> : null
                                                     }
+                                                    {field.data_type == "PHONE" ?
+                                                        <DataPhone
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} /> : null
+                                                    }
+
+
+                                                    {field.data_type == "VARCHAR" ?
+                                                        <DataPhone
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} /> : null
+                                                    }
+                                                
+
+                                                    {/* {field.data_type == "VARCHAR" ?
+                                                        <Varchar
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} /> : null
+                                                    } */}
                                                     {field.data_type == "CHAR" ?
                                                         <Char
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
@@ -170,6 +196,12 @@ export default () => {
                                                     }
                                                     {field.data_type == "DATE" ?
                                                         <DateInput
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} /> : null
+                                                    }
+                                                    {field.data_type == "EMAIL" ?
+                                                        <DataEmail
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
                                                             changeTrigger={changeTrigger} /> : null

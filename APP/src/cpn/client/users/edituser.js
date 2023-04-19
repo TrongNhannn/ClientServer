@@ -35,9 +35,8 @@ export default () => {
         { name: "email", label: "Email" },
         { name: "phone", label: "Di động" },
         { name: "address", label: "Địa chỉ" },
-        { name: "account_role", label: "Quyền" }
-
     ]
+
 
     const [input, setInput] = useState({})
 
@@ -60,6 +59,7 @@ export default () => {
                 if (data != undefined && data.length > 0) {
                     const nameSplited = data[0].fullname.split(" ");
                     const usr = { ...data[0], name: nameSplited[nameSplited.length - 1] }
+                    console.log(usr)
                     setUser(usr)
                 }
 
@@ -93,10 +93,7 @@ export default () => {
     }
 
     const submitChange = () => {
-        console.log(user);
         const apiUrl = `${proxy}/api/${unique_string}/user/update/${user.credential_string}`;
-        console.log(credential_string)
-
         // Gửi yêu cầu POST đến máy chủ với thông tin người dùng
         fetch(apiUrl, {
             method: 'PUT',
@@ -104,16 +101,16 @@ export default () => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(user),
-           
+
         })
             .then((response) => response.json())
             .then((data) => {
                 if (data.success) {
                     // Xử lý thành công
-                    al.success("Thành công","Cập nhật thông tin người dùng thành công");
+                    al.success("Thành công", "Cập nhật thông tin người dùng thành công");
                 } else {
                     // Xử lý lỗi
-                    al.failure("Thất bại","Cập nhật thông tin người dùng thất bại");
+                    al.failure("Thất bại", "Cập nhật thông tin người dùng thất bại");
                 }
             })
             .catch((error) => {
@@ -131,6 +128,20 @@ export default () => {
         const newUser = user;
         newUser[prop] = e.target.value;
         setUser(newUser);
+    }
+
+    const askUserRole = () => {
+        const changeRole = (role) => {
+            const { label, value } = role;
+            setUser({...user, account_role: value})
+        }
+
+        const roles = [
+            { id: 0, label: "Người dùng", value: "user" },
+            { id: 1, label: "Người quản trị", value: "admin" },
+        ]
+
+        cf.askForSelection("Chọn quyền", "", changeRole, roles)
     }
 
     return (
@@ -196,6 +207,21 @@ export default () => {
 
                                             )
                                         }
+
+                                        <div className="w-100-pct p-1 m-t-1">
+                                            <div>
+                                                <div>
+                                                    <span className="block text-16-px">{"Quyền"}</span>
+                                                </div>
+                                                <div className="m-t-0-5">
+                                                    <input type="text"
+                                                        className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
+                                                        placeholder="" onFocus={ askUserRole } value={ user.account_role == "user"?  "Người dùng":"Người quản trị" }
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div className="w-100-pct m-t-1 flex flex-no-wrap p-0-5">
                                             <button onClick={submitChange} className="w-max-content p-0-5 p-l-1 p-r-1 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Cập nhật</button>
                                             <button onClick={redirectTo} className="w-max-content p-0-5 p-l-1 p-r-1 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Quay về</button>

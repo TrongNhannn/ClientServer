@@ -6,7 +6,7 @@ import { Navbar, Horizon } from '../../navbar';
 import {
     Varchar, Char, Text, Int,
     DateInput, TimeInput, DateTimeInput,
-    Decimal, Bool,
+    Decimal, Bool, DataPhone,DataEmail
 } from './inputs';
 
 export default () => {
@@ -140,7 +140,7 @@ export default () => {
                         <div className="w-100-pct">
                             <div className="flex flex-no-wrap bg-white shadow-blur">
                                 <div className="fill-available p-1">
-                                    <span> Người dùng</span>
+                                    {/* <span> Người dùng</span> */}
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
@@ -156,11 +156,9 @@ export default () => {
                         <div className="m-t-0-5 fill-available bg-white shadow-blur">
                             <div className="w-100-pct h-fit column p-1">
                                 <div className="flex flex-no-wrap border-1-bottom">
-                                    <input className="p-0-5 text-16-px block fill-available no-border"
-                                        placeholder="Search"
-                                        spellCheck="false" />
+                                <span className="p-0-5 text-16-px block fill-available no-border"></span>
                                     <div className="flex flex-no-wrap flex-aligned">
-                                        <div className="border-1-right w-48-px">
+                                        <div className=" w-48-px">
                                             <img className="w-28-px block mg-auto" src="/assets/icon/viewmode/grid.png" />
                                         </div>
                                     </div>
@@ -185,6 +183,18 @@ export default () => {
                                             )}
                                             {fields.map(field =>
                                                 <React.StrictMode key={field.field_id}>
+                                                    {field.data_type == "PHONE" ?
+                                                        <DataPhone
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
+                                                    {field.data_type == "EMAIL" ?
+                                                        <DataEmail
+                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
+                                                            related={relatedTables} field={field}
+                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                    }
                                                     {field.data_type == "VARCHAR" ?
                                                         <Varchar
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}

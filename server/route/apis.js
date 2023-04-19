@@ -9,126 +9,6 @@ const tables  = require('../mongo/tables');
 const { getRequest } = require('./api-resolving');
 
 var router  = express.Router();
-
-
-//@route POST /api/%unique_string%/apis
-//@desc Tạo API mới nhe quí dị
-//@access Admin & Su
-router.post('/', async (req, res) => {
-    const { api } = req.body;
-    const id_str = v4().replaceAll("-", '');
-    const { project_id, version_id } = api;
-
-    api.create_on = new Date();
-    api.status = false;
-    api.url = {
-        ...api.url,
-        id_str,
-        url: `/api/${project_id}/${version_id}/${ id_str }/`,
-    }
-
-    const dbo = await asyncMongo()
-    const insertResult = await new Promise((resolve, reject) => {
-        dbo.collection(tables.apis).insertOne(api, (err, result) => {
-            resolve( result );
-        })
-    })
-    res.status(200).send({ success: true, api })
-})
-
-//@route DELETE /api/%unique_string%/apis/api/:id_str/drop
-//@desc Xóa api
-//@access Admin & Su
-
-router.delete('/api/:id_str/drop', async (req, res) => {
-    const { id_str } = req.params;
-    const dbo = await asyncMongo()
-
-    const api = await new Promise((resolve, reject) => {
-        dbo.collection(tables.apis).findOne({ "url.id_str": id_str }, (err, result) => {
-            resolve( result )
-        })
-    });
-
-    if( api ){
-        const deleteResult = await new Promise((resolve, reject) => {
-            dbo.collection(tables.apis).deleteOne({ "url.id_str": id_str }, (err, result) => {
-                resolve( result )
-            })
-        });
-
-        res.status(201).send({ success: true, content: "" })
-    }else{
-        res.status(404).send({ success: false, content: "Trường không tồn tại" })
-    }
-});
-
-
-//@route PUT /api/%unique_string%/apis/api/:id_str/modify
-//@desc Cập nhật một thuộc tính
-//@access Admin & Su
-
-router.put('/api/:id_str/modify', async (req, res) => {
-    const { id_str } = req.params;
-    const dbo = await asyncMongo()
-
-    const api = await new Promise((resolve, reject) => {
-        dbo.collection(tables.apis).findOne({ "url.id_str": id_str }, (err, result) => {
-            resolve( result )
-        })
-    });
-
-    if( api ){
-        const { prop, value } = req.body.data;
-        const newValue = {}
-        newValue[prop] = value;
-
-        const updateResult = await new Promise((resolve, reject) => {
-            dbo.collection(tables.apis).updateOne({ "url.id_str": id_str }, { $set: { ...newValue } }, (err, result) => {
-                resolve( result )
-            })
-        });
-
-        res.status(201).send({ success: true, content: "" })
-    }else{
-        res.status(404).send({ success: false, content: "Trường không tồn tại" })
-    }
-
-})
-
-//@route PUT /api/%unique_string%/apis/api/:id_str/update
-//@desc Cập nhật toàn bộ thông tin của
-//@access Admin & Su
-
-router.put('/api/:id_str/update', async (req, res) => {
-    const { id_str } = req.params;
-    const dbo = await asyncMongo()
-
-    const oldApi = await new Promise((resolve, reject) => {
-        dbo.collection(tables.apis).findOne({ "url.id_str": id_str }, (err, result) => {
-            resolve( result )
-        })
-    });
-
-    if( oldApi ){
-        const { api } = req.body;
-        delete api._id;
-        delete api.url;
-
-
-        const updateResult = await new Promise((resolve, reject) => {
-            dbo.collection(tables.apis).updateOne({ "url.id_str": id_str }, { $set: { ...api } }, (err, result) => {
-                resolve( result )
-            })
-        });
-
-        res.status(201).send({ success: true, content: "" })
-    }else{
-        res.status(404).send({ success: false, content: "Trường không tồn tại" })
-    }
-})
-
-
 //@route GET /api/%unique_string%/apis/api/input/info/:id_str
 //@desc Xóa api
 //@access Admin & Su
@@ -183,7 +63,6 @@ router.get(`/api/input/info/:id_str`, async (req, res) => {
         res.status(404).send({ success: false })
     }
 })
-
 
 router.get('/table/data/:table_alias', async (req, res) => {
     const { table_alias } = req.params;
