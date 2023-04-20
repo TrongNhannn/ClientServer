@@ -93,11 +93,11 @@ export default (props) => {
 
         fetch(`${proxy}${page.apis.get}`).then(res => res.json()).then(res => {
             const { success, content, data } = res;
-            if (!success) {
+            
                 // al.failure("Lỗi", "Đọc dữ liệu thất bại ")
-            } else {
+           
                 setApiData(data)
-            }
+            
         })
     }
     const generateUrl = (url) => {
@@ -133,7 +133,7 @@ export default (props) => {
         const id_str_put = page.apis.put.split(`/`)[4];
 
         let rawParams = page.apis.put.split(`/${id_str_put}/`)[1];
-
+console.log(rawParams)
         const keys = Object.keys(data);
         keys.map(key => {
             const value = data[key];

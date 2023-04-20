@@ -120,15 +120,14 @@ export default (props) => {
     }
 
     const submit = () => {
-        if(user.account_role=="")
-        {
+        if (user.account_role == "") {
             al.failure("Thất bại", "Vui lòng chọn quyền");
             return;
         }
-        
 
 
-        if (user.pwd_string && user.account_string&&user.account_role) {
+
+        if (user.pwd_string && user.account_string && user.account_role) {
             fetch(`${proxy}/${unique_string}/create_user`, {
                 method: "POST",
                 headers: {
@@ -188,10 +187,22 @@ export default (props) => {
                         onChange={(e) => handleInputChange(e, "account_string")}
                         className="block w-60-pct border-1  border-radius-8-px p-0-5"
                     /> */}
+
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.account_string}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-0-5">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.account_string}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Mật khẩu</label>
@@ -199,18 +210,38 @@ export default (props) => {
                         onChange={(e) => { setUser({ ...user, pwd_string: e.target.value }) }
                         } onBlur={(e) => validateField("pwd_string", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.pwd_string}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-0-5">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.pwd_string}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct h-20-pct">Loại tài khoản</label>
                     <input placeholder='Chọn quyền' defaultValue={user.account_role_label ? user.account_role_label : ""} onFocus={focusTrigger} onBlur={blurTrigger} className="block w-60-pct border-1  border-radius-8-px p-0-5" readOnly />
 
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.account_role_label}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-0-5">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.account_role}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap flex-end mg-auto">
                     <div className="w-60-pct">
@@ -235,49 +266,92 @@ export default (props) => {
 
                 {/* DROPBOX HERE */}
 
+                
+
+
                 <span className="text-20-px block p-1 text-right">Thông tin người dùng</span>
-                <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Họ tên</label>
                     <input value={user.fullname} placeholder='Nhập đầy đủ họ tên' onChange={
                         (e) => { setUser({ ...user, fullname: e.target.value }) }
                     } onBlur={(e) => validateField("fullname", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.fullname}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-1">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.fullname}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Email</label>
                     <input value={user.email} type="email" placeholder='Nhập tài khoản Email' onChange={
                         (e) => { setUser({ ...user, email: e.target.value }) }
                     } onBlur={(e) => validateField("email", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.email}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-1">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.email}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Số di động</label>
                     <input value={user.phone} maxLength={10} placeholder='Nhập số điện thoại' onChange={
                         (e) => { setUser({ ...user, phone: e.target.value }) }
                     } onBlur={(e) => validateField("phone", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number" />
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.phone}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-1">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.phone}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Địa chỉ</label>
                     <input value={user.address} placeholder='Nhập địa chỉ' onChange={
                         (e) => { setUser({ ...user, address: e.target.value }) }
                     } onBlur={(e) => validateField("address", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
-                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
-                    <span className="text-red-500 block w-60-pct ">{error.address}</span>
+                    <span className="text-red-500 block w-60-pct ">
+                        <div className="rel p-b-1">
+                            <div className="abs">
+
+                                <span className="block text-red text-12-px">
+                                    {error.address}
+                                </span>
+                            </div>
+
+                        </div>
+                    </span>
                 </div>
 
-                <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
+                <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <button onClick={submit} className="upper pointer block ml-auto border-radius-8-px w-max-content white text-center p-t-0-5 p-b-0-5 p-l-1 p-r-1 no-border bg-green">THÊM NGAY</button>
                 </div>
             </div>

@@ -12,28 +12,30 @@ import {
 
 export default () => {
     const dispatch = useDispatch();
-
     const { id_str } = useParams()
-
     const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
     const { dateGenerator, autoLabel, openTab } = useSelector(state => state.functions)
     const { navState, unique_string, proxy, Alert, Confirm, pages } = useSelector(state => state);
-
     const [api, setApi] = useState({})
     const [tables, setTables] = useState([])
     const [fields, setFields] = useState([]);
     const [errors, setErrors] = useState({});
     const [data, setData] = useState({});
     const [relatedTables, setRelatedTables] = useState([])
-
     const al = new Alert(dispatch);
     const cf = new Confirm(dispatch)
-
+    const [phoneError, setPhoneError] = useState(false);
+    const handlePhoneError = (error) => {
+        setPhoneError(error);
+    };
+    const [emailError, setEmailError] = useState(false);
+    const handleEmailError = (error) => {
+        setEmailError(error);
+    };
     useEffect(() => {
         fetch(`${proxy}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables } = res;
-
                 if (success) {
                     const { fields, tables } = api;
                     delete api.fields;
@@ -47,19 +49,15 @@ export default () => {
                     setTimeout(() => {
                         history.back();
                     }, 2000);
-
                 }
             })
     }, [])
 
     const changeTrigger = (field, value) => {
-
         const newData = data;
         newData[field.field_alias] = value;
         setData(newData)
-
     }
-
     const nullCheck = () => {
         let valid = true;
         for (let i = 0; i < fields.length; i++) {
@@ -76,9 +74,10 @@ export default () => {
     const handleClick = () => {
         history.back();
     };
-    const submit = () => {
-        if (nullCheck(data)) {
 
+    const submit = () => {
+       
+        if (!emailError && !phoneError && nullCheck(data)) {
             fetch(`${proxy}${api.url.url}`, {
                 method: "POST",
                 headers: {
@@ -87,7 +86,7 @@ export default () => {
                 body: JSON.stringify({ data })
             }).then(res => res.json()).then(res => {
                 const { success, data, fk } = res;
-                console.log(res)
+               
                 if (success) {
                     al.success("Thành công", "Thành công thêm dữ liệu!")
                     setTimeout(() => {
@@ -98,9 +97,15 @@ export default () => {
                 }
             })
         } else {
-            al.failure("Lỗi", "Một số trường vi phạm ràng buộc NOT NULL");
+            if (emailError) {
+                al.failure("Lỗi", "Địa chỉ email không hợp lệ");
+            } else if (phoneError) {
+                al.failure("Lỗi", "Số điện thoại không hợp lệ");
+            } else {
+                al.failure("Lỗi", "Một số trường vi phạm ràng buộc NOT NULL");
+            }
         }
-    }
+    };
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
             <Navbar urls={urls} bottomUrls={bottomUrls} />
@@ -142,34 +147,21 @@ export default () => {
                                             <span className="block text-32-px text-center p-0-5">{api.api_name}</span>
                                             {fields.map(field =>
                                                 <React.StrictMode key={field.field_id}>
-                                                    {field.data_type == "EMAIL" ?
-                                                        <DataEmail
-                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
-                                                            related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger} /> : null
-                                                    }
+
                                                     {field.data_type == "PHONE" ?
                                                         <DataPhone
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger} /> : null
+                                                            changeTrigger={changeTrigger}
+                                                            onPhoneError={handlePhoneError}
+                                                        /> : null
                                                     }
-
-
                                                     {field.data_type == "VARCHAR" ?
-                                                        <DataPhone
-                                                            table={tables.filter(tb => tb.table_id == field.table_id)[0]}
-                                                            related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger} /> : null
-                                                    }
-                                                
-
-                                                    {/* {field.data_type == "VARCHAR" ?
                                                         <Varchar
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
                                                             changeTrigger={changeTrigger} /> : null
-                                                    } */}
+                                                    }
                                                     {field.data_type == "CHAR" ?
                                                         <Char
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
@@ -204,7 +196,9 @@ export default () => {
                                                         <DataEmail
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger} /> : null
+                                                            changeTrigger={changeTrigger}
+                                                            onEmailError={handleEmailError}
+                                                        /> : null
                                                     }
                                                     {field.data_type == "TIME" ?
                                                         <TimeInput

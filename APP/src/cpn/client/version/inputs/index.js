@@ -14,5 +14,5 @@ export {
     Int,
     DateInput, TimeInput, DateTimeInput,
     Decimal,
-    Bool,DataEmail, DataPhone
+    Bool, DataEmail, DataPhone
 }

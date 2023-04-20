@@ -34,6 +34,27 @@ export default () => {
     const handleClick = () => {
         history.back();
     };
+    const nullCheck = () => {
+        let valid = true;
+        for (let i = 0; i < fields.length; i++) {
+            const field = fields[i];
+            const { nullable, field_alias } = field;
+            if (!nullable) {
+                if (data[field_alias] == null || data[field_alias] == undefined || data[field_alias] == "") {
+                    valid = false
+                }
+            }
+        }
+        return valid;
+    }
+    const [phoneError, setPhoneError] = useState(false);
+    const handlePhoneError = (error) => {
+        setPhoneError(error);
+    };
+    const [emailError, setEmailError] = useState(false);
+    const handleEmailError = (error) => {
+        setEmailError(error);
+    };
     useEffect(() => {
         const url = window.location;
         const rawParams = url.pathname.split(`/${id_str}/`)[1];
@@ -52,7 +73,7 @@ export default () => {
                         const { field_alias } = param;
                         return { field_alias, value: paramsList[index] }
                     })
-                    console.log(fields)
+                   
                     const keyFields = serializeParams.map(par => {
                         const field = fields.filter(f => f.field_alias == par.field_alias)[0]
                         return field;
@@ -114,6 +135,7 @@ export default () => {
     }
 
     const submit = () => {
+        if (!emailError && !phoneError && nullCheck(data)) {
         fetch(`${proxy}${api.url.url}${window.location.pathname.split(`/${id_str}/`)[1]}`, {
             method: "PUT",
             headers: {
@@ -128,6 +150,16 @@ export default () => {
                 al.failure("Oops!", data)
             }
         })
+    }
+    else {
+        if (emailError) {
+            al.failure("Lỗi", "Địa chỉ email không hợp lệ");
+        } else if (phoneError) {
+            al.failure("Lỗi", "Số điện thoại không hợp lệ");
+        } else {
+            al.failure("Lỗi", "Một số trường vi phạm ràng buộc NOT NULL");
+        }
+    }
     }
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
@@ -187,13 +219,13 @@ export default () => {
                                                         <DataPhone
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                            changeTrigger={changeTrigger}  onPhoneError={handlePhoneError}defaultValue={initialData[field.field_alias]} /> : null
                                                     }
                                                     {field.data_type == "EMAIL" ?
                                                         <DataEmail
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger} defaultValue={initialData[field.field_alias]} /> : null
+                                                            changeTrigger={changeTrigger}  onEmailError={handleEmailError} defaultValue={initialData[field.field_alias]} /> : null
                                                     }
                                                     {field.data_type == "VARCHAR" ?
                                                         <Varchar

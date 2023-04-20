@@ -10,7 +10,23 @@ export default ( props ) => {
     const [ showKey, setShowKey ] = useState("")
     const { proxy, unique_string } = useSelector( state => state );
     const [ relatedTable, setRelatedTable ] = useState({})
+    // const [intError, setIntError] = useState(false);
 
+    // const validateInt = (value) => {
+    //   const intRegex = /^[-+]?\d+$/;
+    //   return intRegex.test(value);
+    // };
+  
+    // const fieldChangeData = (e) => {
+    //   const { value } = e.target;
+    //   setCurrent(value);
+    //   if (validateInt(value) || value === '') {
+    //     setIntError(false);
+    //     changeTrigger(field, value);
+    //   } else {
+    //     setIntError(true);
+    //   }
+    // };
     useEffect(() => {
         // console.log(field.field_alias)
         // console.log(defaultValue)

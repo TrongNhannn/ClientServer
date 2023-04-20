@@ -1,23 +1,44 @@
 {
     "pages": [
         {
-            "title": "Khách hàng",
+            "title": "Khach_hang",
             "version_id": 1,
             "create_by": {
                 "fullname": "Su nè"
             },
             "status": false,
-            "param": "khachhang",
+            "param": "khach_hang",
             "description": "Trang mới",
-            "id": 7,
+            "id": 22,
             "apis": {
-                "get": "/api/7/1/4ae126bdea7c476cbf0357439213ce84/",
-                "post": "/api/7/1/2892362507d2431fa4aec0862ac118e6/",
-                "put": "/api/7/1/d4674cddead5430faa1dfb9754f0be2b/id1681087516708",
-                "delete": "/api/7/1/91afdde14adc4b60928ac4edffc76718/id1681087516708"
+                "get": "/api/7/1/8e0810b7cbec467a9570bc8d960e05ee/",
+                "post": "/api/7/1/883a883c625342cab206b941d840c8fc/",
+                "put": "/api/7/1/a8307d93ef3f4c2bb944793e2d211afb/id1681087516708",
+                "delete": "/api/7/1/bfe15396648b49c79833e810dfab3327/id1681087516708"
             },
             "formated_create_by": "Su nè",
-            "formated_status": "Vô hiệu"
+            "formated_status": "Vô hiệu",
+            "widget_name": "Khách hàng"
+        },
+        {
+            "title": "nhanvien",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "Su nè"
+            },
+            "status": false,
+            "param": "nhanvien",
+            "description": "Trang mới",
+            "id": 23,
+            "apis": {
+                "get": "/api/7/1/0df1211e63b046c895129a721566c784/",
+                "post": "/api/7/1/33d492ba7c4143efaf41291be8c3a65c/",
+                "put": "/api/7/1/37ee5a823a0d4ed4881f08589c25a0c8/id1681087679936",
+                "delete": "/api/7/1/b968d8458c04487e9e4c2de0494a31fa/id1681087679936"
+            },
+            "formated_create_by": "Su nè",
+            "formated_status": "Vô hiệu",
+            "widget_name": "Nhân viên"
         }
     ]
 }

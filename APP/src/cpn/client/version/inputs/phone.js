@@ -1,26 +1,29 @@
 import { useState, useEffect } from 'react';
 
 export default (props) => {
-    const { field, changeTrigger, defaultValue } = props;
+    // const { field, changeTrigger, defaultValue } = props;
     const [current, setCurrent] = useState('');
-    const [phoneError, setPhoneError] = useState(false);
 
+    // const [phoneError, setPhoneError] = useState(false);
+    const { field, changeTrigger, defaultValue, onPhoneError } = props;
     const validatePhoneNumber = (phone) => {
         const phoneRegex = /^\d{10,15}$/;
         return phoneRegex.test(phone);
     };
 
-    const fieldChangeData = (e) => {
+   
+
+
+      const fieldChangeData = (e) => {
         const { value } = e.target;
         setCurrent(value);
-        if (validatePhoneNumber(value) || value === '') {
-            setPhoneError(false);
+        const isValidPhone = validatePhoneNumber(value) || value === '';
+       
+        onPhoneError(!isValidPhone);
+        if (isValidPhone) {
             changeTrigger(field, value);
-        } else {
-            setPhoneError(true);
         }
     };
-
     useEffect(() => {
         setCurrent(defaultValue);
     }, [defaultValue]);
@@ -33,13 +36,15 @@ export default (props) => {
             <div className="m-t-0-5">
                 <input
                     type="text"
-                    className={`p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1 ${phoneError ? 'border-red' : ''}`}
+                    className={`p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1 `}
                     value={current}
                     placeholder=""
                     onChange={fieldChangeData}
                 />
                 
             </div>
+            {/* 
+            ${phoneError ? 'border-red' : ''}
             <div className="rel">
                 <div className="abs">
                 {phoneError && (
@@ -48,7 +53,7 @@ export default (props) => {
                     </span>
                 )}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

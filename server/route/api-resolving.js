@@ -54,7 +54,6 @@ const isForeignKey = ( tables, field ) => {
 const getRequest  = async ( req, api ) => {
     const dbo = await asyncMongo()
     const { version_id, api_name, tables, params, custom } = api;
-
     let paramQueries = [];
 
     if( params.length > 0 ){
@@ -119,7 +118,6 @@ const getRequest  = async ( req, api ) => {
     }
 
     let filteringData = removeDuplicate( mergedRawData );
-
     for( let i = 0; i < rawData.length; i++ ){
         const { table_alias, table_name, pk, fk } = rawData[i];
         if( fk.length ){
@@ -158,16 +156,18 @@ const getRequest  = async ( req, api ) => {
         const row = filteringData[i]
         const filtedRow = {}
         for( let j = 0; j < visibleFields.length; j++ ){
-            const { field_alias } = visibleFields[j]
-            filtedRow[ field_alias ] = row[ field_alias ]
+            const { field_alias, data_type, props } = visibleFields[j]
+            if( data_type == 'BOOL' ){
+                const { IF_TRUE, IF_FALSE } = props;
+                filtedRow[ field_alias ] = row[ field_alias ] ? IF_TRUE : IF_FALSE;
+            }else{
+                filtedRow[ field_alias ] = row[ field_alias ]
+            }
         }
         finalData.push( filtedRow )
     }
-    let success = false;
-    if( finalData.length > 0 ){
-        success = true
-    }
-    return { api_name, success, data: finalData }
+
+    return { api_name, fields: [...apiFields, ...custom], data: finalData }
 }
 
 

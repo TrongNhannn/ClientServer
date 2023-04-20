@@ -125,7 +125,7 @@ export default () => {
             <Navbar urls={urls} bottomUrls={bottomUrls} />
             <div id="app-container" className={`app fixed-default overflow ${!navState ? "app-stretch" : "app-scaled"}`} style={{ height: "100vh" }}>
                 <Horizon />
-                <div className="p-1" id="app-scrollBox">
+                <div className="p-1" id="">
                     {/* VERSION INFO */}
 <div className="p-1 min-height-full-screen column">
                     <div className="block bg-white scroll-y p-1 shadow-blur p-l-5 p-r-5 flex flex-middle" style={{ height: "100vh" }}>
@@ -154,6 +154,7 @@ export default () => {
                                     </div>
                                 </div>
                             </div>
+                            
                             {/* <div className="m-t-1 m-b-1">
                                 <div className="flex flex-no-wrap">
                                     <div className="main-pic w-30-pct">
