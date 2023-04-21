@@ -76,7 +76,7 @@ export default () => {
     };
 
     const submit = () => {
-       
+
         if (!emailError && !phoneError && nullCheck(data)) {
             fetch(`${proxy}${api.url.url}`, {
                 method: "POST",
@@ -86,7 +86,7 @@ export default () => {
                 body: JSON.stringify({ data })
             }).then(res => res.json()).then(res => {
                 const { success, data, fk } = res;
-               
+
                 if (success) {
                     al.success("Thành công", "Thành công thêm dữ liệu!")
                     setTimeout(() => {

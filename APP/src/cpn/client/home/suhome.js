@@ -19,6 +19,7 @@ export default () => {
       const al = new Alert(dispatch)
     const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
     const [uploadedJson, setUploadedJson] = useState(null);
+
     const handleFileUpload = (event) => {
         const file = event.target.files[0];
 
@@ -28,8 +29,8 @@ export default () => {
             reader.onload = (e) => {
                 try {
                     const json = JSON.parse(e.target.result);
-                    // console.log(json)
-                    // console.log(file)
+                    console.log(json)
+                    console.log(file)
                     setFile(file)
                     setUploadedJson(json);
                 } catch (error) {
@@ -40,9 +41,7 @@ export default () => {
             reader.readAsText(file);
         }
     };
-    const askRemove = () => {
-        cf.askYesNo("Xóa người dùng ?", "Người dùng này sẽ bị xóa vĩnh viễn", removeUser)
-    }
+    
     const importData = async () => {
         if (!uploadedJson) {
             al.failure("Thất bại", "Vui lòng tải lên một file JSON trước khi import");
@@ -70,6 +69,7 @@ export default () => {
         }
     };
     const importAPI = async () => {
+        console.log("aa")
         if (!uploadedJson) {
             al.failure("Thất bại", "Vui lòng tải lên một file JSON trước khi import");
             return;
