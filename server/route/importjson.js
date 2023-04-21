@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 const { mongo, asyncMongo } = require('../Connect/conect');
 const MongoClient = require('mongodb').MongoClient;
 const fs = require('fs');
-const uri = process.env.DB_CONNECTSTRING
+const uri = process.env.DB_CONNECTSTRING;
 const dbName = process.env.DB_NAME_MONGO;
 
 
