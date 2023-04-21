@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default ( props ) => {
     const { field, changeTrigger, defaultValue } = props;
@@ -8,8 +8,11 @@ export default ( props ) => {
         const { value } = e.target;
         changeTrigger( field, value )
         setCurrent( value )
-
     }
+
+    useEffect(() => {
+        setCurrent(defaultValue)
+    }, [defaultValue])
 
     return(
         <div className="w-100-pct p-1 m-t-1">

@@ -14,11 +14,15 @@ app.use(bodyparser.urlencoded({
     extended: false,
 }));
 
-const mongoose = require('mongoose');
-mongoose.connect(`mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.1/${process.env.DB_NAME_MONGO}`, {
+const { MongoClient } = require('mongodb');
+
+const uri = `${process.env.DB_CONNECTSTRING}/${process.env.DB_NAME_MONGO}`;
+const client = new MongoClient(uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-})
+});
+
+client.connect()
   .then(() => console.log(`Kết nối thành công tới cơ sở dữ liệu MongoDB: ${process.env.DB_NAME_MONGO}`))
   .catch((err) => console.error(`Lỗi kết nối tới cơ sở dữ liệu MongoDB: ${process.env.DB_NAME_MONGO}`, err));
 
@@ -49,10 +53,9 @@ app.get('/api/get/the/god/damn/api/key/with/ridiculous/long/url/string', (req, r
 
 //Middleware
 const Auth = require('./Middleware/Auth');
+const { project_status } = require('./mongo/tables');
 app.use(cors());
 //Token
-//Middleware
-// app.use(Auth.isAuth);
 //Login
 app.use(`/${unique_string}`, login);
 //Middleware

@@ -2,7 +2,7 @@ var express = require('express');
 
 const { mongo, asyncMongo } = require('../Connect/conect');
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 var router = express.Router();
 // Kết nối với cơ sở dữ liệu MySQL

@@ -15,7 +15,6 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@supercharge/strings": "^2.0.0",
     "argon2": "^0.30.3",
-    "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",

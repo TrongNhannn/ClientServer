@@ -14,7 +14,8 @@ export default () => {
     const [file, setFile] = useState({});
     const dispatch = useDispatch();
   
-    const { navState,Alert } = useSelector(state => state);
+    const { navState,Alert,proxy, unique_string} = useSelector(state => state);
+    
       const al = new Alert(dispatch)
     const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
     const [uploadedJson, setUploadedJson] = useState(null);
@@ -50,7 +51,7 @@ export default () => {
         }
 
         try {
-            const response = await fetch('http://192.168.15.205:5000/api/dipev1/json/import', {
+            const response = await fetch(`${proxy}/api/${unique_string}/json/import`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ export default () => {
         }
 
         try {
-            const response = await fetch('http://192.168.15.205:5000/api/dipev1/json/import-api', {
+            const response = await fetch(`${proxy}/api/${unique_string}/json/import-api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
