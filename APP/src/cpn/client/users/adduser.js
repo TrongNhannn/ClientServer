@@ -7,7 +7,7 @@ export default (props) => {
     const [height, setHeight] = useState(0);
     const [error, setError] = useState({});
 
-    const validateField = (field, value) => {
+    const validateField = (field, value, updateError = false) => {
         let errorMessage = "";
         switch (field) {
             case "account_string":
@@ -50,6 +50,10 @@ export default (props) => {
             default:
                 break;
         }
+        if (updateError) {
+            setError((prevError) => ({ ...prevError, [field]: errorMessage }));
+        }
+        return errorMessage;
         setError({ ...error, [field]: errorMessage });
     };
 
@@ -119,15 +123,47 @@ export default (props) => {
         setHeight(100);
     }
 
-    const submit = () => {
-        if (user.account_role == "") {
-            al.failure("Thất bại", "Vui lòng chọn quyền");
-            return;
+    const isFormValid = (user, error) => {
+        let valid = true;
+
+        // Danh sách các trường cần kiểm tra
+        const fieldsToCheck = [
+            "account_string",
+            "pwd_string",
+            "fullname",
+            "email",
+            "phone",
+            "address"
+        ];
+
+        // Kiểm tra từng trường nhập liệu
+        for (const field of fieldsToCheck) {
+            if (error[field]) {
+                valid = false;
+                break;
+            }
         }
 
-
-
-        if (user.pwd_string && user.account_string && user.account_role) {
+        return valid;
+    };
+    const submit = () => {
+        // Kiểm tra và cập nhật lỗi cho từng trường
+        const fieldsToCheck = [
+            "account_string",
+            "pwd_string",
+            "fullname",
+            "email",
+            "phone",
+            "address"
+        ];
+        fieldsToCheck.forEach((field) => validateField(field, user[field]));
+        const newError = { ...error };
+        fieldsToCheck.forEach((field) => {
+            const errorMessage = validateField(field, user[field]);
+            newError[field] = errorMessage;
+        });
+        setError(newError);
+        if (isFormValid(user, newError)) { // Kiểm tra tính hợp lệ của dữ liệu
             fetch(`${proxy}/${unique_string}/create_user`, {
                 method: "POST",
                 headers: {
@@ -153,8 +189,42 @@ export default (props) => {
                     // Show an error message when adding the user fails
                     al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin");
                 });
+        } else {
+            // Show an error message when the form is not valid
+            al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin và nhập chính xác");
         }
-    }
+    };
+
+
+    // const submit = () => {
+    //     if (user.pwd_string && user.account_string && user.account_role) {
+    //         fetch(`${proxy}/${unique_string}/create_user`, {
+    //             method: "POST",
+    //             headers: {
+    //                 "content-type": "application/json",
+    //             },
+    //             body: JSON.stringify({ user })
+    //         }).then(res => {
+    //             if (!res.ok) {
+    //                 throw new Error('Thêm người dùng thất bại');
+    //             }
+    //             return res.json();
+    //         })
+    //             .then(data => {
+    //                 const { credential_string } = data;
+
+    //                 al.success("Thành Công", "Thêm người dùng thành công")
+    //                 setTimeout(() => {
+    //                     window.location.reload();
+    //                 }, 1600);
+    //                 setUsers({ ...user, credential_string, avatar: defaultImage })
+    //             })
+    //             .catch(error => {
+    //                 // Show an error message when adding the user fails
+    //                 al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin");
+    //             });
+    //     }
+    // }
 
     return (
         <div className={`fixed adduser overflow z-index-1 bg-white r-0 t-0 shadow`} style={{ right: `${right}px` }}>
@@ -173,9 +243,19 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Tên đăng nhập</label>
 
-                    <input value={user.account_string} placeholder='Nhập tài khoản' onChange={
+                    {/* <input value={user.account_string} placeholder='Nhập tài khoản' onInput={
                         (e) => { setUser({ ...user, account_string: e.target.value }) }
-                    } onBlur={(e) => validateField("account_string", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                    } onBlur={(e) => validateField("account_string", e.target.value, true)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                     */}
+                    <input
+                        value={user.account_string}
+                        placeholder="Nhập tài khoản"
+                        onInput={(e) => {
+                            setUser({ ...user, account_string: e.target.value });
+                            validateField("account_string", e.target.value, true);
+                        }}
+                        className="block w-60-pct border-1  border-radius-8-px p-0-5"
+                    />
 
 
 
@@ -207,8 +287,8 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Mật khẩu</label>
                     <input value={user.pwd_string} minLength={2} type="password" placeholder='Nhập mật khẩu'
-                        onChange={(e) => { setUser({ ...user, pwd_string: e.target.value }) }
-                        } onBlur={(e) => validateField("pwd_string", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        onChange={(e) => { setUser({ ...user, pwd_string: e.target.value }) 
+                        validateField("pwd_string", e.target.value, true)} }className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -266,15 +346,15 @@ export default (props) => {
 
                 {/* DROPBOX HERE */}
 
-                
+
 
 
                 <span className="text-20-px block p-1 text-right">Thông tin người dùng</span>
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Họ tên</label>
                     <input value={user.fullname} placeholder='Nhập đầy đủ họ tên' onChange={
-                        (e) => { setUser({ ...user, fullname: e.target.value }) }
-                    } onBlur={(e) => validateField("fullname", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        (e) => { setUser({ ...user, fullname: e.target.value }) 
+                    validateField("fullname", e.target.value, true)} }className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -293,8 +373,8 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Email</label>
                     <input value={user.email} type="email" placeholder='Nhập tài khoản Email' onChange={
-                        (e) => { setUser({ ...user, email: e.target.value }) }
-                    } onBlur={(e) => validateField("email", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        (e) => { setUser({ ...user, email: e.target.value }) 
+                    validateField("email", e.target.value, true)}} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -313,8 +393,8 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Số di động</label>
                     <input value={user.phone} maxLength={10} placeholder='Nhập số điện thoại' onChange={
-                        (e) => { setUser({ ...user, phone: e.target.value }) }
-                    } onBlur={(e) => validateField("phone", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number" />
+                        (e) => { setUser({ ...user, phone: e.target.value }) 
+                  validateField("phone", e.target.value, true)}} className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -333,8 +413,8 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Địa chỉ</label>
                     <input value={user.address} placeholder='Nhập địa chỉ' onChange={
-                        (e) => { setUser({ ...user, address: e.target.value }) }
-                    } onBlur={(e) => validateField("address", e.target.value)} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        (e) => { setUser({ ...user, address: e.target.value }) 
+                     validateField("address", e.target.value, true)}} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>

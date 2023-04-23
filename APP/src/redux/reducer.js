@@ -10,7 +10,7 @@ import api from './router/api';
 
 import datatypes from './field-props';
 
-import pages from '../dipesconfig/ui.json';
+import pages from '../dipe-configs/ui.json';
 
 const initState = {
     highlight: 0,

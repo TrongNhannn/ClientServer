@@ -3,9 +3,7 @@ import { useState, useEffect } from 'react';
 export default (props) => {
     const { field, changeTrigger, defaultValue, unsigned } = props;
     const [current, setCurrent] = useState(defaultValue ? defaultValue : "")
-
     const [decimalError, setDecimalError] = useState(false);
-
     const validateDecimal = (decimal, unsigned) => {
         const decimalRegex = /^-?\d+(\.\d+)?$/;
         if (unsigned) {
@@ -25,10 +23,6 @@ export default (props) => {
             setDecimalError(true);
         }
     };
-
-
-
-
     // const fieldChangeData = (e) => {
     //     const { value } = e.target
     //     if( unsigned ){
