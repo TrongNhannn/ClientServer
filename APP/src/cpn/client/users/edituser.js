@@ -59,7 +59,7 @@ export default () => {
                 if (data != undefined && data.length > 0) {
                     const nameSplited = data[0].fullname.split(" ");
                     const usr = { ...data[0], name: nameSplited[nameSplited.length - 1] }
-                    console.log(usr)
+                    // console.log(usr)
                     setUser(usr)
                 }
 

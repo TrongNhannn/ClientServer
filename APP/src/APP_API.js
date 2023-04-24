@@ -1,5 +1,5 @@
-const { REACT_APP_BE_HOST, REACT_APP_BE_PORT } = process.env; 
-const app_api = `${REACT_APP_BE_HOST}:${REACT_APP_BE_PORT}`
+
+const app_api = `http://192.168.19.180:5000`
 
 
 

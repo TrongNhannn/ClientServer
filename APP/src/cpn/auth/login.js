@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 
-import APP_API from '../../APP_API';
+
 
 export default () => {
     const [ auth, setAuth ] = useState({})
-    const {  Confirm, Alert, pages } = useSelector(state => state);
+    const {  Confirm, Alert, pages, proxy } = useSelector(state => state);
     const { unique_string } = useSelector( state => state )
     const dispatch = useDispatch()
     const cf = new Confirm(dispatch)
@@ -17,7 +17,9 @@ export default () => {
     }
 
     const submit = () => {
-        fetch(`${APP_API}/${ unique_string }/login`, {
+        console.log(proxy)
+         fetch(`${proxy}/${ unique_string }/login`, {
+            // fetch(`dipes/test/login`, {
             method: "post",
             headers: {
                 "content-type": "application/json"

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 
-import APP_API from '../../APP_API';
+
 
 export default () => {
     const [ auth, setAuth ] = useState({})
-
+    const {  Confirm, Alert, pages, proxy } = useSelector(state => state);
     const enterTriggered = (e) => {
         if( e.keyCode === 13 ){
             submit()
@@ -19,7 +19,7 @@ export default () => {
                 alert("Mẫu khẩu và xác nhận mật khẩu không khớp !!")
             }else{
 
-                fetch(`${ APP_API }/api/auth/signup`, {
+                fetch(`${ proxy }/api/auth/signup`, {
                     method: "post",
                     headers: {
                         "content-type": "application/json"
