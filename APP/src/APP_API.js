@@ -10,7 +10,7 @@
 
 
 const app_api = () => {
-    return window.REACT_APP_API_URL; // Giá trị mặc định nếu API_URL chưa sẵn sàng
+    return window.REACT_APP_API_URL; 
   };
   
   export default app_api;

@@ -32,7 +32,7 @@ export default (props) => {
 
             const { table_alias, fks } = thisFieldForeignKey;
             if (foreignData.length == 0) {
-                fetch(`${proxy}/api/${unique_string}/apis/table/data/${table_alias}`).then(res => res.json()).then(res => {
+                fetch(`${proxy()}/api/${unique_string}/apis/table/data/${table_alias}`).then(res => res.json()).then(res => {
                     const { success, data, fields, pk } = res;
                     setForeignData(data)
                     setFields(fields)

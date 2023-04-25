@@ -50,7 +50,7 @@ export default () => {
         }
 
         try {
-            const response = await fetch(`${proxy}/api/${unique_string}/json/import`, {
+            const response = await fetch(`${(proxy())}/api/${unique_string}/json/import`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ export default () => {
         }
 
         try {
-            const response = await fetch(`${proxy}/api/${unique_string}/json/import-api`, {
+            const response = await fetch(`${proxy()}/api/${unique_string}/json/import-api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

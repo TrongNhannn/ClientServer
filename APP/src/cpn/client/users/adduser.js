@@ -164,7 +164,7 @@ export default (props) => {
         });
         setError(newError);
         if (isFormValid(user, newError)) { // Kiểm tra tính hợp lệ của dữ liệu
-            fetch(`${proxy}/${unique_string}/create_user`, {
+            fetch(`${proxy()}/${unique_string}/create_user`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json",

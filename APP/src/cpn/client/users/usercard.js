@@ -41,7 +41,7 @@ export default (props) => {
                 alterFunc(user)
             }
             else {
-                fetch(`${proxy}/api/${unique_string}/user/delete/${user.credential_string}`, {
+                fetch(`${proxy()}/api/${unique_string}/user/delete/${user.credential_string}`, {
                     method: 'DELETE',
                     headers: {
                         "content-type": "application/json",

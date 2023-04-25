@@ -42,7 +42,7 @@ export default ( props ) => {
         }
 
         setCollections( newCollection )
-        fetch(`${ proxy }/api/${ unique_string }/apis/api/status`, {
+        fetch(`${ proxy() }/api/${ unique_string }/apis/api/status`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
@@ -80,7 +80,7 @@ export default ( props ) => {
         const newApiSet = newCollection[ api.type.value ]
         newCollection[ api.type.value ] = newApiSet.filter( _api => _api.url.id_str != api.url.id_str)
         setCollections( newCollection )
-        fetch(`${ proxy }/api/${ unique_string }/apis/api`, {
+        fetch(`${ proxy() }/api/${ unique_string }/apis/api`, {
             method: "DELETE",
             headers: {
                 "content-type": "application/json",

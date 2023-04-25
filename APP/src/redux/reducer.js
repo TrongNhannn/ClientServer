@@ -10,7 +10,7 @@ import api from './router/api';
 
 import datatypes from './field-props';
 
-import pages from '../dipe-configs/ui.json';
+// import pages from '../dipe-configs/ui.json';
 
 const initState = {
     highlight: 0,
@@ -23,8 +23,8 @@ const initState = {
     Alert,
     Confirm,
     datatypes,
-    pages: pages.pages,
-
+    // pages: pages.pages,
+    pages: [],
     database: {
         tables: [],
         fields: [],

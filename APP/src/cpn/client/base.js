@@ -12,7 +12,7 @@ export default () => {
     useEffect( () => {
         dispatch({
             type: "setNavBarHighLight",
-            payload: { url_id:  }
+            payload: { url_id: 0}
         })
     }, [])
 

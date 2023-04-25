@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
-import APP_API from '../APP_API';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -31,7 +32,7 @@ function App() {
             }
         }
 
-        fetch(`${ proxy }/api/${ unique_string }/user/getall/${ credential_string }`).then( res => res.json() )
+        fetch(`${ proxy() }/api/${ unique_string }/user/getall/${ credential_string }`).then( res => res.json() )
         .then( (data) => {
             const info = data.data[0];
 
@@ -42,6 +43,22 @@ function App() {
                 }
             })
         })
+
+        const fetchData = async () => {
+            try {
+              const response = await axios.get('/dipe-configs/ui.json');
+              dispatch({
+                  type: "setUIPages",
+                  payload: { pages: response.data.pages }
+              })     
+              
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }    
+              
+          };
+      
+          fetchData();
 
     }, [])
 

@@ -59,8 +59,8 @@ export default () => {
         const url = window.location;
         const rawParams = url.pathname.split(`/${id_str}/`)[1];
         const paramsList = rawParams.split('/');
-
-        fetch(`${proxy}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
+   
+        fetch(`${proxy()}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables, fields } = res;
                 if (success) {
@@ -87,7 +87,7 @@ export default () => {
                     setRelatedTables(relatedTables)
 
 
-                    fetch(`${proxy}/api/${unique_string}/apis/retrive/put/data/${id_str}`)
+                    fetch(`${proxy()}/api/${unique_string}/apis/retrive/put/data/${id_str}`)
                         .then(res => res.json()).then(res => {
                             const { data } = res;
 
@@ -136,7 +136,7 @@ export default () => {
 
     const submit = () => {
         if (!emailError && !phoneError && nullCheck(data)) {
-        fetch(`${proxy}${api.url.url}${window.location.pathname.split(`/${id_str}/`)[1]}`, {
+        fetch(`${proxy()}${api.url.url}${window.location.pathname.split(`/${id_str}/`)[1]}`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json"
@@ -176,7 +176,8 @@ export default () => {
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
-                                        <div className="block p-1" onClick={() => { navTrigger() }}>
+                                        {/* <div className="block p-1" onClick={() => { navTrigger() }}> */}
+                                        <div className="block p-1">
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />

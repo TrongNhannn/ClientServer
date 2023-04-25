@@ -17,9 +17,9 @@ export default () => {
     }
 
     const submit = () => {
-        // console.log(proxy)
-        const apiUrl = app_api();
-         fetch(`${apiUrl}/${ unique_string }/login`, {
+        // console.log(proxy())
+       
+         fetch(`${proxy()}/${ unique_string }/login`, {
             // fetch(`dipes/test/login`, {
             method: "post",
             headers: {

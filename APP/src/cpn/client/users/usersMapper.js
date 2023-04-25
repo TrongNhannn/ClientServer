@@ -21,7 +21,7 @@ export default (props) => {
             payload: { url_id: 2 }
         })
 
-        fetch(`${proxy}/api/${unique_string}/user/getall`).then(res => res.json())
+        fetch(`${proxy()}/api/${unique_string}/user/getall`).then(res => res.json())
             .then(resp => {
                 const { data, success } = resp;
 

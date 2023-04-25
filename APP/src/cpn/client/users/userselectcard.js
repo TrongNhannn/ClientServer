@@ -15,7 +15,7 @@ export default (props) => {
         >
             <div className="flex flex-no-wrap">
                 <div className="flex flex-middle w-100-px">
-                    <img className="w-100-pct block border-radius-50-pct" src={ user.avatar === defaultImage ? user.avatar : `${proxy}/${ user.avatar }`}/>
+                    <img className="w-100-pct block border-radius-50-pct" src={ user.avatar === defaultImage ? user.avatar : `${proxy()}/${ user.avatar }`}/>
                 </div>
                 <div className="flex flex-aligned flex-wrap w-100-pct m-l-2">
                     <span className="text-20-px w-100-pct block">{ user.account_string }</span>

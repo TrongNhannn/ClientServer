@@ -25,7 +25,7 @@ export default (props) => {
     const [ filter, setFilter ] = useState(criterias[0])
 
     useEffect( () => {
-        fetch(`${ proxy }/api/${ unique_string }/apis/version/${ version.version_id }`).then( res => res.json() )
+        fetch(`${ proxy() }/api/${ unique_string }/apis/version/${ version.version_id }`).then( res => res.json() )
         .then( res => {
             const { collections } = res;
             if( collections.length > 0 ){
@@ -83,7 +83,7 @@ export default (props) => {
             created_by: auth,
             create_on: date.toString()
         }
-        fetch(`${ proxy }/api/${ unique_string }/apis/collection`, {
+        fetch(`${ proxy() }/api/${ unique_string }/apis/collection`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",
@@ -100,7 +100,7 @@ export default (props) => {
     }
 
     const nameSwitch = () => {
-        fetch(`${proxy}/api/${ unique_string }/apis/collection/${ collection.collection_id }/name`, {
+        fetch(`${proxy()}/api/${ unique_string }/apis/collection/${ collection.collection_id }/name`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
@@ -133,7 +133,7 @@ export default (props) => {
         const { collection_id } = collection;
         const newCollections = collections.filter( col => col.collection_id != collection_id );
 
-        fetch(`${proxy}/api/${ unique_string }/apis/collection/${ collection_id }`, {
+        fetch(`${proxy()}/api/${ unique_string }/apis/collection/${ collection_id }`, {
             method: "DELETE"
         }).then( res => res.json()).then( res =>{
             setCollections( newCollections );

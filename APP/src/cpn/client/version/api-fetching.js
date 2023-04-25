@@ -12,14 +12,13 @@ import { Navbar, Horizon } from '../../navbar';
 export default (props) => {
     const { page_param } = useParams()
     const { navState, unique_string, proxy, addConstraintBox, addApi, apiAddFilter, pages, Alert, Confirm } = useSelector(state => state);
-
+    const [ page, setPage ] = useState({})
     const dispatch = useDispatch()
     const cf = new Confirm(dispatch);
     const al = new Alert(dispatch);
-    const page = pages.filter(pag => pag.param == page_param)[0];
-    if (!page) {
-        alert("Page not found")
-    }
+    
+
+    
 
 
 
@@ -40,22 +39,32 @@ export default (props) => {
     //     callApi()
     // }, [])
     useEffect(() => {
-        const id_str = page.apis.get.split('/')[4];
+        const page = pages.filter(pag => pag.param == page_param)[0];        
+        console.log(page)
+        if( page !=undefined ){       
+            
+            setPage(page)         
+        }
         dispatch({
             type: "setNavBarHighLight",
             payload: { page: 1001 }
         })
+        
+    }, [pages])
 
-
-        fetch(`${proxy}/api/${unique_string}/apis/id_str/${id_str}`)
-            .then(res => res.json())
-            .then(res => {
-                const { api } = res;
-                setApi(api);
-
-                callApi(api)
+    useEffect(() => {
+        if(page && page.apis){
+            const id_str = page.apis.get.split('/')[4];          
+            fetch(`${proxy()}/api/${unique_string}/apis/id_str/${id_str}`)
+                .then(res => res.json())
+                .then(res => {
+                    const { api } = res;
+                    setApi(api);
+                    console.log(api)
+                    callApi(api)
             })
-    }, [])
+        }           
+    }, [page])
 
     const cardDrop = () => {
         setHeight(height == 0 ? 200 : 0)
@@ -78,7 +87,7 @@ export default (props) => {
             collection: newCollection
         }
         setCollections(newCollection)
-        fetch(`${proxy}/api/${unique_string}/apis/api/status`, {
+        fetch(`${proxy()}/api/${unique_string}/apis/api/status`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
@@ -90,11 +99,11 @@ export default (props) => {
     }
     const callApi = (api) => {
         /* this must be fixed */
-
-        fetch(`${proxy}${page.apis.get}`).then(res => res.json()).then(res => {
+    
+        fetch(`${proxy()}${page.apis.get}`).then(res => res.json()).then(res => {
             const { success, content, data } = res;
             
-                // al.failure("Lỗi", "Đọc dữ liệu thất bại ")
+            //  al.failure("Lỗi", "Đọc dữ liệu thất bại ")
            
                 setApiData(data)
             
@@ -114,7 +123,8 @@ export default (props) => {
         const newApiSet = newCollection[api.type.value]
         newCollection[api.type.value] = newApiSet.filter(_api => _api.url.id_str != api.url.id_str)
         setCollections(newCollection)
-        fetch(`${proxy}/api/${unique_string}/apis/api`, {
+       
+        fetch(`${proxy()}/api/${unique_string}/apis/api`, {
             method: "DELETE",
             headers: {
                 "content-type": "application/json",
@@ -126,6 +136,7 @@ export default (props) => {
     }
 
     const redirectToInput = () => {
+        console.log(page)
         const id_str_post = page.apis.post.split('/')[4];
         openTab(`/su/api/post/input/${id_str_post}`)
     }
@@ -176,7 +187,8 @@ console.log(rawParams)
             const value = data[key];
             rawParams = rawParams.replaceAll(key, value);
         })
-        fetch(`${proxy}${rawParams}`, {
+      
+        fetch(`${proxy()}${rawParams}`, {
             method: "DELETE",
             headers: {
                 "content-type": "application/json"
@@ -210,7 +222,8 @@ console.log(rawParams)
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
-                                        <div className="block p-1" onClick={() => { navTrigger() }}>
+                                        {/* <div className="block p-1" onClick={() => { navTrigger() }}> */}
+                                        <div className="block p-1">
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />

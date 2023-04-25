@@ -35,7 +35,7 @@ export default () => {
             payload: { url_id: 1 }
         })
 
-        fetch(`${ proxy }/api/${ unique_string }/projects/project/${project_id}/ver/${version_id}`)
+        fetch(`${ proxy() }/api/${ unique_string }/projects/project/${project_id}/ver/${version_id}`)
         .then( res => res.json() ).then( res => {
             const { project, version } = res.data;
             const { tablesDetail } = res;
@@ -65,7 +65,7 @@ export default () => {
     }, [])
 
     const reInitialization = () => {
-        fetch(`${ proxy }/api/${ unique_string }/projects/project/${project_id}/ver/${version_id}`)
+        fetch(`${ proxy() }/api/${ unique_string }/projects/project/${project_id}/ver/${version_id}`)
         .then( res => res.json() ).then( res => {
             const { project, version } = res.data;
             const { tablesDetail } = res;
@@ -106,7 +106,7 @@ export default () => {
         if( !tableState ){
             setTableState( !tableState )
             const { table_name, table_id } = table;
-            fetch(`${proxy}/api/${ unique_string }/tables/modify`, {
+            fetch(`${proxy()}/api/${ unique_string }/tables/modify`, {
                 method: "PUT",
                 headers: {
                     "content-type": "application/json",
@@ -138,7 +138,7 @@ export default () => {
             table_name: "Bảng mới",
             version_id
         }
-        fetch(`${proxy}/api/${ unique_string }/tables/create`, {
+        fetch(`${proxy()}/api/${ unique_string }/tables/create`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
@@ -166,7 +166,7 @@ export default () => {
             default_value: "",
         }
 
-        fetch( `${proxy}/api/${ unique_string }/table/create/field`, {
+        fetch( `${proxy()}/api/${ unique_string }/table/create/field`, {
             method: "POST",
             headers: {
                 "content-type": "application/json"
@@ -252,7 +252,7 @@ export default () => {
     const removeTable = ( table ) => {
         const { table_id } = table;
 
-        fetch(`${ proxy }/api/${ unique_string }/tables/drop/${ table_id }`, {
+        fetch(`${ proxy() }/api/${ unique_string }/tables/drop/${ table_id }`, {
             method: "DELETE",
         }).then( res => res.json() ).then( res => {
             const newTables = tables.filter( tb => tb.table_id !== table_id );

@@ -25,7 +25,7 @@ export default () => {
     const [ data, setData ] = useState({});
 
     useEffect( () => {
-        fetch(`${ proxy }/api/${ unique_string }/table/${ table_id }/fields`).then( res => res.json() )
+        fetch(`${ proxy() }/api/${ unique_string }/table/${ table_id }/fields`).then( res => res.json() )
         .then( res => {
             const { success, content, fields, table, constraints } = res;
             const formatedFields = fields.map( f => {
@@ -66,7 +66,7 @@ export default () => {
 
     const submit = () => {
         if( nullCheck(data) ){
-            fetch(`${ proxy }/api/${ unique_string }/table/${ table_id }/data/input`, {
+            fetch(`${ proxy() }/api/${ unique_string }/table/${ table_id }/data/input`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"

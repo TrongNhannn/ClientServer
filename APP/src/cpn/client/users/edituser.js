@@ -53,7 +53,7 @@ export default () => {
         const height = $('#ava-container').width() * 75 / 100;
         setHeight(height)
 
-        fetch(`${proxy}/api/${unique_string}/user/getall/${credential_string}`).then(res => res.json())
+        fetch(`${proxy()}/api/${unique_string}/user/getall/${credential_string}`).then(res => res.json())
             .then(resp => {
                 const { data, success } = resp;
                 if (data != undefined && data.length > 0) {
@@ -93,7 +93,7 @@ export default () => {
     }
 
     const submitChange = () => {
-        const apiUrl = `${proxy}/api/${unique_string}/user/update/${user.credential_string}`;
+        const apiUrl = `${proxy()}/api/${unique_string}/user/update/${user.credential_string}`;
         // Gửi yêu cầu POST đến máy chủ với thông tin người dùng
         fetch(apiUrl, {
             method: 'PUT',

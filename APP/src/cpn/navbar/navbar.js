@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+
 
 export default (props) => {
-  const { highlight, navState, proxy, unique_string, version } = useSelector(
+    const dispatch = useDispatch();
+  const { highlight, navState, proxy, unique_string, version, pages } = useSelector(
     (state) => state
   );
   const { dateGenerator, autoLabel, openTab } = useSelector(
@@ -13,20 +14,23 @@ export default (props) => {
   const [collections, setCollections] = useState([]);
   const [collection, setCollection] = useState([]);
   const { page_param } = useParams();
+  const [ priorityParam, setPriority ] = useState(undefined)
 
-  const [pages, setPages] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/dipesconfig/ui.json');
-        setPages(response.data.pages);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
+    dispatch({
+        type: "modifyPageParam",
+        payload: { func: setPageParam }
+      })
 
-    fetchData();
+      dispatch({
+        type: "setNavBarHighLight",
+        payload: { url_id: 10001 }
+    })
   }, []);
+
+  const setPageParam = ( param ) => {
+    setPriority(param)
+  }
 
   const criterias = [
     { id: 0, label: 'ALL', value: null },
@@ -37,7 +41,7 @@ export default (props) => {
   ];
   const [filter, setFilter] = useState(criterias[0]);
 
-  const dispatch = useDispatch();
+  
 
   const { urls, bottomUrls } = props;
 
@@ -63,6 +67,15 @@ export default (props) => {
 
     return result;
   };
+
+  const currentParam = (page) => {
+
+    if( priorityParam ){
+        return priorityParam == page.param ? true : false
+    }else{
+        return page.param == page_param ? true: false;
+    }
+  }
 
     return (
 
@@ -97,7 +110,7 @@ export default (props) => {
         
                         {pages.map(page =>
         
-                            <div onClick={() => { openTab(`/fetch/${page.param}`) }} className={`flex flex-no-wrap m-t-0-5 pointer hover ${page_param === page.param ? "highlight" : ""}`} key={page.id}>
+                            <div onClick={() => { openTab(`/fetch/${page.param}`) }} className={`flex flex-no-wrap m-t-0-5 pointer hover ${currentParam(page)  ? "highlight" : ""}`} key={page.id}>
         
                                 <div className="w-72-px pointer order-0">
                                     <div className="block p-0-5">

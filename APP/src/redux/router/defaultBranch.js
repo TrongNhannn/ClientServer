@@ -37,6 +37,14 @@ export default (state, action) => {
         case "setFloatingForm":
             return setFloatingForm( state, action );
             break;
+
+        case "modifyPageParam":
+            return modifyPageParam(state, action);
+            break;
+        case "setUIPages":
+            return setUIPages(state, action);
+            break;
+            
         default:
             return state;
     }
@@ -75,3 +83,16 @@ const setFloatingForm = ( state, action ) => {
 
     return { ...state, floatingForms }
 }
+
+
+const modifyPageParam = ( state, action ) => {
+    const { func } = action.payload;
+    const { functions } = state;
+    functions.modifyPageParam = func;
+    return { ...state, functions }
+}
+
+const setUIPages = (state, action) => {
+    const { pages } = action.payload;
+    return { ...state, pages }
+} 

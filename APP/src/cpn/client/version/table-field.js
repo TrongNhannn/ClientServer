@@ -157,7 +157,7 @@ export default ( props ) => {
     const submitChange = () => {
         const { table_id } = table;
 
-        fetch(`${ proxy }/api/${ unique_string }/table/modify/field`, {
+        fetch(`${ proxy() }/api/${ unique_string }/table/modify/field`, {
             method: "PUT",
             headers: {
                 'content-type': 'application/json'
@@ -171,7 +171,7 @@ export default ( props ) => {
     const deleteField = () => {
         updateFields( "remove", field );
         const { table_id } = table;
-        fetch(`${ proxy }/api/${ unique_string }/table/field_drop/${ field.field_id }`, {
+        fetch(`${ proxy() }/api/${ unique_string }/table/field_drop/${ field.field_id }`, {
             method: "DELETE",
             headers: {
                 'content-type': 'application/json'
@@ -185,7 +185,7 @@ export default ( props ) => {
     const removeConstraint = ( constraint_id ) => {
         const { table_id } = table;
 
-        fetch(`${ proxy }/api/${ unique_string }/table/drop_id/constraints`, {
+        fetch(`${ proxy() }/api/${ unique_string }/table/drop_id/constraints`, {
             method: "DELETE",
             headers: {
                 'content-type': 'application/json'

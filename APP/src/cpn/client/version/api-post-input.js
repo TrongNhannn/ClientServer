@@ -14,7 +14,7 @@ export default () => {
     const dispatch = useDispatch();
     const { id_str } = useParams()
     const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
-    const { dateGenerator, autoLabel, openTab } = useSelector(state => state.functions)
+    const { dateGenerator, autoLabel, openTab, modifyPageParam } = useSelector(state => state.functions)
     const { navState, unique_string, proxy, Alert, Confirm, pages } = useSelector(state => state);
     const [api, setApi] = useState({})
     const [tables, setTables] = useState([])
@@ -33,7 +33,8 @@ export default () => {
         setEmailError(error);
     };
     useEffect(() => {
-        fetch(`${proxy}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
+       
+        fetch(`${proxy()}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables } = res;
                 if (success) {
@@ -49,9 +50,15 @@ export default () => {
                     setTimeout(() => {
                         history.back();
                     }, 2000);
+                }                
+                // const { url } = api.url;
+                const page = pages.filter( p => p.apis.post == api.url.url)[0]
+                if( page ){
+                   const { param } = page;
+                   modifyPageParam(param)        
                 }
-            })
-    }, [])
+        })
+    }, [pages])
 
     const changeTrigger = (field, value) => {
         const newData = data;
@@ -78,7 +85,7 @@ export default () => {
     const submit = () => {
 
         if (!emailError && !phoneError && nullCheck(data)) {
-            fetch(`${proxy}${api.url.url}`, {
+            fetch(`${proxy()}${api.url.url}`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
@@ -120,7 +127,8 @@ export default () => {
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
-                                        <div className="block p-1" onClick={() => { navTrigger() }}>
+                                    {/* <div className="block p-1" onClick={() => { navTrigger() }}> */}
+                                        <div className="block p-1">
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />

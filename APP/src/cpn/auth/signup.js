@@ -19,7 +19,7 @@ export default () => {
                 alert("Mẫu khẩu và xác nhận mật khẩu không khớp !!")
             }else{
 
-                fetch(`${ proxy }/api/auth/signup`, {
+                fetch(`${ proxy() }/api/auth/signup`, {
                     method: "post",
                     headers: {
                         "content-type": "application/json"

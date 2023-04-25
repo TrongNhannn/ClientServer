@@ -39,7 +39,7 @@ export default () => {
         const height = $('#ava-container').width() * 75 / 100;
         setHeight( height )
 
-        fetch(`${proxy}/api/${ unique_string}/user/getall/${ credential_string }`).then( res => res.json() )
+        fetch(`${proxy()}/api/${ unique_string}/user/getall/${ credential_string }`).then( res => res.json() )
         .then( resp => {
             const { data, success } = resp;
             if( data != undefined && data.length > 0 ) {
@@ -48,7 +48,7 @@ export default () => {
                 setUser( usr )
             }
 
-            fetch(`${ proxy }/api/${ unique_string }/projects/of/${ credential_string }`).then( res => res.json() )
+            fetch(`${ proxy() }/api/${ unique_string }/projects/of/${ credential_string }`).then( res => res.json() )
             .then( resp => {
                 const { success, projects } = resp;
                 setProjects( projects )
@@ -80,7 +80,7 @@ export default () => {
     const submitChange = () => {
         const { key, value } = input;
 
-        fetch(`${proxy}/api/${unique_string}/user/prop/${ user.credential_string }`, {
+        fetch(`${proxy()}/api/${unique_string}/user/prop/${ user.credential_string }`, {
             method: "PUT",
             headers: {
                 "content-type": "application/json",
@@ -110,7 +110,7 @@ export default () => {
                 reader.onload = (e) => {
                     setUser({ ...user, avatar: e.target.result })
 
-                    fetch(`${proxy}/api/${ unique_string }/user/${ user.credential_string }/changeava`, {
+                    fetch(`${proxy()}/api/${ unique_string }/user/${ user.credential_string }/changeava`, {
                         method: "PUT",
                         headers: {
                             "content-type": "application/json",
@@ -148,7 +148,7 @@ export default () => {
                             </div>
                             <div id="ava-container" className="w-40-pct flex flex-middle">
                                 { user.avatar ?
-                                    <div onClick={ () => { $("#avatar").click() } } className="block w-75-pct border-radius-12-px pointer bg-fit" style={{ height: `${height}px`, backgroundImage: `url(${ user.avatar === defaultImage ? user.avatar : `${ user.avatar.length < 100 ? proxy : "" }${ user.avatar }` })` }}/>
+                                    <div onClick={ () => { $("#avatar").click() } } className="block w-75-pct border-radius-12-px pointer bg-fit" style={{ height: `${height}px`, backgroundImage: `url(${ user.avatar === defaultImage ? user.avatar : `${ user.avatar.length < 100 ? proxy() : "" }${ user.avatar }` })` }}/>
                                     : null
                                 }
                                 <input type="file" id="avatar" className="hidden" onChange={ changeAva }/>
