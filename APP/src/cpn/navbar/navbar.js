@@ -18,7 +18,7 @@ export default (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/ui.json');
+        const response = await axios.get('/dipesconfig/ui.json');
         setPages(response.data.pages);
       } catch (error) {
         console.error('Error fetching data:', error);

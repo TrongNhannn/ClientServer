@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-
+import app_api from "../../APP_API";
 
 
 export default () => {
@@ -17,8 +17,9 @@ export default () => {
     }
 
     const submit = () => {
-        console.log(proxy)
-         fetch(`${proxy}/${ unique_string }/login`, {
+        // console.log(proxy)
+        const apiUrl = app_api();
+         fetch(`${apiUrl}/${ unique_string }/login`, {
             // fetch(`dipes/test/login`, {
             method: "post",
             headers: {
@@ -27,7 +28,7 @@ export default () => {
             body: JSON.stringify(auth)
         }).then( res => res.json() ).then( ( resp ) => {
             const { success, role, credential_string, _token, redirectToImport  } = resp;
-            console.log( resp )
+            // console.log( resp )
             if( success ){
                 localStorage.setItem( 'role', role )
                 localStorage.setItem( 'credential_string', credential_string )

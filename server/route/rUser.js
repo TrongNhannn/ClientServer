@@ -131,7 +131,7 @@ router.put('/update-user/:id', async (req, res) => {
   router.put('/update/:credential_string', (req, res) => {
     const { account_string, account_role, account_role_label, fullname, email, phone, address, credential_string, account_status, avatar, user, name } = req.body;
     const { credential_string: credentialParam } = req.params;
-    console.log(req.body);
+    // console.log(req.body);
   
     mongo(dbo => {
       dbo.collection(tables.accounts).updateOne({ credential_string: credentialParam }, {
@@ -151,7 +151,7 @@ router.put('/update-user/:id', async (req, res) => {
         }
       }, (err, result) => {
         if (err) {
-          console.log(err);
+        //   console.log(err);
           res.status(500).send({ success: false, message: 'Error updating user' });
         } else {
           if (result.matchedCount > 0) {
