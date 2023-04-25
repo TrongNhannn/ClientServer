@@ -59,7 +59,7 @@ export default () => {
         const url = window.location;
         const rawParams = url.pathname.split(`/${id_str}/`)[1];
         const paramsList = rawParams.split('/');
-   
+   console.log(rawParams)
         fetch(`${proxy()}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables, fields } = res;
@@ -145,7 +145,7 @@ export default () => {
         }).then(res => res.json()).then(res => {
             const { success, content } = res;
             if (success) {
-                al.success("", "Cập nhật dữ liệu thành công")
+                al.success("Thành công", "Cập nhật dữ liệu thành công")
             } else {
                 al.failure("Oops!", data)
             }

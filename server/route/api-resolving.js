@@ -205,6 +205,9 @@ const postRequest  = async ( req, api ) => {
         }
     }
 
+    // console.log("\nDATA")
+    // console.log( data )
+
     for( let i = 0 ; i < tables.length; i++ ){
         const table = tables[i]
         const { table_id, table_alias, table_name } = table;
@@ -216,12 +219,16 @@ const postRequest  = async ( req, api ) => {
 
         for( let j = 0 ; j < fields.length; j++){
             const { field_alias, default_value, props, data_type } = fields[j];
+
+
+
             if( IS_INT_FAMILY(data_type) && props.AUTO_INCREMENT && !isForeignKey( tables, fields[j] ) ){
                 const currentId = await getAndUpdateCurrentID( field_alias );
                 piece[ field_alias ] = makePattern( currentId, props.PATTERN );
             }else{
                 piece[ field_alias ] = data[ field_alias ] ? data[ field_alias ] : default_value;
             }
+
         }
         tearedObjects.push({ table_alias, table_name, data: piece })
     }
@@ -231,6 +238,7 @@ const postRequest  = async ( req, api ) => {
     for( let i = 0; i < tearedObjects.length; i++ ){
         const piece = tearedObjects[i];
         const { table_alias, data } = piece;
+
         const table = tables.filter( tb => tb.table_alias == table_alias )[0];
         const { fk } = table;
 
@@ -238,6 +246,7 @@ const postRequest  = async ( req, api ) => {
             const foreignAlias = fk[j].table_alias;
             const keys = fk[j].fks;
             const foreignPiece = tearedObjects.filter( obj => obj.table_alias == foreignAlias )[0];
+
             if( foreignPiece ){
                 const foreignData = foreignPiece.data;
 
@@ -255,6 +264,7 @@ const postRequest  = async ( req, api ) => {
         const { table_alias, table_name, pk } = table;
         const piece = tearedObjects.filter( data => data.table_alias == table_alias )[0].data;
         const primaryKey = {};
+
         for( let i = 0; i < pk.length; i++ ){
             const alias = pk[i];
             primaryKey[ alias ] = piece[ alias ]
@@ -306,6 +316,7 @@ const postRequest  = async ( req, api ) => {
     }
 
     if( primaryConflict ){
+
         return { success: false, data: "Vi phạm khoá chính: " + conflictPriTables.join(', '), type: "fk-error" }
     }else{
 
@@ -473,8 +484,15 @@ const putRequest  = async ( req, api ) => {
                         const field_alias = pk[h]
                         query[field_alias] = row[field_alias]
                     }
+                    const tableFields = dbFields.filter( f => f.table_id == table.table_id );
+                    const newValues = {};
+                    tableFields.map( f => {
+                        if( newValue[f.field_alias] != undefined ){
+                            newValues[f.field_alias] = newValue[f.field_alias];
+                        }
+                    })
                     const updateResult = await new Promise( (resolve, reject) => {
-                        dbo.collection( table_alias ).updateOne({ ...query }, { $set: { ...newValue } },(err, result) => {
+                        dbo.collection( table_alias ).updateOne({ ...query }, { $set: { ...newValues } },(err, result) => {
                             resolve( result )
                         })
                     });

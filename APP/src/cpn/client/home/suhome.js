@@ -60,6 +60,9 @@ export default () => {
 
             if (response.ok) {
                 al.success("Thành công","Import dữ liệu thành công")
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1600);
             } else {
                 al.failure("Thất bại","Import dữ liệu thất bại")
             }
@@ -86,6 +89,9 @@ export default () => {
 
             if (response.ok) {
                 al.success("Thành công","Import dữ liệu thành công")
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1600);
             } else {
                 al.failure("Thất bại","Import dữ liệu thất bại")
             }

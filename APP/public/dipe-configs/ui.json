@@ -1,20 +1,20 @@
 {
     "pages": [
         {
-            "title": "Khách hàng",
+            "title": "Test",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "khach_hang",
+            "param": "defaul_url",
             "description": "Trang mới",
-            "id": 7,
+            "id": 8,
             "apis": {
-                "get": "/api/7/1/6e9159d304d44f6082dc9c1338ab1b48/",
-                "post": "/api/7/1/72e2b83beeb54348a9e45ce8b27a75d1/",
-                "put": "/api/7/1/3aad4ca7f5d942e9aaaab52835d6642c/",
-                "delete": "/api/7/1/360231fcfc574a2e9ac6ac9bea9b7839/"
+                "get": "/api/7/1/f78dc7fdbaa44dbbabb1c5813513c5e2/",
+                "post": "/api/7/1/1099ad7a0dff4d9bbf25742b43890cb6/",
+                "put": "/api/7/1/64600a57162f4c4bbbe512d36b396ee7/",
+                "delete": "/api/7/1/bd30626350cc4254bb7f4c21d0a3e583/"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
