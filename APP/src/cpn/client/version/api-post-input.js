@@ -49,7 +49,7 @@ export default () => {
                     al.failure("Lỗi", "Không thực hiện được chức năng này")
                     setTimeout(() => {
                         history.back();
-                    }, 2000);
+                    },1600);
                 }                
                 // const { url } = api.url;
                 const page = pages.filter( p => p.apis.post == api.url.url)[0]
@@ -83,17 +83,19 @@ export default () => {
     };
 
     const submit = () => {
-
+      
         if (!emailError && !phoneError && nullCheck(data)) {
             fetch(`${proxy()}${api.url.url}`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
                 },
+                
                 body: JSON.stringify({ data })
+              
             }).then(res => res.json()).then(res => {
                 const { success, data, fk } = res;
-
+                console.log(res)
                 if (success) {
                     al.success("Thành công", "Thành công thêm dữ liệu!")
                     setTimeout(() => {

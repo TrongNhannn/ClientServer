@@ -29,8 +29,8 @@ export default () => {
             reader.onload = (e) => {
                 try {
                     const json = JSON.parse(e.target.result);
-                    console.log(json)
-                    console.log(file)
+                    // console.log(json)
+                    // console.log(file)
                     setFile(file)
                     setUploadedJson(json);
                 } catch (error) {
@@ -64,12 +64,12 @@ export default () => {
                 al.failure("Thất bại","Import dữ liệu thất bại")
             }
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             al.failure("Thất bại","Import dữ liệu thất bại")
         }
     };
     const importAPI = async () => {
-        console.log("aa")
+        // console.log("aa")
         if (!uploadedJson) {
             al.failure("Thất bại", "Vui lòng tải lên một file JSON trước khi import");
             return;
@@ -90,7 +90,7 @@ export default () => {
                 al.failure("Thất bại","Import dữ liệu thất bại")
             }
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             al.failure("Thất bại","Import dữ liệu thất bại")
         }
     };
