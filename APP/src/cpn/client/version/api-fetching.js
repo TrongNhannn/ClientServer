@@ -40,7 +40,7 @@ export default (props) => {
     // }, [])
     useEffect(() => {
         const page = pages.filter(pag => pag.param == page_param)[0];        
-        console.log(page)
+        // console.log(page)
         if( page !=undefined ){       
             
             setPage(page)         
@@ -60,7 +60,7 @@ export default (props) => {
                 .then(res => {
                     const { api } = res;
                     setApi(api);
-                    console.log(api)
+                    // console.log(api)
                     callApi(api)
             })
         }           
@@ -136,7 +136,7 @@ export default (props) => {
     }
 
     const redirectToInput = () => {
-        console.log(page)
+        // console.log(page)
         const id_str_post = page.apis.post.split('/')[4];
         openTab(`/su/api/post/input/${id_str_post}`)
     }
@@ -144,7 +144,7 @@ export default (props) => {
         const id_str_put = page.apis.put.split(`/`)[4];
 
         let rawParams = page.apis.put.split(`/${id_str_put}/`)[1];
-console.log(rawParams)
+// console.log(rawParams)
         const keys = Object.keys(data);
         keys.map(key => {
             const value = data[key];

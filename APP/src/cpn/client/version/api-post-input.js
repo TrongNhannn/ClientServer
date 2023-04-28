@@ -33,7 +33,7 @@ export default () => {
         setEmailError(error);
     };
     useEffect(() => {
-       
+
         fetch(`${proxy()}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables } = res;
@@ -49,15 +49,15 @@ export default () => {
                     al.failure("Lỗi", "Không thực hiện được chức năng này")
                     setTimeout(() => {
                         history.back();
-                    },1600);
-                }                
-                // const { url } = api.url;
-                const page = pages.filter( p => p.apis.post == api.url.url)[0]
-                if( page ){
-                   const { param } = page;
-                   modifyPageParam(param)        
+                    }, 1600);
                 }
-        })
+                // const { url } = api.url;
+                const page = pages.filter(p => p.apis.post == api.url.url)[0]
+                if (page) {
+                    const { param } = page;
+                    modifyPageParam(param)
+                }
+            })
     }, [pages])
 
     const changeTrigger = (field, value) => {
@@ -83,16 +83,16 @@ export default () => {
     };
 
     const submit = () => {
-      
+
         if (!emailError && !phoneError && nullCheck(data)) {
             fetch(`${proxy()}${api.url.url}`, {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
                 },
-                
+
                 body: JSON.stringify({ data })
-              
+
             }).then(res => res.json()).then(res => {
                 const { success, data, fk } = res;
                 console.log(res)
@@ -129,7 +129,7 @@ export default () => {
                                 </div>
                                 <div className="w-48-px flex flex-middle">
                                     <div className="w-72-px pointer order-0">
-                                    {/* <div className="block p-1" onClick={() => { navTrigger() }}> */}
+                                        {/* <div className="block p-1" onClick={() => { navTrigger() }}> */}
                                         <div className="block p-1">
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />
                                             <span className="block w-24-px border-3-top" style={{ marginTop: "4px" }} />

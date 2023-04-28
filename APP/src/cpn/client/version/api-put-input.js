@@ -6,7 +6,7 @@ import { Navbar, Horizon } from '../../navbar';
 import {
     Varchar, Char, Text, Int,
     DateInput, TimeInput, DateTimeInput,
-    Decimal, Bool, DataPhone,DataEmail
+    Decimal, Bool, DataPhone, DataEmail
 } from './inputs';
 
 export default () => {
@@ -59,7 +59,7 @@ export default () => {
         const url = window.location;
         const rawParams = url.pathname.split(`/${id_str}/`)[1];
         const paramsList = rawParams.split('/');
-   console.log(rawParams)
+      
         fetch(`${proxy()}/api/${unique_string}/apis/api/input/info/${id_str}`).then(res => res.json())
             .then(res => {
                 const { success, api, relatedTables, fields } = res;
@@ -73,7 +73,7 @@ export default () => {
                         const { field_alias } = param;
                         return { field_alias, value: paramsList[index] }
                     })
-                   
+
                     const keyFields = serializeParams.map(par => {
                         const field = fields.filter(f => f.field_alias == par.field_alias)[0]
                         return field;
@@ -136,30 +136,30 @@ export default () => {
 
     const submit = () => {
         if (!emailError && !phoneError && nullCheck(data)) {
-        fetch(`${proxy()}${api.url.url}${window.location.pathname.split(`/${id_str}/`)[1]}`, {
-            method: "PUT",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({ data })
-        }).then(res => res.json()).then(res => {
-            const { success, content } = res;
-            if (success) {
-                al.success("Thành công", "Cập nhật dữ liệu thành công")
-            } else {
-                al.failure("Oops!", data)
-            }
-        })
-    }
-    else {
-        if (emailError) {
-            al.failure("Lỗi", "Địa chỉ email không hợp lệ");
-        } else if (phoneError) {
-            al.failure("Lỗi", "Số điện thoại không hợp lệ");
-        } else {
-            al.failure("Lỗi", "Một số trường vi phạm ràng buộc NOT NULL");
+            fetch(`${proxy()}${api.url.url}${window.location.pathname.split(`/${id_str}/`)[1]}`, {
+                method: "PUT",
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify({ data })
+            }).then(res => res.json()).then(res => {
+                const { success, content } = res;
+                if (success) {
+                    al.success("Thành công", "Cập nhật dữ liệu thành công")
+                } else {
+                    al.failure("Oops!", data)
+                }
+            })
         }
-    }
+        else {
+            if (emailError) {
+                al.failure("Lỗi", "Địa chỉ email không hợp lệ");
+            } else if (phoneError) {
+                al.failure("Lỗi", "Số điện thoại không hợp lệ");
+            } else {
+                al.failure("Lỗi", "Một số trường vi phạm ràng buộc NOT NULL");
+            }
+        }
     }
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
@@ -189,7 +189,7 @@ export default () => {
                         <div className="m-t-0-5 fill-available bg-white shadow-blur">
                             <div className="w-100-pct h-fit column p-1">
                                 <div className="flex flex-no-wrap border-1-bottom">
-                                <span className="p-0-5 text-16-px block fill-available no-border"></span>
+                                    <span className="p-0-5 text-16-px block fill-available no-border"></span>
                                     <div className="flex flex-no-wrap flex-aligned">
                                         <div className=" w-48-px">
                                             <img className="w-28-px block mg-auto" src="/assets/icon/viewmode/grid.png" />
@@ -220,13 +220,13 @@ export default () => {
                                                         <DataPhone
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger}  onPhoneError={handlePhoneError}defaultValue={initialData[field.field_alias]} /> : null
+                                                            changeTrigger={changeTrigger} onPhoneError={handlePhoneError} defaultValue={initialData[field.field_alias]} /> : null
                                                     }
                                                     {field.data_type == "EMAIL" ?
                                                         <DataEmail
                                                             table={tables.filter(tb => tb.table_id == field.table_id)[0]}
                                                             related={relatedTables} field={field}
-                                                            changeTrigger={changeTrigger}  onEmailError={handleEmailError} defaultValue={initialData[field.field_alias]} /> : null
+                                                            changeTrigger={changeTrigger} onEmailError={handleEmailError} defaultValue={initialData[field.field_alias]} /> : null
                                                     }
                                                     {field.data_type == "VARCHAR" ?
                                                         <Varchar
@@ -300,6 +300,7 @@ export default () => {
                                                 <div className="p-1">
                                                     <div className="button-wrapper">
                                                         <button onClick={submit} className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Lưu lại</button>
+                                                
                                                     </div>
                                                     <div className="button-wrapper">
                                                         <button onClick={handleClick} className="w-max-content p-0-5 p-l-1 p-r-1 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Quay về</button>

@@ -1,20 +1,58 @@
 {
     "pages": [
         {
-            "title": "Test",
+            "title": "Sản phẩm",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "defaul_url",
+            "param": "san_pham",
             "description": "Trang mới",
-            "id": 8,
+            "id": 12,
             "apis": {
-                "get": "/api/7/1/f78dc7fdbaa44dbbabb1c5813513c5e2/",
-                "post": "/api/7/1/1099ad7a0dff4d9bbf25742b43890cb6/",
-                "put": "/api/7/1/64600a57162f4c4bbbe512d36b396ee7/",
-                "delete": "/api/7/1/bd30626350cc4254bb7f4c21d0a3e583/"
+                "get": "/api/7/1/eb3d92c14d4e4eb3bd0b7bd43fe9c305/",
+                "post": "/api/7/1/ee76797ffcbc4f12ab74834257e1e8dc/",
+                "put": "/api/7/1/95c524b9395e4567a5fcddeeac6eb55b/id1682490289256",
+                "delete": "/api/7/1/dedb8040c71548b2b74f15fd9894b938/id1682490289256"
+            },
+            "formated_create_by": "SUPER USER",
+            "formated_status": "Vô hiệu"
+        },
+        {
+            "title": "Khách hàng",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "SUPER USER"
+            },
+            "status": false,
+            "param": "khach_hang",
+            "description": "Trang mới",
+            "id": 13,
+            "apis": {
+                "get": "/api/7/1/21b1174f4bce4e45877b61782cd80de6/",
+                "post": "/api/7/1/fc5bcc831ba3482e97e9663d6c27ba64/",
+                "put": "/api/7/1/2950a32abb8b45dcae975912f7d5905a/id1682489849309",
+                "delete": "/api/7/1/292b6d178c714738b1b640705c410227/id1682489849309"
+            },
+            "formated_create_by": "SUPER USER",
+            "formated_status": "Vô hiệu"
+        },
+        {
+            "title": "Hóa đơn",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "SUPER USER"
+            },
+            "status": false,
+            "param": "hoa_don",
+            "description": "Trang mới",
+            "id": 14,
+            "apis": {
+                "get": "/api/7/1/802eb333eb26489594f5a9c3031d16b0/",
+                "post": "/api/7/1/13fc87adce43445d9f2559de79f05cb8/",
+                "put": "/api/7/1/9a6ed7fc11994a519d46edcbe5fe9355/id1682490404105",
+                "delete": "/api/7/1/f9f30c9b99c649ea9420ad91e16d6cf0/id1682490404105"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"

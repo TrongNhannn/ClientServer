@@ -10,6 +10,7 @@ export default ( props ) => {
     const [ showKey, setShowKey ] = useState("")
     const { proxy, unique_string } = useSelector( state => state );
     const [ relatedTable, setRelatedTable ] = useState({})
+    const [ pk, setPK ] = useState([]);//////////////////////////////////////////////////////////////////////////////////////////
     // const [intError, setIntError] = useState(false);
 
     // const validateInt = (value) => {
@@ -29,7 +30,7 @@ export default ( props ) => {
     // };
     useEffect(() => {
         // console.log(field.field_alias)
-        // console.log(defaultValue)
+       
         if( isFieldForeign()){
             const thisFieldForeignKey = table.fk.filter( fk => {
                 const { fks } = fk;
@@ -43,13 +44,14 @@ export default ( props ) => {
             const { table_alias, fks } = thisFieldForeignKey;
             if( foreignData.length == 0 ){
                 fetch(`${ proxy() }/api/${ unique_string }/apis/table/data/${ table_alias }`).then( res => res.json() ).then( res => {
-                    const { success, data, fields, pk } = res;
+                    const { success, data, fields, pk } = res;                    
                     setForeignData( data )
                     setFields(fields)
                     const showKey = fks.filter(k => k.field_alias == field.field_alias )[0].ref_on
                     setShowKey(showKey)
                     const rTable = related.filter( tb => tb.table_alias == table_alias )[0];
                     setRelatedTable(rTable)
+                    setPK(pk) /////////////     ///////////////////////////////////////////////////////////////////              
                 })
             }
         }else{
@@ -65,9 +67,14 @@ export default ( props ) => {
 
     }, [])
 
-    useEffect(() => {
-        setCurrent(defaultValue)
-    }, [defaultValue])
+    useEffect(()=> {
+        // console.log(defaultValue)
+        // console.log(pk)
+        // console.log(foreignData)
+
+        const filtedCurrent = foreignData.filter(data => data[ pk[0] ] == defaultValue )[0];///////////////////////////////////////////////////
+        setCurrent(filtedCurrent)
+    }, [foreignData])
 
     const isFieldForeign = () => {
         const isForeign = table.fk.filter( key => {
@@ -96,7 +103,6 @@ export default ( props ) => {
     }
 
     const generateData = ( data ) => {
-
         if( fields.length > 0 && data ){
             let showFields = fields;
             const { display_fields } = relatedTable;
@@ -143,13 +149,13 @@ export default ( props ) => {
                         <span className="block text-16-px">
                             {/* { field.field_name } */}
 
-                            {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *w</span>}
+                            {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}
                         </span>
                     </div>
                     <div className="m-t-0-5">
                         <input type="text"
                             className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
-                            placeholder="" onChange={ fieldChangeData } defaultValue={ generateData(current) }
+                            placeholder="" onChange={ fieldChangeData } value={ generateData(current) }
                             onFocus={ focusTrigger }
                             onBlur={ blurTrigger }
                             />

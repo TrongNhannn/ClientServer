@@ -59,7 +59,7 @@ app.use(cors());
 //Login
 app.use(`/${unique_string}`, login);
 //Middleware
-// app.use(Auth.verifyToken);
+//app.use(Auth.verifyToken);
 //User
 app.use(`/api/${unique_string}/user`, user);
 

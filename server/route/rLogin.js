@@ -81,9 +81,10 @@ async function checkCollectionsExist(dbo) {
   const collectionNames = collections.map((c) => c.name);
 
   return (
-    collectionNames.includes("accounts") &&
+    // collectionNames.includes("accounts") &&
     collectionNames.includes("tables") &&
-    collectionNames.includes("fields")
+    collectionNames.includes("fields") &&
+    collectionNames.includes("apis")
   );
 }
 
@@ -93,7 +94,9 @@ router.post('/login', async (req, res) => {
   if (account_string === defaultUser.account_string && pwd_string === defaultUser.pwd_string) {
     // Tạo mã JWT để xác thực người dùng
     const dbo = await asyncMongo();
-    const token = jwt.sign({ credential_string: defaultUser.account_string }, 'your-jwt-secret', { expiresIn: '1h' });
+    // const token = jwt.sign({ credential_string: defaultUser.account_string }, 'your-jwt-secret', { expiresIn: '10s' });
+
+   const token = jwt.sign({ credential_string: defaultUser.account_string }, 'your-jwt-secret', { expiresIn: '1h' });
     const collectionsExist = await checkCollectionsExist(dbo);
     res.status(200).json({ success: true, content: 'Đăng nhập thành công', role: defaultUser.account_role, credential_string: defaultUser.account_string, _token: token ,redirectToImport: !collectionsExist, });
   } else {

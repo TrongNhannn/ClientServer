@@ -1,0 +1,23 @@
+{
+    "pages": [
+        {
+            "title": "trang mới",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "SUPER USER"
+            },
+            "status": false,
+            "param": "trang_moi",
+            "description": "Trang mới",
+            "id": 10,
+            "apis": {
+                "get": "/api/7/1/ac68417a9f044c7590f290066cc05c0a/",
+                "post": "/api/7/1/0c6f074e8ce54844ade5ceaaf9cd7047/",
+                "put": "/api/7/1/c25e96a1d7e842788ba28c419f904171/id1682470181217",
+                "delete": "/api/7/1/e227ec0a861745cda4dc0584892c2180/id1682470181217"
+            },
+            "formated_create_by": "SUPER USER",
+            "formated_status": "Vô hiệu"
+        }
+    ]
+}
