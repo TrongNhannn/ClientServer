@@ -72,18 +72,17 @@ export default (props) => {
         return isForeign ? true : false;
     }
 
-    
     const fieldChangeData = (e) => {
-        const { value } = e.target;
-        setCurrent(value);
-        if (validateVarchar(value) || value === "") {
-          setVarcharError(false);
-          changeTrigger(field, value);
+        const value = e.target.value
+        setCurrent(e.target.value)
+        if (validateVarchar(value) || value === '') {
+            setVarcharError(false);
+            changeTrigger(field, value);
         } else {
-          setVarcharError(true);
+            setVarcharError(true);
         }
-      };
-      
+    }
+    
 
     const blurTrigger = (e) => {
         e.preventDefault();
