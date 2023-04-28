@@ -18,8 +18,23 @@ export default () => {
             <Navbar urls={urls} bottomUrls={bottomUrls} />
             <div className={`app fixed-default overflow ${!navState ? "app-stretch" : "app-scaled"}`} style={{ height: "100vh" }}>
                 <Horizon />
-                <span className="text-24-px p-1">User home</span>
-                <div style={{ height: "200vh" }}></div>
+                <div className="p-1" id="app-scrollBox">
+                    <div className="p-1 min-height-full-screen column">
+                        
+                        <div className="m-t-0-5 fill-available bg-white shadow-blur">
+                            <div className="w-100-pct h-fit column p-1">
+                                <div className="flex flex-no-wrap b">
+                                    
+                                    
+                                </div>
+                                <div className="w-100-pct m-t-1">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
             </div>
         </div>
     )

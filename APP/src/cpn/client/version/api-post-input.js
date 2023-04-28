@@ -95,7 +95,7 @@ export default () => {
 
             }).then(res => res.json()).then(res => {
                 const { success, data, fk } = res;
-                console.log(res)
+                // console.log(res)
                 if (success) {
                     al.success("Thành công", "Thành công thêm dữ liệu!")
                     setTimeout(() => {

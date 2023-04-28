@@ -17,14 +17,19 @@ const links = {
 
     admin: {
         urls: [
-            { id: 0, url: "/", label: "Trang chủ", icon: "import.png", },
-            // { id: 0, url: "/", label: "Trang chủ", icon: "home.png", },
-            { id: 1, url: "/projects", label: "Quản lý dự án", icon: "manage.png" },
-            { id: 2, url: "/plan", label: "Kế hoạch làm việc", icon: "plan.png" },
-            { id: 7, url: "/design", label: "Thiết kế UI", icon: "design.png" },
-            { id: 8, url: "/apis", label: "Thiết kế API", icon: "api.png" },
-            { id: 3, url: "/statistic", label: "Thống kê", icon: "chart.png" },
-            { id: 4, url: "/report/export", label: "Xuất báo cáo", icon: "export.png" },
+            // { id: 0, url: "/", label: "Import Data admin", icon: "export.png", },
+            //  { id: 1, url: "/su/projects", label: "Quản lý dự án", icon: "manage.png" },
+            { id: 2, url: "/su/users", label: "Quản lý người dùng", icon: "users.png" },
+            // { id: 3, url: "/statistic", label: "Thống kê", icon: "chart.png" },
+            // { id: 4, url: "/report/export", label: "Xuất báo cáo", icon: "export.png" },
+            // { id: 0, url: "/", label: "Trang chủ", icon: "import.png", },
+            // // { id: 0, url: "/", label: "Trang chủ", icon: "home.png", },
+            // { id: 1, url: "/projects", label: "Quản lý dự án", icon: "manage.png" },
+            // { id: 2, url: "/plan", label: "Kế hoạch làm việc", icon: "plan.png" },
+            // { id: 7, url: "/design", label: "Thiết kế UI", icon: "design.png" },
+            // { id: 8, url: "/apis", label: "Thiết kế API", icon: "api.png" },
+            // { id: 3, url: "/statistic", label: "Thống kê", icon: "chart.png" },
+            // { id: 4, url: "/report/export", label: "Xuất báo cáo", icon: "export.png" },
         ],
 
         bottomUrls: [

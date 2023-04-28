@@ -187,8 +187,30 @@ export default (props) => {
                 })
                 .catch(error => {
                     // Show an error message when adding the user fails
-                    al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin");
+                    if (error.message.includes("Thêm người dùng thất bại")) {
+                        fetch(`${proxy()}/${unique_string}/create_user`, {
+                            method: "POST",
+                            headers: {
+                                "content-type": "application/json",
+                            },
+                            body: JSON.stringify({ user })
+                        }).then(errRes => {
+                            if (!errRes.ok) {
+                                return errRes.json().then(errData => {
+                                    if (errData && errData.content && errData.content.includes("Tài khoản đã tồn tại")) {
+                                        al.failure("Thất bại", "Tài khoản đã tồn tại");
+                                    } else {
+                                        al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin");
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin");
+                    }
                 });
+                
+                
         } else {
             // Show an error message when the form is not valid
             al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin và nhập chính xác");
@@ -287,8 +309,10 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-1 mg-auto">
                     <label className="block w-40-pct">Mật khẩu</label>
                     <input value={user.pwd_string} minLength={2} type="password" placeholder='Nhập mật khẩu'
-                        onChange={(e) => { setUser({ ...user, pwd_string: e.target.value }) 
-                        validateField("pwd_string", e.target.value, true)} }className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        onChange={(e) => {
+                            setUser({ ...user, pwd_string: e.target.value })
+                            validateField("pwd_string", e.target.value, true)
+                        }} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -353,8 +377,10 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Họ tên</label>
                     <input value={user.fullname} placeholder='Nhập đầy đủ họ tên' onChange={
-                        (e) => { setUser({ ...user, fullname: e.target.value }) 
-                    validateField("fullname", e.target.value, true)} }className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        (e) => {
+                            setUser({ ...user, fullname: e.target.value })
+                            validateField("fullname", e.target.value, true)
+                        }} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -373,8 +399,10 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Email</label>
                     <input value={user.email} type="email" placeholder='Nhập tài khoản Email' onChange={
-                        (e) => { setUser({ ...user, email: e.target.value }) 
-                    validateField("email", e.target.value, true)}} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        (e) => {
+                            setUser({ ...user, email: e.target.value })
+                            validateField("email", e.target.value, true)
+                        }} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -393,8 +421,10 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Số di động</label>
                     <input value={user.phone} maxLength={10} placeholder='Nhập số điện thoại' onChange={
-                        (e) => { setUser({ ...user, phone: e.target.value }) 
-                  validateField("phone", e.target.value, true)}} className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number" />
+                        (e) => {
+                            setUser({ ...user, phone: e.target.value })
+                            validateField("phone", e.target.value, true)
+                        }} className="block w-60-pct border-1  border-radius-8-px p-0-5" type="number" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>
@@ -413,8 +443,10 @@ export default (props) => {
                 <div className="form-field w-100-pct flex flex-no-wrap p-0-5 mg-auto">
                     <label className="block w-40-pct">Địa chỉ</label>
                     <input value={user.address} placeholder='Nhập địa chỉ' onChange={
-                        (e) => { setUser({ ...user, address: e.target.value }) 
-                     validateField("address", e.target.value, true)}} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
+                        (e) => {
+                            setUser({ ...user, address: e.target.value })
+                            validateField("address", e.target.value, true)
+                        }} className="block w-60-pct border-1  border-radius-8-px p-0-5" />
                 </div>
                 <div className="form-field w-100-pct flex flex-no-wrap p-l-0-5">
                     <label className="block w-40-pct"></label>

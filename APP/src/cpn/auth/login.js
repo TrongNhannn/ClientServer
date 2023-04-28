@@ -19,7 +19,7 @@ export default () => {
     const submit = () => {
         // console.log(proxy())
        
-         fetch(`${proxy()}/${ unique_string }/login`, {
+        fetch(`${proxy()}/${ unique_string }/login`, {
             // fetch(`dipes/test/login`, {
             method: "post",
             headers: {
@@ -28,27 +28,33 @@ export default () => {
             body: JSON.stringify(auth)
         }).then( res => res.json() ).then( ( resp ) => {
             const { success, role, credential_string, _token, redirectToImport  } = resp;
-             console.log( resp )
+            console.log( resp )
             if( success ){
                 localStorage.setItem( 'role', role )
                 localStorage.setItem( 'credential_string', credential_string )
                 localStorage.setItem( '_token', _token )
                 console.log(redirectToImport)
-                if (redirectToImport) {
-                    window.location = "/"; 
-                    
-                    setTimeout(() => {
-                        al.warning("Warning!","Chưa có dữ liệu")
-                    }, 2000);
-                   
-                  } else {
+                if (role === 'su') {
+                    if (redirectToImport) {
+                        window.location = "/"; 
+                        
+                        setTimeout(() => {
+                            al.warning("Warning!","Chưa có dữ liệu")
+                        }, 2000);
+                    } else {
+                        window.location = "/su/users";
+                    }
+                } else if (role === 'admin') {
                     window.location = "/su/users";
-                  }
-            }else{
+                } else if (role === 'user') {
+                    window.location = "/";
+                }
+            } else {
                al.failure("Thất bại","Đăng nhập thất bại")
             }
         })
     }
+    
 
     return(
         <div className="fixed-default flex flex-aligned fullscreen login-bg overflow">

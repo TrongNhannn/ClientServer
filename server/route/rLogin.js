@@ -24,48 +24,6 @@ function checkdata(input) {
   }
   return valid;
 }
-
-//@route post /%unique_string%/create_user
-//@desc Đăng ký tài khoản người dùng mới
-//@access Public
-router.post('/create_user', async (req, res) => {
-    /* Thêm account_role vào body vì đã chia ra thêm một role mới là su ( stands for super user ) */
-     const { user } = req.body;
-     const { account_string, pwd_string, account_role, fullname, email, phone, address } = user;
-     if (!checkdata(account_string)) {
-         return res.status(400).json({ success: false, content: 'Vui lòng nhập tài khoản' });
-     }
-     if (!checkdata(pwd_string)) {
-         return res.status(400).json({ success: false, content: 'Vui lòng nhật mật khẩu' });
-     }
-     else {
-        // Kiểm tra xem tài khoản đã tồn tại hay chưa
-
-        mongo( dbo => {
-            dbo.collection( tables.accounts ).findOne({ account_string }, async (err, result) => {
-                if( result ){
-                    return res.status(500).json({ success: false, content: 'Tài khoản đã tồn tại' });
-                }else{
-
-                    // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
-                    const hashedPassword = await bcrypt.hash(pwd_string, 10);
-                    const account_status = 1;
-                    const credential_string = 'hihi' + (new Date()).getTime();
-                    // Thêm người dùng mới vào cơ sở dữ liệu
-                    const avatar = "/assets/image/icon.png"
-                    dbo.collection(tables.accounts ).insertOne( { ...user, hashedPassword, credential_string, account_status, avatar } , (err, result) => {
-                        res.status(200).json({ success: true, credential_string, content: 'Tài khoản đã được tạo thành công' });
-                    })
-                }
-            })
-        })
-    }
-});
-
-//@route post /%unique_string%/login
-//@desc Đăng nhập tài khoản người dùng
-//@access Public
-
 const defaultUser = {
   account_string: "administrator", //administrator
   pwd_string: "dipes@admin",//dipes@admin
@@ -75,6 +33,88 @@ const defaultUser = {
   phone: "0123456789",
   address: "123 Default Street",
 };
+//@route post /%unique_string%/create_user
+//@desc Đăng ký tài khoản người dùng mới
+//@access Public
+// router.post('/create_user', async (req, res) => {
+//     /* Thêm account_role vào body vì đã chia ra thêm một role mới là su ( stands for super user ) */
+//      const { user } = req.body;
+//      const { account_string, pwd_string, account_role, fullname, email, phone, address } = user;
+//      if (!checkdata(account_string)) {
+//          return res.status(400).json({ success: false, content: 'Vui lòng nhập tài khoản' });
+//      }
+//      if (!checkdata(pwd_string)) {
+//          return res.status(400).json({ success: false, content: 'Vui lòng nhật mật khẩu' });
+//      }
+//      else {
+//         // Kiểm tra xem tài khoản đã tồn tại hay chưa
+
+//         mongo( dbo => {
+//             dbo.collection( tables.accounts ).findOne({ account_string }, async (err, result) => {
+//                 if( result ){
+//                   if (account_string === defaultUser.account_string){
+//                     return res.status(500).json({ success: false, content: 'Tài khoản đã tồn tại' });
+//                   }
+//                 }else{
+
+//                     // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+//                     const hashedPassword = await bcrypt.hash(pwd_string, 10);
+//                     const account_status = 1;
+//                     const credential_string = 'hihi' + (new Date()).getTime();
+//                     // Thêm người dùng mới vào cơ sở dữ liệu
+//                     const avatar = "/assets/image/icon.png"
+//                     dbo.collection(tables.accounts ).insertOne( { ...user, hashedPassword, credential_string, account_status, avatar } , (err, result) => {
+//                         res.status(200).json({ success: true, credential_string, content: 'Tài khoản đã được tạo thành công' });
+//                     })
+//                 }
+//             })
+//         })
+//     }
+// });
+
+
+router.post('/create_user', async (req, res) => {
+  const { user } = req.body;
+  const { account_string, pwd_string, account_role, fullname, email, phone, address } = user;
+  
+  if (!checkdata(account_string)) {
+      return res.status(400).json({ success: false, content: 'Vui lòng nhập tài khoản' });
+  }
+  if (!checkdata(pwd_string)) {
+      return res.status(400).json({ success: false, content: 'Vui lòng nhật mật khẩu' });
+  }
+
+  const dbo = await asyncMongo();
+  
+  // Kiểm tra xem tài khoản đã tồn tại hay chưa
+  const existingUser = await dbo.collection(tables.accounts).findOne({ account_string });
+
+
+  if (existingUser || user.account_string === defaultUser.account_string) {
+      return res.status(500).json({ success: false, content: 'Tài khoản đã tồn tại' });
+  } else {
+      // Mã hóa mật khẩu trước khi lưu vào cơ sở dữ liệu
+      const hashedPassword = await bcrypt.hash(pwd_string, 10);
+      const account_status = 1;
+      const credential_string = 'hihi' + (new Date()).getTime();
+      
+      // Thêm người dùng mới vào cơ sở dữ liệu
+      const avatar = "/assets/image/icon.png"
+      const newUser = { ...user, hashedPassword, credential_string, account_status, avatar };
+
+      dbo.collection(tables.accounts).insertOne(newUser, (err, result) => {
+          res.status(200).json({ success: true, credential_string, content: 'Tài khoản đã được tạo thành công' });
+      });
+  }
+});
+
+
+
+//@route post /%unique_string%/login
+//@desc Đăng nhập tài khoản người dùng
+//@access Public
+
+
 
 async function checkCollectionsExist(dbo) {
   const collections = await dbo.listCollections().toArray();
