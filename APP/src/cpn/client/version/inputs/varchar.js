@@ -12,7 +12,7 @@ export default (props) => {
     const [showKey, setShowKey] = useState("")
     const { proxy, unique_string } = useSelector(state => state);
     const [relatedTable, setRelatedTable] = useState({})
-    const [pk, setPK] = useState([]);
+    const [ pk, setPK ] = useState([]);
     const [varcharError, setVarcharError] = useState(false);
     const validateVarchar = (varchar) => {
         return varchar.length <= 255;
@@ -45,7 +45,7 @@ export default (props) => {
                 })
             }
         }
-
+    
 
     }, [])
 
@@ -54,12 +54,12 @@ export default (props) => {
     }, [defaultValue])
 
 
-    useEffect(() => {
+    useEffect(()=> {
         console.log(defaultValue)
         console.log(pk)
         console.log(foreignData)
 
-        const filtedCurrent = foreignData.filter(data => data[pk[0]] == defaultValue)[0];///////////////////////////////////////////////////
+        const filtedCurrent = foreignData.filter(data => data[ pk[0] ] == defaultValue )[0];///////////////////////////////////////////////////
         setCurrent(filtedCurrent)
     }, [foreignData])
 
@@ -72,27 +72,18 @@ export default (props) => {
         return isForeign ? true : false;
     }
 
-    // const fieldChangeData = (e) => {
-    //     const value = e.target.value
-    //     setCurrent(e.target.value)
-    //     if (validateVarchar(value) || value === '') {
-    //         setVarcharError(false);
-    //         changeTrigger(field, value);
-    //     } else {
-    //         setVarcharError(true);
-    //     }
-    // }
+    
     const fieldChangeData = (e) => {
         const { value } = e.target;
         setCurrent(value);
         if (validateVarchar(value) || value === "") {
-            setVarcharError(false);
-            changeTrigger(field, value);
+          setVarcharError(false);
+          changeTrigger(field, value);
         } else {
-            setVarcharError(true);
+          setVarcharError(true);
         }
-    };
-
+      };
+      
 
     const blurTrigger = (e) => {
         e.preventDefault();
@@ -135,18 +126,14 @@ export default (props) => {
                     <div>
                         <span className="block text-16-px">
                             {/* {field.field_name} */}
-                            {field.field_name}{!field.nullable && <span style={{ color: 'red' }}> *</span>}
+                            {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}
                         </span>
                     </div>
                     <div className="m-t-0-5">
-                        <input
-                            type="text"
-                            className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
-                            placeholder=""
-                            onChange={fieldChangeData}
-                            value={current}
+                        <input type="text"
+                            className={`p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-11 ${varcharError ? 'border-red' : ''}`}
+                            placeholder="" onChange={fieldChangeData} value={current}
                         />
-
                         {varcharError && (
                             <span className="block p-t-0-5 text-red text-14-px">
                                 Vượt quá số lượng kí tự
@@ -161,7 +148,7 @@ export default (props) => {
             <div className="w-100-pct p-1 m-t-1">
                 <div>
                     <div>
-                        <span className="block text-16-px">{field.field_name}{!field.nullable && <span style={{ color: 'red' }}> *</span>}</span>
+                        <span className="block text-16-px">{field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}</span>
                     </div>
                     <div className="m-t-0-5">
                         <input type="text"
