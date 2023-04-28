@@ -61,7 +61,7 @@ export default (props) => {
                             <div className="w-100-pct">
                                 <div className="flex flex-no-wrap bg-white shadow-blur">
                                     <div className="fill-available p-1">
-                                        <span> Người dùng</span>
+                                        <span> Danh sách người dùng</span>
                                     </div>
                                     <div className="w-48-px flex flex-middle">
                                         <div className="w-72-px pointer order-0">

@@ -28,12 +28,12 @@ export default () => {
             body: JSON.stringify(auth)
         }).then( res => res.json() ).then( ( resp ) => {
             const { success, role, credential_string, _token, redirectToImport  } = resp;
-            console.log( resp )
+            // console.log( resp )
             if( success ){
                 localStorage.setItem( 'role', role )
                 localStorage.setItem( 'credential_string', credential_string )
                 localStorage.setItem( '_token', _token )
-                console.log(redirectToImport)
+                // console.log(redirectToImport)
                 if (role === 'su') {
                     if (redirectToImport) {
                         window.location = "/"; 

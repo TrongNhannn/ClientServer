@@ -11,7 +11,7 @@ export default (props) => {
     const [showKey, setShowKey] = useState("")
     const { proxy, unique_string } = useSelector(state => state);
     const [relatedTable, setRelatedTable] = useState({})
-
+    const [ pk, setPK ] = useState([]);
     const [varcharError, setVarcharError] = useState(false);
     const validateVarchar = (varchar) => {
         return varchar.length <= 255;
@@ -40,6 +40,7 @@ export default (props) => {
                     setShowKey(showKey)
                     const rTable = related.filter(tb => tb.table_alias == table_alias)[0];
                     setRelatedTable(rTable)
+                    setPK(pk);
                 })
             }
         }
@@ -51,7 +52,14 @@ export default (props) => {
     }, [defaultValue])
 
 
+    useEffect(()=> {
+        // console.log(defaultValue)
+        // console.log(pk)
+        // console.log(foreignData)
 
+        const filtedCurrent = foreignData.filter(data => data[ pk[0] ] == defaultValue )[0];///////////////////////////////////////////////////
+        setCurrent(filtedCurrent)
+    }, [foreignData])
 
     const isFieldForeign = () => {
         const isForeign = table.fk.filter(key => {
@@ -141,7 +149,7 @@ export default (props) => {
                     <div className="m-t-0-5">
                         <input type="text"
                             className={`p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-11 ${varcharError ? 'border-red' : ''}`}
-                            placeholder="" onChange={fieldChangeData} defaultValue={generateData(current)}
+                            placeholder="" onChange={fieldChangeData} value={generateData(current)}
                             onFocus={focusTrigger}
                             onBlur={blurTrigger}
                         />

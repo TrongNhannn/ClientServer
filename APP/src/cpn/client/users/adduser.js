@@ -70,19 +70,19 @@ export default (props) => {
         phone: "",
         address: ""
     });
-    const handleInputChange = (e, field) => {
-        const value = e.target.value;
-        let errorMessage = "";
+    // const handleInputChange = (e, field) => {
+    //     const value = e.target.value;
+    //     let errorMessage = "";
 
-        switch (field) {
-            case "account_string":
-                errorMessage = value.length < 1 ? "Vui lòng nhập tên" : "";
-                break;
-            // Add more case statements for other fields
-        }
-        setUser({ ...user, [field]: value });
-        setErrors({ ...errors, [field]: errorMessage });
-    };
+    //     switch (field) {
+    //         case "account_string":
+    //             errorMessage = value.length < 1 ? "Vui lòng nhập tên" : "";
+    //             break;
+    //         // Add more case statements for other fields
+    //     }
+    //     setUser({ ...user, [field]: value });
+    //     setErrors({ ...errors, [field]: errorMessage });
+    // };
     const { navState, Alert } = useSelector(state => state);
     const dispatch = useDispatch();
     const al = new Alert(dispatch);
