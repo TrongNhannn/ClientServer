@@ -26,23 +26,12 @@ client.connect()
   .then(() => console.log(`Kết nối thành công tới cơ sở dữ liệu MongoDB: ${process.env.DB_NAME_MONGO}`))
   .catch((err) => console.error(`Lỗi kết nối tới cơ sở dữ liệu MongoDB: ${process.env.DB_NAME_MONGO}`, err));
 
-
-
-
-
-
-
 app.use( express.static('public') );
 
 app.use(bodyparser.json({ limit: "50mb" }));
 
-
 var login = require('./route/rLogin');
 var user = require('./route/rUser');
-
-
-// var field = require('./route/table/rField');
-
 
 var api = require('./route/apis');
 var json = require('./route/importjson')
@@ -55,8 +44,6 @@ app.get('/api/get/the/god/damn/api/key/with/ridiculous/long/url/string', (req, r
 const Auth = require('./Middleware/Auth');
 const { project_status } = require('./mongo/tables');
 app.use(cors());
-//Token
-//Login
 app.use(`/${unique_string}`, login);
 //Middleware
 //app.use(Auth.verifyToken);
