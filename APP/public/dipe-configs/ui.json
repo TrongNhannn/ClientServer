@@ -82,39 +82,39 @@
             "apis": {}
         },
         {
-            "title": "bảng test",
+            "title": "bảng 1",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "bang_test",
+            "param": "bang_1",
             "description": "Trang mới",
-            "id": 18,
+            "id": 20,
             "apis": {
-                "get": "/api/7/1/8617701c7bf0435dbfaf44766280b0a8/",
-                "post": "/api/7/1/d443ffc1c16440cc82676ccf2e802dfc/",
-                "put": "/api/7/1/30bc2d4ddf95433c94f9ee920825782c/id1682663767172",
-                "delete": "/api/7/1/8f6480e348604f7bb9fe3a0e7964732c/id1682663767172"
+                "get": "/api/7/1/20adfec59353496fba824847ba1e4dc6/",
+                "post": "/api/7/1/2603caa52f424a5da0d4a9e21a7d60ee/",
+                "put": "/api/7/1/c64631adc23f412e91a3f8de328aa67f/id1682672189817",
+                "delete": "/api/7/1/ba82f3a95b5145af834077f79e038da7/id1682672189817"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
         },
         {
-            "title": "bảng test 2",
+            "title": "bảng 2",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "bang_test_2",
+            "param": "bang_2",
             "description": "Trang mới",
-            "id": 19,
+            "id": 22,
             "apis": {
-                "get": "/api/7/1/f1b166e4fc564d69bc817962d9fa34f9/",
-                "post": "/api/7/1/c7b43952d67f473abfb2a13cfae23fb7/",
-                "put": "/api/7/1/0972fcb38ae5427399bb8ba08eb05e36/id1682663839559",
-                "delete": "/api/7/1/6fd33549fc5242b2a1a5d24f2d28d766/id1682663839559"
+                "get": "/api/7/1/0fedd17288b54a318854a65dc4bb495f/",
+                "post": "/api/7/1/6f4ab8a3e0184c88a7bc06e0cfbf2e16/",
+                "put": "/api/7/1/ea9ea8dbfaca474cafcdc232db813a5c/id1682672278408",
+                "delete": "/api/7/1/d66128a2b3b848bea70888ef30682e3f/id1682672278408"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
