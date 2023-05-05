@@ -11,10 +11,17 @@ export default () => {
 
     const [height, setHeight] = useState(false);
     const { auth, defaultImage, proxy } = useSelector(state => state);
+    const [isLoading, setIsLoading] = useState(true);
 
+    useEffect(() => {
+        if (auth.fullname) {
+            setIsLoading(false);
+        }
+    }, [auth.fullname]);
     return (
         <div className="sticky-default flex flex-no-wrap flex-end z-index-2 w-100-pct shadow horizon-bar p-0-5">
-            <span className="text-18-px block p-0-5 p-r-0-5">{auth.fullname || 'Administrator'}</span>
+            
+            <span className="text-17-px block p-0-5 p-r-0-5 m-0-5">{auth.fullname || 'Administrator'}</span>
             <div className="avatar-container flex flex-middle m-r-1 pointer" onClick={() => { setHeight(!height) }}>
                 {/* <img src={ auth.avatar == defaultImage ? defaultImage : `${ proxy }${ auth.avatar }`  } className="w-50-px border-radius-24-px"/> */}
                 <img src="/assets/image/user2.png" className="w-50-px border-radius-24-px" />

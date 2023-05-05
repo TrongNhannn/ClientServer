@@ -1,21 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { Navbar, Horizon } from '../../navbar';
 
 const CustomFileInput = ({ onChange, ...props }) => {
     const fileInputRef = useRef(null);
-
     const handleButtonClick = () => {
         fileInputRef.current.click();
     };
-
     const handleFileChange = (event) => {
         if (onChange) {
             onChange(event);
         }
     };
-
     return (
         <div>
             <input
@@ -25,12 +21,8 @@ const CustomFileInput = ({ onChange, ...props }) => {
                 onChange={handleFileChange}
                 {...props}
             />
-            <button onClick={handleButtonClick} className="w-max-content p-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover m-0-5">Select File</button>
-
+            <button onClick={handleButtonClick} className="w-max-content p-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover m-0-5">Chọn tệp</button>
         </div>
-
-
     );
 };
-
 export default CustomFileInput;

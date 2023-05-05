@@ -5,13 +5,21 @@ export default (props) => {
     const [current, setCurrent] = useState(defaultValue ? defaultValue : "")
     const [decimalError, setDecimalError] = useState(false);
     const validateDecimal = (decimal, unsigned) => {
-        const decimalRegex = /^-?\d+(\.\d+)?$/;
-        if (unsigned) {
-            return decimalRegex.test(decimal) && parseFloat(decimal) >= 0;
-        } else {
-            return decimalRegex.test(decimal);
+        const decimalRegex = unsigned ? /^\d+(\.\d{1,2})?$/ : /^-?\d+(\.\d{1,2})?$/;
+        const maxLength = unsigned ? 5 : 6;
+        const desiredDotPosition = 3;
+    
+        if (decimal.length > maxLength) {
+            return false;
         }
+    
+        if (decimal.indexOf('.') !== -1 && decimal.indexOf('.') !== desiredDotPosition) {
+            return false;
+        }
+    
+        return decimalRegex.test(decimal);
     };
+    
 
     const fieldChangeData = (e) => {
         const { value } = e.target;
@@ -23,18 +31,6 @@ export default (props) => {
             setDecimalError(true);
         }
     };
-    // const fieldChangeData = (e) => {
-    //     const { value } = e.target
-    //     if( unsigned ){
-    //         if( value >= 0 ){
-    //             changeTrigger( field, value)
-    //             setCurrent( value )
-    //         }
-    //     }else{
-    //         changeTrigger( field, value)
-    //         setCurrent( value )
-    //     }
-    // }
 
     useEffect(() => {
         setCurrent(defaultValue)
@@ -43,13 +39,14 @@ export default (props) => {
     return (
         <div className="w-100-pct p-1 m-t-1">
             <div>
-                <span className="block text-16-px">{field.field_name}</span>
+                <span className="block text-16-px"> {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}</span>
             </div>
             <div className="m-t-0-5">
                 <input type="number" step={2}
-                    className="p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1"
+                    className={`p-t-0-5 p-b-0-5 p-l-1 text-16-px block w-100-pct border-1 `}
                     placeholder="" onChange={fieldChangeData} value={current}
                 />
+                
             </div>
         </div>
     )

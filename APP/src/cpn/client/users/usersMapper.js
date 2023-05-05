@@ -11,6 +11,7 @@ export default (props) => {
     const { openTab } = useSelector(state => state.functions)
     const { label, users, removeFromUI } = props;
 
+    const [currentPage, setCurrentPage] = useState(0);
     const [sus, setSus] = useState([]);
     const [admins, setAdmins] = useState([]);
     const [userlist, setUsers] = useState([]);
@@ -49,6 +50,13 @@ export default (props) => {
                 setUsers([...userlist, user])
         }
     }
+    const itemsPerPage = 12;
+    const pageCount = Math.ceil(users.length / itemsPerPage);
+
+    const handlePageClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+    const usersToShow = users.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
     return (
         <div>
             <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
@@ -110,12 +118,12 @@ export default (props) => {
                                                             <th className="text-left">SĐT</th>
                                                             <th className="text-left">Địa chỉ</th>
                                                             <th className="text-left">Quyền</th>
-                                                            <th className="text-center">Công cụ</th>
+                                                            <th className="text-center">Thao tác</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {users && users.length > 0 ? (
-                                                            users.map((user) => (
+                                                        {usersToShow.length > 0 ? (
+                                                            usersToShow.map((user) => (
                                                                 <UserCard user={user} key={user.credential_string} removeFromUI={removeFromUI} />))
                                                         ) : (
                                                             <tr>
@@ -126,9 +134,22 @@ export default (props) => {
                                                         )}
                                                     </tbody>
                                                 </table>
+                                                {pageCount > 1 && (
+                                                    <div className='p-t-1'>
+                                                        <div className='p-b-0-5'>
+                                                            Hiển thị từ kết quả {currentPage * itemsPerPage + 1} đến {Math.min((currentPage + 1) * itemsPerPage, users.length)} của {users.length} kết quả
+                                                        </div>
+                                                        <div>
+                                                            {Array.from(Array(pageCount), (page, index) => (
+                                                                <button key={index} onClick={() => handlePageClick(index)}
+                                                                    style={{ marginRight:'5px', backgroundColor: currentPage === index ? 'lightgray' : 'white', }}> {index + 1}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>

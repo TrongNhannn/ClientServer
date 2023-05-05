@@ -97,7 +97,7 @@ export default ( props ) => {
             <div className="w-100-pct p-1 m-t-1">
                 <div>
                     <div>
-                        <span className="block text-16-px">{ field.field_name }</span>
+                    {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}
                     </div>
                     <div className="m-t-0-5">
                         <input type="text"
@@ -113,7 +113,7 @@ export default ( props ) => {
             <div className="w-100-pct p-1 m-t-1">
                 <div>
                     <div>
-                        <span className="block text-16-px">{ field.field_name }</span>
+                    {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}
                     </div>
                     <div className="m-t-0-5">
                         <input type="text"

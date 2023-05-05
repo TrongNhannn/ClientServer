@@ -7,16 +7,16 @@ import {
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Horizon } from '../../navbar';
-import CustomFileInput from './CustomFileInpu';
+import CustomFileInput from './CustomFileInput';
 export default () => {
-    
+
     const [selectedFile, setSelectedFile] = useState(null);
     const [file, setFile] = useState({});
     const dispatch = useDispatch();
-  
-    const { navState,Alert,proxy, unique_string} = useSelector(state => state);
-    
-      const al = new Alert(dispatch)
+
+    const { navState, Alert, proxy, unique_string } = useSelector(state => state);
+
+    const al = new Alert(dispatch)
     const { urls, bottomUrls } = useSelector(state => state.navbarLinks.su)
     const [uploadedJson, setUploadedJson] = useState(null);
 
@@ -34,18 +34,18 @@ export default () => {
                     setFile(file)
                     setUploadedJson(json);
                 } catch (error) {
-                    al.failure("Thất bại","Định dạng tệp không hợp lệ")
+                    al.failure("Thất bại", "Định dạng tệp không hợp lệ")
                 }
             };
 
             reader.readAsText(file);
         }
     };
-    
+
     const importData = async () => {
         if (!uploadedJson) {
             al.failure("Thất bại", "Vui lòng tải lên một file JSON trước khi import");
-            
+
             return;
         }
 
@@ -59,16 +59,16 @@ export default () => {
             });
 
             if (response.ok) {
-                al.success("Thành công","Import dữ liệu thành công")
+                al.success("Thành công", "Import dữ liệu thành công")
                 setTimeout(() => {
                     window.location.reload();
                 }, 1600);
             } else {
-                al.failure("Thất bại","Import dữ liệu thất bại")
+                al.failure("Thất bại", "Import dữ liệu thất bại")
             }
         } catch (error) {
             // console.error(error);
-            al.failure("Thất bại","Import dữ liệu thất bại")
+            al.failure("Thất bại", "Import dữ liệu thất bại")
         }
     };
     const importAPI = async () => {
@@ -88,16 +88,16 @@ export default () => {
             });
 
             if (response.ok) {
-                al.success("Thành công","Import dữ liệu thành công")
+                al.success("Thành công", "Import dữ liệu thành công")
                 setTimeout(() => {
                     window.location.reload();
                 }, 1600);
             } else {
-                al.failure("Thất bại","Import dữ liệu thất bại")
+                al.failure("Thất bại", "Import dữ liệu thất bại")
             }
         } catch (error) {
             // console.error(error);
-            al.failure("Thất bại","Import dữ liệu thất bại")
+            al.failure("Thất bại", "Import dữ liệu thất bại")
         }
     };
     useEffect(() => {
@@ -106,20 +106,20 @@ export default () => {
             payload: { url_id: 0 }
         })
     }, [])
-    
+
     const getFileType = () => {
         const { data } = uploadedJson
-        const keys = Object.keys( data );
+        const keys = Object.keys(data);
 
-        const isApi = keys.filter( key => key == "apis" )[0];
-        if( isApi ){
-            return "API"
-        }else{
-            const isDatabase = keys.filter( key => key == "tables" )[0];
-            if( isDatabase ){
+        const isApi = keys.filter(key => key == "apis")[0];
+        if (isApi) {
+            return "Api"
+        } else {
+            const isDatabase = keys.filter(key => key == "tables")[0];
+            if (isDatabase) {
                 return "Database"
-            }else{
-                return "Invalid File"
+            } else {
+                return "Không đúng định dạng, vui lòng chọn lại !"
             }
         }
     }
@@ -134,35 +134,40 @@ export default () => {
                 <Horizon />
                 <div className="p-1" id="">
                     {/* VERSION INFO */}
-<div className="p-1 min-height-full-screen column">
-                    <div className="block bg-white scroll-y p-1 shadow-blur p-l-5 p-r-5 flex flex-middle" style={{ height: "100vh" }}>
+                    <div className="p-1 min-height-full-screen column">
+                        <div className="block bg-white scroll-y p-1 shadow-blur p-l-5 p-r-5 flex flex-middle" style={{ height: "100vh" }}>
 
-                        <div className="p-l-2 p-r-1 bg-white shadow-blur rel" style={{ width: 768, height: 400 }}>
+                            <div className="p-l-2 p-r-1 bg-white shadow-blur rel" style={{ width: 768, height: 400 }}>
 
-                            <div className="m-t-1 m-b-1">
-                                <div className="flex flex-no-wrap">
-                                    <div className="main-pic w-30-pct">
-                                        Tên tệp:
-                                    </div>
-                                    <div className="w-70-pct">
-                                   { file.name }
+                                <div className="m-t-1 m-b-1">
+                                    <div className="flex flex-no-wrap">
+                                        <div className="main-pic w-30-pct">
+                                            Tên tệp:
+                                        </div>
+                                        <div className="w-70-pct">
+                                            {file.name}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <hr className="block border-1-top" />
-                            <div className="m-t-1 m-b-1">
-                                <div className="flex flex-no-wrap">
-                                    <div className="main-pic w-30-pct">
-                                        Dạng tệp:
-                                    </div>
-                                    <div className="w-70-pct">
-                                        { uploadedJson ? getFileType() : null }
+                                <hr className="block border-1-top" />
+                                <div className="m-t-1 m-b-1">
+                                    <div className="flex flex-no-wrap">
+                                        <div className="main-pic w-30-pct">Dạng tệp:</div>
+                                        <div className="w-70-pct">
+                                            {uploadedJson ? (
+                                                getFileType() === "Không đúng định dạng, vui lòng chọn lại !" ? (
+                                                    <span className="text-red">{getFileType()}</span>
+                                                ) : (
+                                                    getFileType()
+                                                )
+                                            ) : null}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            {/* <div className="m-t-1 m-b-1">
+
+
+                                {/* <div className="m-t-1 m-b-1">
                                 <div className="flex flex-no-wrap">
                                     <div className="main-pic w-30-pct">
                                         Dự án:
@@ -182,22 +187,35 @@ export default () => {
                                     </div>
                                 </div>
                             </div> */}
-                            <div className="flex flex-no-wrap abs b-0 r-0 p-1">  
-                                <CustomFileInput onChange={handleFileUpload} />
-                                {
-                                    uploadedJson && getFileType() == "API" ?
-                                    
-                                    <button onClick={importAPI} className="w-max-content p-0-5 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Import API</button>
-                                    
-                                    :
-                                    <button onClick={importData} className="w-max-content p-0-5 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover">Import Database</button>
+                                <div className="flex flex-no-wrap abs b-0 r-0 p-1">
+                                    <CustomFileInput onChange={handleFileUpload} />
+                                    {uploadedJson && (
+                                        getFileType() == "Api" ? (
+                                            <button
+                                                onClick={importAPI}
+                                                className="w-max-content p-0-5 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover"
+                                            >
+                                                Import API
+                                            </button>
+                                        ) : getFileType() == "Database" ? (
+                                            <button
+                                                onClick={importData}
+                                                className="w-max-content p-0-5 m-0-5 shadow-blur shadow-hover bg-theme-color no-border block text-16-px white pointer shadow-blur shadow-hover"
+                                            >
+                                                Import Database
+                                            </button>
+                                        ) : (
+                                            <p className="text-red-500">
 
-                                 }
-                                
-                                
-                            </div>
+                                            </p>
+                                        )
+                                    )}
+                                </div>
 
-                            {/* <div className="flex flex-aligned flex-wrap m-l-2 text-center" >
+
+
+
+                                {/* <div className="flex flex-aligned flex-wrap m-l-2 text-center" >
 
                                     <span className="text-16-px block italic bold">Import Config</span>
 
@@ -221,8 +239,8 @@ export default () => {
                                 </div> */}
 
 
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

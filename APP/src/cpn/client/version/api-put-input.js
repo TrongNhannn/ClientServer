@@ -90,14 +90,17 @@ export default () => {
                     fetch(`${proxy()}/api/${unique_string}/apis/retrive/put/data/${id_str}`)
                         .then(res => res.json()).then(res => {
                             const { data } = res;
-
-                            let initData = data
+                            
+                            let initData = data;
+                            // console.log(serializeParams)
                             for (let i = 0; i < serializeParams.length; i++) {
                                 const { field_alias, value } = serializeParams[i]
+                                const decodedString = decodeURIComponent(value);
                                 initData = initData.filter(row => {
-                                    return row[field_alias] == value
+                                    return row[field_alias] == decodedString
                                 })
                             }
+                            
                             if (initData[0]) {
                                 const data = {};
                                 apiFields.map(field => {

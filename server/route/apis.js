@@ -47,6 +47,8 @@ router.get(`/api/input/info/:id_str`, async (req, res) => {
             return !isExistInSelectedTables ? true: false
         });
 
+    
+
         const fields = [];
         for( let i = 0; i < api.tables.length; i++ ){
             const { table_id } = api.tables[i];

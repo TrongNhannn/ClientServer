@@ -1,20 +1,20 @@
 {
     "pages": [
         {
-            "title": "Sản phẩm",
+            "title": "Nhân viên",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "san_pham",
+            "param": "nhan_vien",
             "description": "Trang mới",
-            "id": 12,
+            "id": 41,
             "apis": {
-                "get": "/api/7/1/eb3d92c14d4e4eb3bd0b7bd43fe9c305/",
-                "post": "/api/7/1/ee76797ffcbc4f12ab74834257e1e8dc/",
-                "put": "/api/7/1/95c524b9395e4567a5fcddeeac6eb55b/id1682490289256",
-                "delete": "/api/7/1/dedb8040c71548b2b74f15fd9894b938/id1682490289256"
+                "get": "/api/7/1/4848b4e33b8e4e909ce3cb3174306103/",
+                "post": "/api/7/1/1bd7d2662b584f81be09e1e22eb110c6/",
+                "put": "/api/7/1/ac8acf36fc5644039354bea8701dc16d/id1681087679936",
+                "delete": "/api/7/1/89707a01e80b4c0c9111e6e82d2bcb05/id1681087679936"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
@@ -28,93 +28,107 @@
             "status": false,
             "param": "khach_hang",
             "description": "Trang mới",
-            "id": 13,
+            "id": 42,
             "apis": {
-                "get": "/api/7/1/21b1174f4bce4e45877b61782cd80de6/",
-                "post": "/api/7/1/fc5bcc831ba3482e97e9663d6c27ba64/",
-                "put": "/api/7/1/2950a32abb8b45dcae975912f7d5905a/id1682489849309",
-                "delete": "/api/7/1/292b6d178c714738b1b640705c410227/id1682489849309"
+                "get": "/api/7/1/d3587153333244ed8d89f3d0ef0995f5/",
+                "post": "/api/7/1/520663dfae25431697fdd419c0d0333b/",
+                "put": "/api/7/1/6b5666935529465997f50cb934c00667/id1681087516708",
+                "delete": "/api/7/1/937a107b581440c79c6d9125085968de/id1681087516708"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
         },
         {
-            "title": "Hóa đơn",
+            "title": "Sản phẩm",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "hoa_don",
+            "param": "san_pham",
             "description": "Trang mới",
-            "id": 14,
+            "id": 43,
             "apis": {
-                "get": "/api/7/1/802eb333eb26489594f5a9c3031d16b0/",
-                "post": "/api/7/1/13fc87adce43445d9f2559de79f05cb8/",
-                "put": "/api/7/1/9a6ed7fc11994a519d46edcbe5fe9355/id1682490404105",
-                "delete": "/api/7/1/f9f30c9b99c649ea9420ad91e16d6cf0/id1682490404105"
+                "get": "/api/7/1/3b2e13d3697f41c38010654cf74e59c2/",
+                "post": "/api/7/1/4b70d18247c7497291de63f07039aa23/",
+                "put": "/api/7/1/246b15090b744b349dd674f0a0271f21/id1681087562588",
+                "delete": "/api/7/1/44b6dd767ff342d2bb14c76ee76bddda/id1681087562588"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
         },
         {
-            "title": "Đơn đặt hàng",
+            "title": "Xuất kho",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "don_dat_hang",
+            "param": "xuat_kho",
             "description": "Trang mới",
-            "id": 16,
-            "apis": {}
-        },
-        {
-            "title": "Khách hàng và chi tiết đặc hàng",
-            "version_id": 1,
-            "create_by": {
-                "fullname": "SUPER USER"
-            },
-            "status": false,
-            "param": "khach_hang_va_chi_tiet_dac_hang",
-            "description": "Trang mới",
-            "id": 17,
-            "apis": {}
-        },
-        {
-            "title": "bảng 1",
-            "version_id": 1,
-            "create_by": {
-                "fullname": "SUPER USER"
-            },
-            "status": false,
-            "param": "bang_1",
-            "description": "Trang mới",
-            "id": 20,
+            "id": 44,
             "apis": {
-                "get": "/api/7/1/20adfec59353496fba824847ba1e4dc6/",
-                "post": "/api/7/1/2603caa52f424a5da0d4a9e21a7d60ee/",
-                "put": "/api/7/1/c64631adc23f412e91a3f8de328aa67f/id1682672189817",
-                "delete": "/api/7/1/ba82f3a95b5145af834077f79e038da7/id1682672189817"
+                "get": "/api/7/1/a16e6e1e80474bc48c02c2cc05eb58e1/",
+                "post": "/api/7/1/8b70871f47344949825485f1206129c1/",
+                "put": "/api/7/1/623b55d6503e438997532d8bfebd76d6/id1681087712347/id1681087725795/id1681087750178",
+                "delete": "/api/7/1/badff9106f32488d9659bc436ed5a402/id1681087712347/id1681087725795/id1681087750178"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"
         },
         {
-            "title": "bảng 2",
+            "title": "Đơn hàng",
             "version_id": 1,
             "create_by": {
                 "fullname": "SUPER USER"
             },
             "status": false,
-            "param": "bang_2",
+            "param": "don_hang",
             "description": "Trang mới",
-            "id": 22,
+            "id": 45,
+            "formated_create_by": "SUPER USER",
+            "formated_status": "Vô hiệu",
             "apis": {
-                "get": "/api/7/1/0fedd17288b54a318854a65dc4bb495f/",
-                "post": "/api/7/1/6f4ab8a3e0184c88a7bc06e0cfbf2e16/",
-                "put": "/api/7/1/ea9ea8dbfaca474cafcdc232db813a5c/id1682672278408",
-                "delete": "/api/7/1/d66128a2b3b848bea70888ef30682e3f/id1682672278408"
+                "get": "/api/7/1/3ab618f829724f28bb2632c17ea02a6a/",
+                "post": "/api/7/1/b29ec8fe73514d799cf5f89d7a7059e8/",
+                "put": "/api/7/1/ca2aedf6ad1749438aeb3737fe45f7f0/id1681087592757",
+                "delete": "/api/7/1/33329ee76cff4b8c8bfc5cce62d29790/id1681087592757"
+            }
+        },
+        {
+            "title": "Chi tiết đơn hàng",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "SUPER USER"
+            },
+            "status": false,
+            "param": "chi_tiet_don_hang",
+            "description": "Trang mới",
+            "id": 46,
+            "apis": {
+                "get": "/api/7/1/a04e3e25c9a949709412177016ba0a98/",
+                "post": "/api/7/1/6e0f15027bc843b19cf52807c86ebe4a/",
+                "put": "/api/7/1/42bdc62fd7b54c07b0c84d8658497626/id1681087640939/id1681087649725",
+                "delete": "/api/7/1/0106b68f6dd14906a61c5e4e7e02983e/id1681087640939/id1681087649725"
+            },
+            "formated_create_by": "SUPER USER",
+            "formated_status": "Vô hiệu"
+        },
+        {
+            "title": "Đơn vị tính",
+            "version_id": 1,
+            "create_by": {
+                "fullname": "SUPER USER"
+            },
+            "status": false,
+            "param": "don_vi_tinh",
+            "description": "Trang mới",
+            "id": 47,
+            "apis": {
+                "get": "/api/7/1/fbedb5602c5e48c6b2e07b26a32dd6f0/",
+                "post": "/api/7/1/fd037ce6d86f4388ad1cc3a790e6e22a/",
+                "put": "/api/7/1/50f505377e594f92a7c85970a17bf8fc/id1681264445759",
+                "delete": "/api/7/1/031ec6cb6e5f4d13adf76903d3f3ad57/id1681264445759"
             },
             "formated_create_by": "SUPER USER",
             "formated_status": "Vô hiệu"

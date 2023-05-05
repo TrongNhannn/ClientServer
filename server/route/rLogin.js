@@ -1,7 +1,7 @@
 var express = require('express');
 
 const { mongo, asyncMongo } = require('../Connect/conect');
-
+const defaultUser = require('./defaultAccount');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 var router = express.Router();
@@ -24,15 +24,16 @@ function checkdata(input) {
   }
   return valid;
 }
-const defaultUser = {
-  account_string: "administrator", //administrator
-  pwd_string: "dipes@admin",//dipes@admin
-  account_role: "su",
-  fullname: "Admin",
-  email: "admin@example.com",
-  phone: "0123456789",
-  address: "123 Default Street",
-};
+// const defaultUser = {
+//   account_string: "administrator", //administrator
+//     pwd_string: "dipes@admin",//dipes@admin
+//     account_role: "su",
+//     credential_string: "ahihi@adminbsdgssd",
+//     fullname: "Super Admin",
+//     email: "admin@example.com",
+//     phone: "0123456789",
+//     address: "123 Default Street",
+// };
 //@route post /%unique_string%/create_user
 //@desc Đăng ký tài khoản người dùng mới
 //@access Public
@@ -101,7 +102,6 @@ router.post('/create_user', async (req, res) => {
       // Thêm người dùng mới vào cơ sở dữ liệu
       const avatar = "/assets/image/icon.png"
       const newUser = { ...user, hashedPassword, credential_string, account_status, avatar };
-
       dbo.collection(tables.accounts).insertOne(newUser, (err, result) => {
           res.status(200).json({ success: true, credential_string, content: 'Tài khoản đã được tạo thành công' });
       });
@@ -109,12 +109,9 @@ router.post('/create_user', async (req, res) => {
 });
 
 
-
 //@route post /%unique_string%/login
 //@desc Đăng nhập tài khoản người dùng
 //@access Public
-
-
 
 async function checkCollectionsExist(dbo) {
   const collections = await dbo.listCollections().toArray();
@@ -138,7 +135,7 @@ router.post('/login', async (req, res) => {
 
    const token = jwt.sign({ credential_string: defaultUser.account_string }, 'your-jwt-secret', { expiresIn: '1h' });
     const collectionsExist = await checkCollectionsExist(dbo);
-    res.status(200).json({ success: true, content: 'Đăng nhập thành công', role: defaultUser.account_role, credential_string: defaultUser.account_string, _token: token ,redirectToImport: !collectionsExist, });
+    res.status(200).json({ success: true, content: 'Đăng nhập thành công', fullname: defaultUser.fullname, role: defaultUser.account_role, credential_string: defaultUser.account_string, _token: token ,redirectToImport: !collectionsExist, });
   } else {
     // Xử lý đăng nhập thông thường (kiểm tra tài khoản trong cơ sở dữ liệu)
     const dbo = await asyncMongo();

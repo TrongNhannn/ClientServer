@@ -19,6 +19,7 @@ export default (props) => {
 
 
     useEffect(() => {
+
         if (isFieldForeign()) {
             const thisFieldForeignKey = table.fk.filter(fk => {
                 const { fks } = fk;
@@ -92,19 +93,23 @@ export default (props) => {
     }
 
     const generateData = (data) => {
-        // console.log(data)
+
         if (fields.length > 0 && current) {
             let showFields = fields;
             const { display_fields } = relatedTable;
+
             if (display_fields && display_fields.length > 0) {
                 showFields = display_fields;
                 return showFields.map(f => data[f]).join(' - ')
             }
+
             return showFields.map(f => data[f.field_alias]).join(' - ')
+
         } else {
             return null
         }
     }
+
     const dataClickedTrigger = (data) => {
         setCurrent(data);
         changeTrigger(field, data[showKey])
@@ -139,7 +144,7 @@ export default (props) => {
             <div className="w-100-pct p-1 m-t-1">
                 <div>
                     <div>
-                        <span className="block text-16-px"> {field.field_name}{!field.nullable && <span style={{color: 'red'}}> *</span>}</span>
+                        <span className="block text-16-px">{field.field_name}</span>
                     </div>
                     <div className="m-t-0-5">
                         <input type="text"

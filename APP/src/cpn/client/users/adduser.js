@@ -209,8 +209,8 @@ export default (props) => {
                         al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin");
                     }
                 });
-                
-                
+
+
         } else {
             // Show an error message when the form is not valid
             al.failure("Thất bại", "Vui lòng kiểm tra lại thông tin và nhập chính xác");

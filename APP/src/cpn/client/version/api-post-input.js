@@ -41,6 +41,7 @@ export default () => {
                     const { fields, tables } = api;
                     delete api.fields;
                     delete api.tables;
+                    console.log(fields)
                     setApi(api)
                     setFields(fields)
                     setTables(tables)
@@ -102,7 +103,7 @@ export default () => {
                         window.location.reload();
                     }, 1600);
                 } else {
-                    al.failure("Oops!", data)
+                    al.failure("Lỗi",data)
                 }
             })
         } else {

@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 export default ( props ) => {
     const { field, changeTrigger, defaultValue } = props;
     const [ current, setCurrent ] = useState(defaultValue ? defaultValue:"")
-
     const fieldChangeData = (e) => {
         const { value } = e.target;
         changeTrigger( field, value )

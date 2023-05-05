@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import $ from 'jquery';
 
 import { Navbar, Horizon } from '../../navbar';
-import ProjectCard from '../projects/suprojects/projectCard'
+
 
 
 import { Varchar } from '../version/inputs';
@@ -307,13 +307,13 @@ export default () => {
                                                                 <div className="abs">
 
                                                                     <span className="block text-red text-12-px">
-                                                                    {error[prop.name] && <div className="text-red text-14-px">{error[prop.name]}</div>}
+                                                                        {error[prop.name] && <div className="text-red text-14-px">{error[prop.name]}</div>}
                                                                     </span>
                                                                 </div>
 
                                                             </div>
                                                         </span>
-                                                        
+
                                                     </div>
                                                 </div>
                                             )

@@ -3,22 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-
-
-
 import { Navbar, Horizon } from '../../navbar';
-
 
 export default (props) => {
     const { page_param } = useParams()
     const { navState, unique_string, proxy, addConstraintBox, addApi, apiAddFilter, pages, Alert, Confirm } = useSelector(state => state);
-    const [ page, setPage ] = useState({})
+    const [page, setPage] = useState({})
     const dispatch = useDispatch()
     const cf = new Confirm(dispatch);
     const al = new Alert(dispatch);
-    
 
-    
+
+    const [currentPage, setCurrentPage] = useState(0);
 
 
 
@@ -39,22 +35,22 @@ export default (props) => {
     //     callApi()
     // }, [])
     useEffect(() => {
-        const page = pages.filter(pag => pag.param == page_param)[0];        
+        const page = pages.filter(pag => pag.param == page_param)[0];
         // console.log(page)
-        if( page !=undefined ){       
-            
-            setPage(page)         
+        if (page != undefined) {
+
+            setPage(page)
         }
         dispatch({
             type: "setNavBarHighLight",
             payload: { page: 1001 }
         })
-        
+
     }, [pages])
 
     useEffect(() => {
-        if(page && page.apis){
-            const id_str = page.apis.get.split('/')[4];          
+        if (page && page.apis) {
+            const id_str = page.apis.get.split('/')[4];
             fetch(`${proxy()}/api/${unique_string}/apis/id_str/${id_str}`)
                 .then(res => res.json())
                 .then(res => {
@@ -62,8 +58,8 @@ export default (props) => {
                     setApi(api);
                     // console.log(api)
                     callApi(api)
-            })
-        }           
+                })
+        }
     }, [page])
 
     const cardDrop = () => {
@@ -99,14 +95,14 @@ export default (props) => {
     }
     const callApi = (api) => {
         /* this must be fixed */
-    
+
         fetch(`${proxy()}${page.apis.get}`).then(res => res.json()).then(res => {
             const { success, content, data } = res;
-            
+
             //  al.failure("Lỗi", "Đọc dữ liệu thất bại ")
-           
-                setApiData(data)
-            
+
+            setApiData(data)
+
         })
     }
     const generateUrl = (url) => {
@@ -123,7 +119,7 @@ export default (props) => {
         const newApiSet = newCollection[api.type.value]
         newCollection[api.type.value] = newApiSet.filter(_api => _api.url.id_str != api.url.id_str)
         setCollections(newCollection)
-       
+
         fetch(`${proxy()}/api/${unique_string}/apis/api`, {
             method: "DELETE",
             headers: {
@@ -144,7 +140,7 @@ export default (props) => {
         const id_str_put = page.apis.put.split(`/`)[4];
 
         let rawParams = page.apis.put.split(`/${id_str_put}/`)[1];
-// console.log(rawParams)
+        // console.log(rawParams)
         const keys = Object.keys(data);
         keys.map(key => {
             const value = data[key];
@@ -187,7 +183,7 @@ export default (props) => {
             const value = data[key];
             rawParams = rawParams.replaceAll(key, value);
         })
-      
+
         fetch(`${proxy()}${rawParams}`, {
             method: "DELETE",
             headers: {
@@ -206,8 +202,14 @@ export default (props) => {
         })
     }
     const askRemove = (data) => {
-        cf.askYesNo("Xóa bản ghi ?", "Bản ghi này sẽ bị xóa vĩnh viễn", (conf) => { deleteData(data) })
+        cf.askYesNo("Xác nhận ?", "Bản ghi này sẽ bị xóa vĩnh viễn", (conf) => { deleteData(data) })
     }
+    const itemsPerPage = 12;
+    const pageCount = Math.ceil(apiData.length / itemsPerPage);
+
+    const handlePageClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
     return (
         <div className="fixed-default fullscreen main-bg overflow flex flex-no-wrap">
             <Navbar urls={urls} param={page_param} />
@@ -256,41 +258,74 @@ export default (props) => {
                                     </div>
                                 </div>
                             </div> */}
+
+
                                     <div className="m-t-1">
-                                        {apiData != undefined && apiData.length > 0 ?
-                                            <table className="w-100-pct">
-                                                <thead>
-                                                    <tr>
-                                                        {api.fields && api.fields.map(field =>
-                                                            <th className="text-left">
-                                                                <span>{field.field_name}</span>
-                                                            </th>
-                                                        )}
-                                                        <th>
-                                                            Action
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {apiData && apiData.map(data =>
+                                        {apiData !== undefined && apiData.length > 0 ? (
+                                            <>
+                                                <table className="w-100-pct">
+                                                    <thead>
                                                         <tr>
-                                                            {api.fields && api.fields.map(field =>
-                                                                <td>{data[field.field_alias]}</td>
-                                                            )}
-                                                            <td className='text-center'>
-                                                                <img onClick={() => { redirectToInputPut(data) }} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/edit.png`} width="100%" />
-                                                                <img onClick={() => { askRemove(data) }} className="w-24-px mg-auto m-l-0-5" src={`/assets/icon/delete.png`} width="100%" />
-                                                            </td>
+                                                            {api.fields &&
+                                                                api.fields.map((field) => (
+                                                                    <th className="text-left">
+                                                                        <span>{field.field_name}</span>
+                                                                    </th>
+                                                                ))}
+                                                            <th>Thao tác</th>
                                                         </tr>
-                                                    )}
-                                                </tbody>
-                                            </table>
-                                            :
-                                            (
-                                                <span>Không có dữ liệu.</span>
-                                            )
-                                        }
+                                                    </thead>
+                                                    <tbody>
+                                                        {apiData
+                                                            .slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+                                                            .map((data) => (
+                                                                <tr>
+                                                                    {api.fields &&
+                                                                        api.fields.map((field) => (
+                                                                            <td>{data[field.field_alias]}</td>
+                                                                        ))}
+                                                                    <td className="text-center">
+                                                                        <img
+                                                                            onClick={() => {
+                                                                                redirectToInputPut(data);
+                                                                            }}
+                                                                            className="w-24-px mg-auto m-l-0-5"
+                                                                            src={`/assets/icon/edit.png`}
+                                                                            width="100%"
+                                                                        />
+                                                                        <img
+                                                                            onClick={() => {
+                                                                                askRemove(data);
+                                                                            }}
+                                                                            className="w-24-px mg-auto m-l-0-5"
+                                                                            src={`/assets/icon/delete.png`}
+                                                                            width="100%"
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                    </tbody>
+                                                </table>
+
+                                                {/* {apiData.length > itemsPerPage && ( */}
+                                                {apiData.length > 12 && (
+                                                    <div className='p-t-1'>
+                                                        <div className='p-b-0-5'> 
+                                                            Hiển thị từ kết quả {currentPage * itemsPerPage + 1} đến {Math.min((currentPage + 1) * itemsPerPage, apiData.length)} của {apiData.length} kết quả
+                                                        </div>
+                                                        {Array.from(Array(pageCount), (page, index) => (
+                                                            <button key={index} onClick={() => handlePageClick(index)}
+                                                                style={{marginRight:'5px', backgroundColor: currentPage === index ? 'lightgray' : 'white', }} > {index + 1}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </>
+                                        ) : (
+                                            <span>Không có dữ liệu.</span>
+                                        )}
                                     </div>
+
                                 </div>
                             </div>
                         </div>

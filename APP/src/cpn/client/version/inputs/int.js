@@ -10,27 +10,12 @@ export default ( props ) => {
     const [ showKey, setShowKey ] = useState("")
     const { proxy, unique_string } = useSelector( state => state );
     const [ relatedTable, setRelatedTable ] = useState({})
-    const [ pk, setPK ] = useState([]);//////////////////////////////////////////////////////////////////////////////////////////
-    // const [intError, setIntError] = useState(false);
-
-    // const validateInt = (value) => {
-    //   const intRegex = /^[-+]?\d+$/;
-    //   return intRegex.test(value);
-    // };
-  
-    // const fieldChangeData = (e) => {
-    //   const { value } = e.target;
-    //   setCurrent(value);
-    //   if (validateInt(value) || value === '') {
-    //     setIntError(false);
-    //     changeTrigger(field, value);
-    //   } else {
-    //     setIntError(true);
-    //   }
-    // };
+    const [ pk, setPK ] = useState([]);
+    
     useEffect(() => {
-        // console.log(field.field_alias)
-       
+        setCurrent(defaultValue)
+    }, [defaultValue])
+    useEffect(() => {
         if( isFieldForeign()){
             const thisFieldForeignKey = table.fk.filter( fk => {
                 const { fks } = fk;
@@ -44,14 +29,14 @@ export default ( props ) => {
             const { table_alias, fks } = thisFieldForeignKey;
             if( foreignData.length == 0 ){
                 fetch(`${ proxy() }/api/${ unique_string }/apis/table/data/${ table_alias }`).then( res => res.json() ).then( res => {
-                    const { success, data, fields, pk } = res;      ///////////////////////////              
+                    const { success, data, fields, pk } = res;                
                     setForeignData( data )
                     setFields(fields)
                     const showKey = fks.filter(k => k.field_alias == field.field_alias )[0].ref_on
                     setShowKey(showKey)
                     const rTable = related.filter( tb => tb.table_alias == table_alias )[0];
                     setRelatedTable(rTable)
-                    setPK(pk) /////////////     ///////////////////////////////////////////////////////////////////              
+                    setPK(pk)             
                 })
             }
         }else{

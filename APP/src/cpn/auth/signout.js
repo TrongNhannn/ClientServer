@@ -11,9 +11,13 @@ export default () => {
         //     }
         // })
 
-        localStorage.removeItem( 'role' )
-        localStorage.removeItem( 'credential_string' )
-        localStorage.removeItem( '_token' )
+        localStorage.removeItem('role')
+        localStorage.removeItem('credential_string')
+        localStorage.removeItem('_token')
+        // localStorage.removeItem("account_string");
+        // localStorage.removeItem("pwd_string");
+        // localStorage.removeItem("remember_me");
+
         window.location = "/login"
     }, [])
     return null

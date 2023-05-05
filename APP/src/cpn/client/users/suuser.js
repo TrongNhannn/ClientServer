@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import $ from 'jquery';
 
 import { Navbar, Horizon } from '../../navbar';
-import ProjectCard from '../projects/suprojects/projectCard'
+
 
 
 export default () => {
@@ -169,42 +169,7 @@ export default () => {
                         </div>
 
                         <hr className="border-1-top block m-t-1"/>
-                        { projects.own.success ?
-                            <div className="m-t-1">
-                                <span className="block text-20-px">Dự án của { user.name }</span>
-
-                                <div className="flex flex-no-wrap">
-                                    { projects.own.success && projects.own.projectDetails.map(project =>
-                                        <ProjectCard key={ project.project_id } project = { project }/>
-                                    )}
-                                </div>
-                            </div>
-                        : null }
-
-                        { projects.partner.success ?
-                            <div className="m-t-1">
-                                <span className="block text-20-px">Dự án { user.name } đã tham gia</span>
-
-                                <div className="flex flex-no-wrap">
-                                    { projects.partner.success && projects.partner.projectDetails.map(project =>
-                                        <ProjectCard key={ project.project_id } project = { project }/>
-                                    )}
-                                </div>
-                            </div>
-                        : null }
-
-                        { projects.use.success ?
-                            <div className="m-t-1">
-                                <span className="block text-20-px">Dự án { user.name } là người dùng</span>
-
-                                <div className="flex flex-no-wrap">
-                                    { projects.use.success && projects.use.projectDetails.map(project =>
-                                        <ProjectCard key={ project.project_id } project = { project }/>
-                                    )}
-                                </div>
-                            </div>
-                        : null }
-
+                        
 
                     </div>
                 </div>

@@ -6,11 +6,17 @@ const tables = require('../mongo/tables');
 const { cropIMG } = require('../module/crop');
 
 const { mongo } = require('../Connect/conect');
+
+const defaultUser = require('./defaultAccount');
 //@route GET api/user/GetAll
 //@desc GetAll or GetById user
 //@access Public
 router.get('/getall/:credential_string', function (req, res) {
     if (req.params.credential_string) {
+        if( req.params.credential_string == defaultUser.credential_string ){
+            delete defaultUser.pwd_string;
+            return res.status(200).json({ success: true, content: "Thành công", data: [ defaultUser ] });
+        }
         try {
             User.getUser_detail(req.params.credential_string, function (err, rows) {
                 if (err) {

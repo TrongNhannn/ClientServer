@@ -48,7 +48,7 @@ const initState = {
     auth: {
         credential_string: localStorage.getItem('credential_string'),
         _token: localStorage.getItem('_token'),
-        role: localStorage.getItem('role'),
+        role: localStorage.getItem('role'),        
     },
 
     alert: {

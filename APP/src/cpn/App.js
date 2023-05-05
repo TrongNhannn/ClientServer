@@ -13,7 +13,7 @@ import "../css/index.scss";
 import Alert from './alert';
 import Confirm from './confirm';
 import { Login, SignUp, SignOut } from './auth';
-import { Home, Projects, SuProjects, SuProject, SuUsers, SuUser, EditUser, Version, TableInput, APIPostInput, APIPutInput } from './client';
+import { Home, SuUsers, SuUser, EditUser, Version, TableInput, APIPostInput, APIPutInput } from './client';
 import DataClient from './client/version/data-client';
 import APIFetching from './client/version/api-fetching';
 
@@ -25,7 +25,7 @@ function App() {
     useEffect(() => {
         const specialURLs = [ "/login", "/signup", "/signout" ]
         const url = window.location.pathname;
-
+        // console.log(_token)
         if( specialURLs.indexOf(url) === -1 ){
             if( !_token ){
                 window.location = '/login'
@@ -71,9 +71,7 @@ function App() {
                 <Route exac path="/signup" element={ <SignUp /> } />
                 <Route exac path="/signout" element={ <SignOut /> } />
                 <Route exac path="/" element = { <Home /> } />
-                <Route exac path="/projects" element = { <Projects /> } />
-                <Route exac path="/su/projects" element = { <SuProjects /> } />
-                <Route exac path="/su/project/:project_id" element = { <SuProject /> } />
+    
                 <Route exac path="/su/users" element = { <SuUsers /> } />
                 <Route exac path="/su/user/edit/:credential_string" element = { <EditUser /> } />
                 <Route exac path="/su/user/:credential_string" element = { <SuUser /> } />

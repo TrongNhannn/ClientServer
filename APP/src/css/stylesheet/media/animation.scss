@@ -110,7 +110,7 @@
 $hidenDist: -242px;
 
 .navbar{
-    transition: ease-in-out 0.5s;
+    // transition: ease-in-out 0.5s;
 }
 
 .app{
@@ -157,24 +157,24 @@ $hidenDist: -242px;
 }
 
 
-@keyframes navShow {
-    0%{
-        left: $hidenDist;
-    }
-    100%{
-        left: 0px;
-    }
-}
+// @keyframes navShow {
+//     0%{
+//         left: $hidenDist;
+//     }
+//     100%{
+//         left: 0px;
+//     }
+// }
 
-@keyframes navHide {
-    0%{
-        left: 0px;
-    }
+// @keyframes navHide {
+//     0%{
+//         left: 0px;
+//     }
 
-    100%{
-        left: $hidenDist;
-    }
-}
+//     100%{
+//         left: $hidenDist;
+//     }
+// }
 
 .hori-hide{
     animation-name: horiHide;
@@ -182,14 +182,14 @@ $hidenDist: -242px;
     margin-left: 100vw;
 }
 
-@keyframes horiHide {
-    0%{
-        margin-left: 0;
-    }
-    100%{
-        margin-left: 100vw;
-    }
-}
+// @keyframes horiHide {
+//     0%{
+//         margin-left: 0;
+//     }
+//     100%{
+//         margin-left: 100vw;
+//     }
+// }
 
 .hori-show{
     animation-name: horiShow;
@@ -197,14 +197,14 @@ $hidenDist: -242px;
     margin-left: 0;
 }
 
-@keyframes horiShow {
-    0%{
-        margin-left: 100vw;
-    }
-    100%{
-        margin-left: 0;
-    }
-}
+// @keyframes horiShow {
+//     0%{
+//         margin-left: 100vw;
+//     }
+//     100%{
+//         margin-left: 0;
+//     }
+// }
 
 
 .dock{
